@@ -14,8 +14,8 @@ class LoginController {
     }
 
     public function validateUser(){
-        $nickname = $_POST("nickname");
-        $password = $_POST("password");
+        $nickname = $_POST["nickname"];
+        $password = $_POST["password"];
 
         $data = $this->userModel->getUser($nickname, $password);
 
