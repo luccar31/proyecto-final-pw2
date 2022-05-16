@@ -36,7 +36,7 @@ class Configuration {
             'localhost',
             'root',
             '',
-            'sarasa');
+            'gauchorocket');
 
     }
 
