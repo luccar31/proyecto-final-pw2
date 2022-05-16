@@ -14,9 +14,9 @@ class SigninController {
     }
 
     public function createUser(){
-        $nickname = $_POST("nickname");
-        $password = $_POST("password");
-        $firstname = $_POST("firstname");
+        $nickname = $_POST["nickname"];
+        $password = $_POST["password"];
+        $firstname = $_POST["firstname"];
 
         if(!$this->existsUser($nickname)){
             //todo: mandar confirmacion por mail
