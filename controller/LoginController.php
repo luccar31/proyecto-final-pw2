@@ -20,9 +20,15 @@ class LoginController {
         $data = $this->userModel->getUser($nickname, $password);
 
         if($data){
-            session_start();
-            $_SESSION["nickname"] = $nickname;
+            echo "existe";
+            //session_start();
+            //$_SESSION["nickname"] = $nickname;
+            header("location: http://localhost");
         }
-        header("location: index");
+        else{
+            $this->printer->generateView('loginView.html',
+                                        ['nickname' => $nickname,'password' => $password,
+                                         'error' => "Usuario/contraseña incorrecto"]);
+        }
     }
 }
