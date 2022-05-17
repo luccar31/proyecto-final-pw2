@@ -1,12 +1,10 @@
 <?php
 
-class SarasaController{
+class HomeController{
 
     private $printer;
-    private $sarasaModel;
 
-    public function __construct($sarasaModel, $printer) {
-        $this->sarasaModel = $sarasaModel;
+    public function __construct($printer) {
         $this->printer = $printer;
     }
 
