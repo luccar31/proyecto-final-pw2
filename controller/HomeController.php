@@ -11,7 +11,7 @@ class SarasaController{
     }
 
     public function execute() {
-        $this->printer->generateView('sarasaView.html');
+        $this->printer->generateView('homeView.html');
     }
 
 }
