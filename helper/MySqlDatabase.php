@@ -24,7 +24,9 @@ class MySqlDatabase {
 
     public function query($sql) {
         $result = mysqli_query($this->conn, $sql);
-        return mysqli_fetch_all($result , MYSQLI_ASSOC);
+        if (substr($sql, 0, 6) == "SELECT"){
+            return mysqli_fetch_all($result , MYSQLI_ASSOC);
+        }
     }
 
     private function connect() {
