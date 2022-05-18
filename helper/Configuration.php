@@ -2,11 +2,12 @@
 include_once('helper/MySqlDatabase.php');
 include_once('helper/Router.php');
 require_once('helper/MustachePrinter.php');
-include_once('controller/SarasaController.php');
+include_once('helper/Session.php');
+include_once('controller/HomeController.php');
 include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
+include_once('controller/ProfileController.php');
 include_once('model/UserModel.php');
-include_once('model/SarasaModel.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
 
 class Configuration {
@@ -15,16 +16,16 @@ class Configuration {
         return new SigninController($this->getUserModel(), $this->getPrinter());
     }
 
+    public function getProfileController() {
+        return new ProfileController($this->getUserModel(), $this->getPrinter());
+    }
+
     public function getLoginController() {
         return new LoginController($this->getUserModel(), $this->getPrinter());
     }
 
-    public function getSarasaController() {
-        return new SarasaController($this->getSarasaModel(), $this->getPrinter());
-    }
-
-    private function getSarasaModel(){
-        return new SarasaModel($this->getDatabase());
+    public function getHomeController() {
+        return new HomeController($this->getPrinter());
     }
 
     private function getUserModel(){
@@ -41,10 +42,10 @@ class Configuration {
     }
 
     private function getPrinter() {
-        return new MustachePrinter("view");
+        return new MustachePrinter("view", new Session());
     }
 
     public function getRouter() {
-        return new Router($this, "getSarasaController", "execute");
+        return new Router($this, "getHomeController", "execute", new Session());
     }
 }
