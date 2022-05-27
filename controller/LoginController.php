@@ -17,29 +17,35 @@ class LoginController {
         $nickname = $_POST["nickname"];
         $password = $_POST["password"];
 
-        $data = $this->userModel->getUser($nickname, $password);
+        $user = $this->userModel->getUser($nickname, $password);
 
-        if($data){
-            $this->startSession();
-            header("location: http://localhost/");
-            exit();
+        if($user){
+            $this->startSession($nickname);
+            $this->redirect("http://localhost/");
         }
         else{
             $this->printer->generateView('loginView.html',
                                         ['nickname' => $nickname,'password' => $password,
-                                         'error' => "Usuario/contraseña incorrecto"]);
+                                         'error' => "Usuario o contraseña incorrecto"]);
         }
     }
 
-    private function startSession(){
+    private function startSession($nickname){
         session_start();
         $_SESSION["logged"] = true;
+        $_SESSION["nickname"] = $nickname;
     }
 
     public function closeSession(){
         session_unset();
         session_destroy();
-        header("location: http://localhost/");
+        $this->redirect("http://localhost/");
+    }
+
+    //funcion aplicable para todos los controladores
+    //se repite codigo
+    private function redirect($url){
+        header("location: " . $url);
         exit();
     }
 }
