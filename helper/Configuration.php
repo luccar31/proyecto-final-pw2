@@ -8,12 +8,13 @@ include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
 include_once('controller/ProfileController.php');
 include_once('model/UserModel.php');
+include_once('model/ClientModel.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
 
 class Configuration {
 
     public function getSigninController() {
-        return new SigninController($this->getUserModel(), $this->getPrinter());
+        return new SigninController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter());
     }
 
     public function getProfileController() {
@@ -30,6 +31,10 @@ class Configuration {
 
     private function getUserModel(){
         return new UserModel($this->getDatabase());
+    }
+
+    private function getClientModel(){
+        return new ClientModel($this->getDatabase());
     }
 
     private function getDatabase() {

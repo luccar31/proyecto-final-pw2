@@ -25,7 +25,6 @@ class LoginController {
             exit();
         }
         else{
-            $this->closeSession();
             $this->printer->generateView('loginView.html',
                                         ['nickname' => $nickname,'password' => $password,
                                          'error' => "Usuario/contraseña incorrecto"]);

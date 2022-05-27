@@ -13,20 +13,27 @@
                             <form method="post" action="/signin/createUser">
                                 <div class="form-outline form-white mb-4" >
                                     <label class="form-label" for="nickname">Usuario</label>
-                                    <input type="text" name="nickname" id="nickname" placeholder="Ingrese su nombre de usuario" class="form-control form-control-lg" />
-
+                                    <input type="text" name="nickname" id="nickname" placeholder="Ingrese su nombre de usuario" class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline form-white mb-4">
                                     <label class="form-label" for="password">Contraseña</label>
-                                    <input  type="password" name="password" id="password" placeholder="Ingrese su contraseña" class="form-control form-control-lg" />
-
+                                    <input  type="password" name="password" id="password" placeholder="Ingrese su contraseña" class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline form-white mb-4">
                                     <label class="form-label" for="firstname">Nombre</label>
-                                    <input  type="text" name="firstname" id="firstname" placeholder="Ingrese su nombre" class="form-control form-control-lg" />
+                                    <input  type="text" name="firstname" id="firstname" placeholder="Ingrese su nombre" class="form-control form-control-lg" required/>
+                                </div>
 
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="surname">Apellido</label>
+                                    <input  type="text" name="surname" id="surname" placeholder="Ingrese su apellido" class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input  type="email" name="email" id="email" placeholder="Ingrese su email" class="form-control form-control-lg" required/>
                                 </div>
 
                                 <button class="btn btn-outline-light btn-lg px-5" type="submit">Registrarse</button>
@@ -36,11 +43,10 @@
                                 <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
                                 <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
                             </div>
-
                         </div>
 
                         <div>
-                            <p class="mb-0">¿No tienes una cuenta? <a href="/signin" class="text-white-50 fw-bold">Registrate</a>
+                            <p class="mb-0">¿Tienes una cuenta? <a href="/login" class="text-white-50 fw-bold">Iniciá sesión</a>
                             </p>
                         </div>
 
