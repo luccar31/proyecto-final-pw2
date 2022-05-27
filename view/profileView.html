@@ -1,4 +1,21 @@
 {{> header}}
 {{> navbar}}
-<p>Perfil xd</p>
+<section class="profile">
+  {{#client}}
+  <p>Nombre de usuario: {{user_nickname}}</p>
+  <p>Nombre: {{firstname}}</p>
+  <p>Apellido: {{surname}}</p>
+  <p>Email: {{email}}</p>
+  {{#traveler_code}}
+  <p>Código de viajero: {{traveler_code}}</p>
+  <p>Nivel de vuelo: {{flight_level}}</p>
+  {{/traveler_code}}
+  {{^traveler_code}}
+  <p>Código de viajero: Usted aún no se realizó el chequeo médico</p>
+  <a href="/appointment/getAppointment">Sacar turno</a>
+  {{/traveler_code}}
+  <a href="/profile/modifyData">Modificar datos</a>
+  <a href="/profile/modifyPassword">Cambiar contraseña</a>
+  {{/client}}
+</section>
 {{> footer}}

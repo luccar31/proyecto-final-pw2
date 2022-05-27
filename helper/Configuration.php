@@ -18,7 +18,7 @@ class Configuration {
     }
 
     public function getProfileController() {
-        return new ProfileController($this->getUserModel(), $this->getPrinter());
+        return new ProfileController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter());
     }
 
     public function getLoginController() {

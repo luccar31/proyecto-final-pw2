@@ -3,13 +3,17 @@
 class ProfileController {
     private $printer;
     private $userModel;
+    private $clientModel;
 
-    public function __construct($userModel, $printer) {
-        $this->userModel = $userModel;
+    public function __construct($models, $printer) {
+        $this->userModel = $models["userModel"];
+        $this->clientModel = $models["clientModel"];
         $this->printer = $printer;
     }
 
     public function execute(){
-        $this->printer->generateView('profileView.html');
+        $client = $this->clientModel->getClient($_SESSION["nickname"]);
+        $data = ["client" => $client];
+        $this->printer->generateView('profileView.html', $data);
     }
 }
