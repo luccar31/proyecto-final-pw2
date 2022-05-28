@@ -7,8 +7,10 @@ include_once('controller/HomeController.php');
 include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
 include_once('controller/ProfileController.php');
+include_once('controller/MedicalcheckupController.php');
 include_once('model/UserModel.php');
 include_once('model/ClientModel.php');
+include_once('model/AppointmentModel.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
 
 class Configuration {
@@ -29,12 +31,20 @@ class Configuration {
         return new HomeController($this->getPrinter());
     }
 
+    public function getMedicalcheckupController(){
+      return new MedicalcheckupController( $this->getAppointmentModel(), $this->getPrinter());
+    }
+
     private function getUserModel(){
         return new UserModel($this->getDatabase());
     }
 
     private function getClientModel(){
         return new ClientModel($this->getDatabase());
+    }
+
+    private function getAppointmentModel(){
+        return new AppointmentModel($this->getDatabase());
     }
 
     private function getDatabase() {
