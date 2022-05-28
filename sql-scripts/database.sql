@@ -24,7 +24,7 @@ CREATE TABLE client(
     flight_level INT
 );
 
-CREATE TABLE medic_center(
+CREATE TABLE medical_center(
     id INT PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     daily_limit INT NOT NULL
@@ -33,13 +33,15 @@ CREATE TABLE medic_center(
 CREATE TABLE appointment(
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
-    user_nickname VARCHAR(50) NOT NULL,
-    FOREIGN KEY (user_nickname) REFERENCES client(user_nickname)
+    user_nickname VARCHAR(50) NOT NULL UNIQUE,
+    FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
+    medical_center_id INT NOT NULL,
+    FOREIGN KEY (medical_center_id) REFERENCES medical_center(id)
 );
 
-INSERT INTO medic_center VALUES(1, 'Buenos Aires', 300);
-INSERT INTO medic_center VALUES(2, 'Shanghái', 210);
-INSERT INTO medic_center VALUES(3, 'Ankara', 200);
+INSERT INTO medical_center VALUES(1, 'Buenos Aires', 300);
+INSERT INTO medical_center VALUES(2, 'Shanghái', 210);
+INSERT INTO medical_center VALUES(3, 'Ankara', 200);
 
 INSERT INTO role VALUES (1, 'client');
 INSERT INTO role VALUES (2, 'admin');
