@@ -22,4 +22,11 @@ class UserModel {
         return $this->database->query("SELECT nickname FROM user
                                        WHERE nickname='$nickname'");
     }
+
+    public function getUserEmail($email){
+        return $this->database->query("SELECT email FROM client
+                                       WHERE email='$email'");
+    }
+
+
 }
