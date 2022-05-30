@@ -15,9 +15,17 @@ class FlightController
     }
 
     public function getFlights(){
-        $flights = $this->flightModel->getFlights();
+        $origin = $_POST['origin'];
+        $destination = $_POST['destination'];
+        $flights = $this->flightModel->getFlights($origin, $destination);
         $data = ["flights" => $flights];
-        $this->printer->generateView('flightView.html', $data);
+
+        if (empty($flights)){
+            $this->printer->generateView('flightView.html', ['error' => 'No hay vuelos disponibles']);
+        }
+        else{
+            $this->printer->generateView('flightView.html', $data);
+        }
 
     }
 }
