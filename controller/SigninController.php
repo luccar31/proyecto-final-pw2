@@ -28,13 +28,44 @@ class SigninController
         $email = $_POST["email"];
 
         //datos ingresados anteriormente
-        $data = ['nickname' => $nickname, 'password' => $password, 'repeatPassword' => $repeatPassword, 'firstname' => $firstname, 'surname' => $surname, 'email' => $email];
+        $data = ['nickname' => $nickname, 'password' => $password, 'firstname' => $firstname, 'surname' => $surname, 'email' => $email];
+        $previousData = count($data);
 
-        //le mando los datos para que valide y me retorna la vista y datos a mostrar
-        $data = $this->userModel->createUser2($data, $this->clientModel);
+        //por cada validacion agregamos un elemento error al data para mostrarlo en pantalla
+        if (empty($nickname) || strlen($nickname) > 50) {
+            $data['nicknameError'] = 'El nombre de usuario debe tener entre 1 y 50 caracteres';
+        }
 
-        //la vista puede ser signinView.html con los datos en caso de error, o loginView.html si salió todo ok
-        $this->printer->generateView($data['view'], $data);
+        if (empty($password) || strlen($password) > 50) {
+            $data['passwordError'] = 'La contraseña debe tener entre 1 y 50 caracteres';
+        }
+        if ($password != $repeatPassword) {
+            $data['repeatPasswordError'] = 'Las contraseñas no coinciden';
+        }
+        if (empty($firstname) || strlen($firstname) > 50) {
+            $data['firstnameError'] = 'El nombre debe tener entre 1 y 50 caracteres';
+        }
+        if (empty($surname) || strlen($surname) > 50) {
+            $data['surnameError'] = 'El apellido debe tener entre 1 y 50 caracteres';
+        }
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $data['emailError'] = 'El email debe tener entre 1 y 50 caracteres';
+        }
+
+        //le mando los datos para que valide y me retorna si es valido o no
+        $data = $this->userModel->validateData($data, $previousData);
+
+        if ($data['isValid'] == false){
+            $this->printer->generateView('signinView.html', $data);
+
+        }
+        else{
+            //todo: mandar confirmacion por mail
+            $this->userModel->createUser($nickname, $password);
+            $this->clientModel->createClient($nickname, $firstname, $surname, $email);
+            header("location: /login");
+            exit();
+        }
 
 
     }
