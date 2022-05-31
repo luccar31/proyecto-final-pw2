@@ -5,27 +5,26 @@ class FlightController
     private $printer;
     private $flightModel;
 
-    public function __construct($appointmentModel, $printer) {
+    public function __construct($appointmentModel, $printer)
+    {
         $this->flightModel = $appointmentModel;
         $this->printer = $printer;
     }
 
-    public function execute(){
+    public function execute()
+    {
         $this->printer->generateView('flightView.html');
     }
 
-    public function getFlights(){
+    public function getFlights()
+    {
         $origin = $_POST['origin'];
         $destination = $_POST['destination'];
-        $flights = $this->flightModel->getFlights($origin, $destination);
-        $data = ["flights" => $flights];
+        $flightType = $_POST['flightType'];
 
-        if (empty($flights)){
-            $this->printer->generateView('flightView.html', ['error' => 'No hay vuelos disponibles']);
-        }
-        else{
-            $this->printer->generateView('flightView.html', $data);
-        }
+        $data = $this->flightModel->getFlights($origin, $destination, $flightType);
+
+        $this->printer->generateView('flightView.html', $data);
 
     }
 }
