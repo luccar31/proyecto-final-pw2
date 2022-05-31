@@ -9,7 +9,12 @@
     background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
 }
 
-.login, .home {
+
+.table {
+    background: white;
+}
+
+.login, .home, .flight {
     background: url("/assets/img/image3.jpg");
     background-size: cover;
     padding: 20px 0 60px 0;

@@ -1,16 +1,18 @@
 {{> header}}
 {{> navbar}}
 
-<section>
-    <table class='w3-table'>
+<section class="flight">
+    <div class="container py-5 h-100">
+    <table class='table'>
+        <thead>
         <tr>
-            <th>Tipo de vuelo</th>
-            <th>Fecha de partida</th>
-            <th>Tiempo de viaje</th>
-            <th>Origen</th>
-            <th>Destino</th>
+            <th scope="col">Tipo de vuelo</th>
+            <th scope="col">Fecha de partida</th>
+            <th scope="col">Tiempo de viaje</th>
+            <th scope="col">Origen</th>
+            <th scope="col">Destino</th>
         </tr>
-
+        </thead>
             {{#flights}}
         <tr>
             <td>{{type_description}}</td>
@@ -26,6 +28,7 @@
     {{#error}}
     <div style="color: red">{{error}}</div>
     {{/error}}
+    </div>
 </section>
 
 {{> footer}}
