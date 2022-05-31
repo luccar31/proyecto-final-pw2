@@ -42,9 +42,9 @@ CREATE TABLE flight(
 
 );
 
-INSERT INTO flight VALUES (1, 'Orbital', '2022-12-10', '13:00', 'Luna', 'Marte');
-INSERT INTO flight VALUES (1, 'Orbital', '2022-11-04', '20:00', 'Jupiter', 'Tierra');
-INSERT INTO flight VALUES (2, 'Entre Destinos', '2022-08-01', '21:30', 'Europa', 'Titan');
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (1, 'Orbital', '2022-12-10', '13:00', 'Luna', 'Marte');
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (1, 'Orbital', '2022-11-04', '20:00', 'Jupiter', 'Tierra');
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (2, 'Entre Destinos', '2022-08-01', '21:30', 'Europa', 'Titan');
 
 
 
