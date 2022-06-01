@@ -11,45 +11,47 @@ class MedicalcheckupController
     }
 
     public function execute(){
-        $this->printer->generateView('medicalcheckupView.html');
+        $nickname = $_SESSION["nickname"];
+        $appointment = $this->appointmentModel->getAppointment($nickname);
+        $data = ['appointment' => $appointment];
+
+        $this->printer->generateView('medicalcheckupView.html', $data);
     }
 
     public function getAppointment(){
-        $date = new DateTime($_POST['date']);
+        $data = [];
         $nickname = $_SESSION['nickname'];
+        $date = new DateTime($_POST['date']);
         $medicalCenter = $_POST['medicalCenter'];
 
-        //todo: faltaría validar que hayan turnos disponibles ese día
-        //Si no (!) es fecha valida, genera vista con mensaje de error y corta la ejecución
-        if(!$this->validDate($date)){
-            $this->printer->generateView('medicalcheckupView.html', ['error' => 'Ingrese una fecha correcta']);
-            exit();
+        if( !$this->validDate($date) ){
+            $data['errors'][] = ['error' => 'Ingrese una fecha correcta'];
         }
 
-        //Si el usuario ya tiene turno, genera vista con mensaje de error y corta la ejecución
-        if($this->appointmentModel->getAppointment($nickname)){
-            $this->printer->generateView('medicalcheckupView.html', ['error' => 'Usted ya posee un turno asignado']);
-            exit();
+        if( !$this->validMedicalCenter($medicalCenter) ){
+            $data['errors'][] = ['error' => 'Ingrese un centro medico'];
         }
-        else{ //Caso contrario, formateo fecha, llamo al modelo y genero vista con mensaje exitoso
-            $date = $date->format('Y-m-d');
-            $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
-            $this->printer->generateView('medicalcheckupView.html', ['exito' => 'Se ha reservado su turno exitosamente']);
-        }
+
+        $this->areThereErrors($data['errors']);
+        $data = $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
+        $this->areThereErrors($data['errors']);
+
+        return $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
 
-    /*
-     * Función que valida si la fecha ingresada es mayor o igual al dia de la fecha.
-     * No se pueden reservar turnos para fechas que ya pasaron
-     */
     private function validDate($input){
         $now = new DateTime();
-        /*
-         * Diferencia de fechas: hoy - fecha ingresada
-         * https://www.php.net/manual/en/class.datetime.php
-         * (int) -> Casteo explícito al entero
-         */
         $diff = (int)$now->diff($input)->format('%r%a');
         return $diff >= 0;
+    }
+
+    private function validMedicalCenter($input){
+        return $input != 0;
+    }
+
+    private function areThereErrors($errors){
+        if( isset($errors) ){
+            return $this->printer->generateView('medicalcheckupView.html', $errors);
+        }
     }
 }

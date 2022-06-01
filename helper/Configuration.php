@@ -3,6 +3,7 @@ include_once('helper/MySqlDatabase.php');
 include_once('helper/Router.php');
 require_once('helper/MustachePrinter.php');
 include_once('helper/Session.php');
+include_once('helper/Helper.php');
 include_once('controller/HomeController.php');
 include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
@@ -34,7 +35,7 @@ class Configuration {
     }
 
     public function getMedicalcheckupController(){
-      return new MedicalcheckupController( $this->getAppointmentModel(), $this->getPrinter());
+      return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter());
     }
     public function getFlightController() {
         return new FlightController($this->getFlightModel(),$this->getPrinter());
@@ -66,10 +67,18 @@ class Configuration {
     }
 
     private function getPrinter() {
-        return new MustachePrinter("view", new Session());
+        return new MustachePrinter("view", $this->getSession());
     }
 
     public function getRouter() {
-        return new Router($this, "getHomeController", "execute", new Session());
+        return new Router($this, "getHomeController", "execute", $this->getSession());
+    }
+
+    private function getSession(){
+        return new Session();
+    }
+
+    private function getHelper(){
+        return new Helper();
     }
 }
