@@ -9,9 +9,11 @@ include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
 include_once('controller/ProfileController.php');
 include_once('controller/MedicalcheckupController.php');
+include_once('controller/FlightController.php');
 include_once('model/UserModel.php');
 include_once('model/ClientModel.php');
 include_once('model/AppointmentModel.php');
+include_once('model/FlightModel.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
 
 class Configuration {
@@ -35,6 +37,9 @@ class Configuration {
     public function getMedicalcheckupController(){
       return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter());
     }
+    public function getFlightController() {
+        return new FlightController($this->getFlightModel(),$this->getPrinter());
+    }
 
     private function getUserModel(){
         return new UserModel($this->getDatabase());
@@ -46,6 +51,10 @@ class Configuration {
 
     private function getAppointmentModel(){
         return new AppointmentModel($this->getDatabase());
+    }
+
+    private function getFlightModel(){
+        return new FlightModel($this->getDatabase());
     }
 
     private function getDatabase() {

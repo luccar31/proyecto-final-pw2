@@ -15,6 +15,7 @@ class AppointmentModel
     }
 
     public function createAppointment($nickname, $date, $medicalCenter){
+
         $data = [];
 
         if($this->getAppointment($nickname)){
@@ -28,8 +29,19 @@ class AppointmentModel
         if(isset($data['errors'])) return $data;
 
         $this->database->query("INSERT INTO appointment (date, user_nickname, medical_center_id) VALUES ('{$date->format('Y-m-d')}','$nickname', '$medicalCenter')");
-
+        
+        
+      
+        $this->createTraveler($nickname);
+        
         return ['nickname' => $nickname, 'date' => $date->format('d-m-Y'), 'medicalCenter' => $medicalCenter];
+        
+    }
+  
+    private function createTraveler($nickname){
+      $travelerCode = $this->generateTravelerCode();
+      $flight_level = rand(1, 3);
+      $this->database->query("UPDATE client set traveler_code = '$travelerCode', flight_level = '$flight_level' WHERE user_nickname = '$nickname'");
     }
 
     public function modifyAppointment($nickname, $date){
@@ -63,5 +75,12 @@ class AppointmentModel
         $available = $limit - $appointmentsInDate;
 
         return $available > 0;
+    }
+  
+    private function generateTravelerCode(){
+        $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomCode = substr(str_shuffle($caracteres), 0, 10);
+
+        return $randomCode;
     }
 }

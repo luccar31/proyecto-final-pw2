@@ -1,21 +1,70 @@
 {{> header}}
 {{> navbar}}
-<section class="profile">
+<section class="vh-100 profile" style="background-color: #f4f5f7;">
   {{#client}}
-  <p>Nombre de usuario: {{user_nickname}}</p>
-  <p>Nombre: {{firstname}}</p>
-  <p>Apellido: {{surname}}</p>
-  <p>Email: {{email}}</p>
-  {{#traveler_code}}
-  <p>Código de viajero: {{traveler_code}}</p>
-  <p>Nivel de vuelo: {{flight_level}}</p>
-  {{/traveler_code}}
-  {{^traveler_code}}
-  <p>Código de viajero: Usted aún no se realizó el chequeo médico</p>
-  <a href="/appointment/getAppointment">Sacar turno</a>
-  {{/traveler_code}}
-  <a href="/profile/modifyData">Modificar datos</a>
-  <a href="/profile/modifyPassword">Cambiar contraseña</a>
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-8 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: .5rem;">
+          <div class="row g-0">
+            <div class="col-md-4 gradient-custom text-center text-white"
+                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+              <img src="/assets/img/gaucho_icon.png"
+                   alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+              <h5>{{firstname}} {{surname}}</h5>
+              <p>{{user_nickname}}</p>
+              <a href="/profile/modifyData"><i class="far fa-edit mb-5"></i></a> <br>
+              <a href="/profile/modifyPassword">Cambiar contraseña</a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <h6>Información</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Email</h6>
+                    <p class="text-muted">{{email}}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>Teléfono</h6>
+                    <p class="text-muted">número?</p>
+                  </div>
+                </div>
+                {{#traveler_code}}
+                <h6>Datos de Viaje</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Número de Viajero</h6>
+                    <p class="text-muted">{{traveler_code}}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>Nivel de Vuelo</h6>
+                    <p class="text-muted">{{flight_level}}</p>
+                  </div>
+                </div>
+                {{/traveler_code}}
+                {{^traveler_code}}
+                <h6>Datos de Viaje</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Numero de Viajero</h6>
+                    <p class="text-muted">Usted aún no se realizó el chequeo médico</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <a href="/appointment/getAppointment"><button class="btn btn-outline-dark btn-lg px-5" type="submit">Sacar Turno</button></a>
+                  </div>
+                </div>
+                {{/traveler_code}}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   {{/client}}
 </section>
 {{> footer}}

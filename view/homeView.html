@@ -3,7 +3,26 @@
 <section class="home">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100 home_p">
-                SOY EL HOME
+
+            <div class="container">
+                <form action="/flight/getFlights" method="post">
+                    <div class="form-outline form-white mb-4" style="font-size: 20px">
+                        <label class="form-label" for="origin">Origen</label>
+                        <input type="text" name="origin" id="origin" placeholder="Ingrese el origen" class="form-control form-control-lg" />
+                    </div>
+                    <div class="form-outline form-white mb-4" style="font-size: 20px">
+                        <label class="form-label" for="origin">Destino</label>
+                        <input type="text" name="destination" id="destination" placeholder="Ingrese el destino" class="form-control form-control-lg" />
+                    </div>
+                    <div class="form-outline form-white mb-4" style="font-size: 20px">
+                        <label class="form-label">Tipo de vuelo:</label><br>
+                        <label><input type="radio" name="flightType" value="1" checked> Orbital</label><br>
+                        <label><input type="radio" name="flightType" value="2"> Entre destinos</label>
+                    </div>
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Buscar</button>
+
+                </form>
+            </div>
         </div>
     </div>
 </section>
