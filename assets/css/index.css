@@ -1,20 +1,23 @@
 .gradient-custom {
-    /* fallback for old browsers */
-    background: #6a11cb;
-
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
-
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+    background: #151515;
+    background: linear-gradient(to right bottom, rgb(14, 14, 14), rgb(49, 49, 49))
 }
 
+a {
+    text-decoration: none;
+    color: #f4f5f7;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #cbcbcb;
+}
 
 .table {
     background: white;
 }
 
-.login, .home, .flight {
+.login, .home, .flight, .profile{
     background: url("/assets/img/image3.jpg");
     background-size: cover;
     padding: 20px 0 60px 0;
