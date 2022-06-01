@@ -2,12 +2,15 @@ CREATE DATABASE gauchorocket;
 USE gauchorocket;
 
 
-
 CREATE TABLE cabin(
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    type CHAR NOT NULL,
-    description VARCHAR(30) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_type INT NOT NULL,
+    FOREIGN KEY (id_type) REFERENCES typeCabin (id),
     capacity INT NOT NULL
+)
+CREATE TABLE typeCabin(
+    id INT PRIMARY KEY,
+    description VARCHAR(30) NOT NULL,
 );
 
 CREATE TABLE ship(
@@ -26,25 +29,82 @@ CREATE TABLE ship_cabin(
 
 CREATE TABLE equipment(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR (30),
+    id_type INT,
+    FOREIGN KEY (id_type) REFERENCES typeEquipment(id)
     id_ship INT,
     FOREIGN KEY (id_ship) REFERENCES ship(id)
+)
+
+CREATE TABLE typeEquipment(
+    id INT PRIMARY KEY,
+    description VARCHAR(50) NOT NULL
 )
 
 CREATE TABLE flight(
     id   INT AUTO_INCREMENT PRIMARY KEY,
     id_type INT,
-    type_description VARCHAR(30) NOT NULL,
+    FOREIGN KEY (id_type) REFERENCES typeFlight(id)
     departure_date DATE,
     travel_time TIME,
     origin VARCHAR(50),
-    destination VARCHAR(50)
+    destination VARCHAR(50),
+    id_stopover INT NOT NULL,
+    FOREIGN KEY (id_type) REFERENCES typeFlight(id)
+
 
 );
 
-INSERT INTO flight VALUES (1, 'Orbital', '2022-12-10', '13:00', 'Luna', 'Marte');
-INSERT INTO flight VALUES (1, 'Orbital', '2022-11-04', '20:00', 'Jupiter', 'Tierra');
-INSERT INTO flight VALUES (2, 'Entre Destinos', '2022-08-01', '21:30', 'Europa', 'Titan');
+CREATE TABLE typeFlight(
+    id INT PRIMARY KEY,
+    description VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE ticket(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_client INT NOT NULL,
+    id_cabin INT NOT NULL,
+    id_flight INT NOT NULL,
+    id_service INT NOT NULL,
+    FOREIGN KEY id_client REFERENCES client (id),
+    FOREIGN KEY id_cabin REFERENCES cabin (id),
+    FOREIGN KEY id_flight REFERENCES flight (id),
+    FOREIGN KEY id_service REFERENCES service (id)
+
+);
+
+CREATE TABLE service(
+    id INT PRIMARY KEY,
+    description VARCHAR(50) NOT NULL
+);
+
+
+--Vuelos random
+INSERT INTO flight (id_type, departure_date, travel_time, origin, destination) VALUES (1, '2022-12-10', '13:00', 'Luna', 'Marte');
+INSERT INTO flight (id_type, departure_date, travel_time, origin, destination) VALUES (1, '2022-11-04', '20:00', 'Jupiter', 'Tierra');
+INSERT INTO flight (id_type, departure_date, travel_time, origin, destination) VALUES (2, '2022-08-01', '21:30', 'Europa', 'Titan');
+
+--Tipos de vuelo (orbital o entre destinos)
+INSERT INTO typeFlight (id, description) VALUES (1, 'Orbital');
+INSERT INTO typeFlight (id, description) VALUES (2, 'Circuito corto');
+INSERT INTO typeFlight (id, description) VALUES (3, 'Circuito largo');
+INSERT INTO typeFlight (id, description) VALUES (4, 'Tour');
+
+--Tipos de equipos (Orbitales, Alta aceleracion o Baja aceleracion)
+INSERT INTO typeEquipment (id, description) VALUES (1, 'Orbital');
+INSERT INTO typeEquipment (id, description) VALUES (2, 'AA');
+INSERT INTO typeEquipment (id, description) VALUES (3, 'BA');
+
+
+--Tipos de servicio (standard, gourmet, spa)
+INSERT INTO service (id, description) VALUES (1, 'Standard');
+INSERT INTO service (id, description) VALUES (2, 'Gourmet');
+INSERT INTO service (id, description) VALUES (3, 'Spa');
+
+--Tipos de cabina (turista, ejecutivo, primera)
+INSERT INTO typeCabine (id, description) VALUES (1, 'Turista', );
+INSERT INTO typeCabine (id, description) VALUES (2, 'Ejecutivo');
+INSERT INTO typeCabine (id, description) VALUES (3, 'Primera');
+
 
 
 
@@ -68,7 +128,6 @@ CREATE TABLE client(
                        email VARCHAR(100) NOT NULL UNIQUE,
                        traveler_code VARCHAR(10) UNIQUE,
                        flight_level INT,
-                       FOREIGN KEY (flight_level) REFERENCES flight(id),
 
 );
 

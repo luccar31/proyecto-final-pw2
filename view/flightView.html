@@ -11,6 +11,8 @@
             <th scope="col">Tiempo de viaje</th>
             <th scope="col">Origen</th>
             <th scope="col">Destino</th>
+            <th scope="col"></th>
+
         </tr>
         </thead>
             {{#flights}}
@@ -20,6 +22,7 @@
             <td>{{travel_time}}</td>
             <td>{{origin}}</td>
             <td>{{destination}}</td>
+            <td><button type="button" class="btn btn-primary">Reservar</button></td>
         </tr>
             {{/flights}}
 
