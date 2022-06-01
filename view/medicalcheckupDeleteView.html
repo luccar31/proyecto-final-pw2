@@ -1,0 +1,9 @@
+{{> header}}
+{{> navbar}}
+<section class="checkup-delete">
+  {{#appointment}}
+  <h3>Su turno para el día {{date}} en el centro médico de {{medicalCenter}} ha sido eliminado</h3>
+  <a href="/profile">Volver al perfil</a>
+  {{/appointment}}
+</section>
+{{> footer}}

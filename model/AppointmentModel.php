@@ -29,8 +29,6 @@ class AppointmentModel
         if(isset($data['errors'])) return $data;
 
         $this->database->query("INSERT INTO appointment (date, user_nickname, medical_center_id) VALUES ('{$date->format('Y-m-d')}','$nickname', '$medicalCenter')");
-        
-        
       
         $this->createTraveler($nickname);
         
@@ -44,8 +42,22 @@ class AppointmentModel
       $this->database->query("UPDATE client set traveler_code = '$travelerCode', flight_level = '$flight_level' WHERE user_nickname = '$nickname'");
     }
 
-    public function modifyAppointment($nickname, $date){
-        $this->database->query("UPDATE appointment SET date = '$date' WHERE user_nickname = '$nickname'");
+    public function modifyAppointment($nickname, $date, $medicalCenter){
+        $data = [];
+
+        if(!$this->getAppointment($nickname)){
+            $data['errors'][] = ['error' => 'Usted NO posee un turno asignado'];
+        }
+
+        if(!$this->isRoomForAppointment($date, $medicalCenter)){
+            $data['errors'][] = ['error' => "El día {$date->format('d-m-Y')} no se encuentran turnos disponibles en el centro médico seleccionado"];
+        }
+
+        if(isset($data['errors'])) return $data;
+
+        $this->database->query("UPDATE appointment SET date = '{$date->format('Y-m-d')}', medical_center_id = '$medicalCenter' WHERE user_nickname = '$nickname'");
+
+        return ['nickname' => $nickname, 'date' => $date->format('d-m-Y'), 'medicalCenter' => $medicalCenter];
     }
 
     public function deleteAppointment($nickname){

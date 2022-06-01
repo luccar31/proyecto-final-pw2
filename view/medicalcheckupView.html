@@ -2,7 +2,9 @@
 {{> navbar}}
 <section class="checkup">
   {{#appointment}}
-    <p>Usted ya tiene cita el día {{date}} en {{medicalCenter}}</p>
+    <p>Usted ya tiene cita el día {{date}} en el centro médico de {{medicalCenter}}</p>
+    <a href="/medicalcheckup/deleteAppointment" style="color: black">Eliminar turno</a>
+    <a href="/medicalcheckup/modifyAppointment1" style="color: black">Modificar turno</a>
   {{/appointment}}
   {{^appointment}}
     <form method="post">
