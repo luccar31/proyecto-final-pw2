@@ -29,18 +29,12 @@ class MedicalcheckupController
         }
 
         if( !$this->validMedicalCenter($medicalCenter) ){
-            $data['errors'][] = ['error' => 'Ingrese un centro medico correcto'];
+            $data['errors'][] = ['error' => 'Ingrese un centro medico'];
         }
 
-        if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupView.html', $data);
-        }
-
+        $this->areThereErrors($data['errors']);
         $data = $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
-
-        if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupView.html', $data);
-        }
+        $this->areThereErrors($data['errors']);
 
         return $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
@@ -53,5 +47,11 @@ class MedicalcheckupController
 
     private function validMedicalCenter($input){
         return $input != 0;
+    }
+
+    private function areThereErrors($errors){
+        if( isset($errors) ){
+            return $this->printer->generateView('medicalcheckupView.html', $errors);
+        }
     }
 }

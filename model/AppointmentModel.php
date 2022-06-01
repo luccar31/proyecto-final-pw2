@@ -17,14 +17,10 @@ class AppointmentModel
     public function createAppointment($nickname, $date, $medicalCenter){
         $data = [];
 
-        //Si el usuario ya tiene turno,
-        //genera vista con mensaje de error y corta la ejecución
         if($this->getAppointment($nickname)){
             $data['errors'][] = ['error' => 'Usted ya posee un turno asignado'];
         }
 
-        //Si no hay turnos disponibles en esa fecha para ese centro,
-        //genera vista con mensaje de error y corta la ejecución
         if(!$this->isRoomForAppointment($date, $medicalCenter)){
             $data['errors'][] = ['error' => "El día {$date->format('d-m-Y')} no se encuentran turnos disponibles en el centro médico seleccionado"];
         }
