@@ -17,15 +17,15 @@ CREATE TABLE ship(
     id   INT AUTO_INCREMENT PRIMARY KEY,
     model VARCHAR(30) NOT NULL,
     domain INT NOT NULL
-)
+);
 
 CREATE TABLE ship_cabin(
-    id_ship INT PRIMARY KEY,
-    id_cabin INT PRIMARY KEY,
+    id_ship INT,
+    id_cabin INT,
     CONSTRAINT id_ship_cabin PRIMARY KEY (id_ship, id_cabin),
     FOREIGN KEY (id_ship) REFERENCES ship(id),
     FOREIGN KEY (id_cabin) REFERENCES cabin(id)
-)
+);
 
 CREATE TABLE equipment(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE equipment(
     FOREIGN KEY (id_type) REFERENCES typeEquipment(id)
     id_ship INT,
     FOREIGN KEY (id_ship) REFERENCES ship(id)
-)
+);
 
 CREATE TABLE typeEquipment(
     id INT PRIMARY KEY,
@@ -106,6 +106,10 @@ INSERT INTO typeCabine (id, description) VALUES (2, 'Ejecutivo');
 INSERT INTO typeCabine (id, description) VALUES (3, 'Primera');
 
 
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (1, 'Orbital', '2022-12-10', '13:00', 'Luna', 'Marte');
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (1, 'Orbital', '2022-11-04', '20:00', 'Jupiter', 'Tierra');
+INSERT INTO flight (id_type, type_description, departure_date, travel_time, origin, destination) VALUES (2, 'Entre Destinos', '2022-08-01', '21:30', 'Europa', 'Titan');
+
 
 
 CREATE TABLE role(
@@ -128,6 +132,7 @@ CREATE TABLE client(
                        email VARCHAR(100) NOT NULL UNIQUE,
                        traveler_code VARCHAR(10) UNIQUE,
                        flight_level INT,
+                       FOREIGN KEY (flight_level) REFERENCES flight(id)
 
 );
 
