@@ -41,6 +41,10 @@ class Configuration {
         return new FlightController($this->getFlightModel(),$this->getPrinter());
     }
 
+    public function getTicketController() {
+        return new SigninController(['clientModel' => $this->getClientModel(), 'flightModel' => $this->getFlightModel(), 'ticketModel' => $this->getTicketModel()], $this->getPrinter());
+    }
+
     private function getUserModel(){
         return new UserModel($this->getDatabase());
     }
@@ -55,6 +59,10 @@ class Configuration {
 
     private function getFlightModel(){
         return new FlightModel($this->getDatabase());
+    }
+
+    private function getTicketModel(){
+        return new TicketModel($this->getDatabase());
     }
 
     private function getDatabase() {
