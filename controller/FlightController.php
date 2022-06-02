@@ -28,8 +28,6 @@ class FlightController
 
     public function searchFlight(){
         $typeFlight = isset($_POST['typeFlight'])? $_POST['typeFlight'] : "";
-        $typeCabin = isset($_POST['$typeCabin'])? $_POST['$typeCabin'] : "";
-        $typeService = isset($_POST['$typeService'])? $_POST['$typeService'] : "";
 
         if($typeFlight) {
             $flights = $this->flightModel->search($typeFlight);
@@ -38,10 +36,6 @@ class FlightController
             $this->execute();
         }
 
-        if($typeFlight && $typeCabin){
-            $flights = $this->flightModel->search($typeFlight, $typeCabin);
-            $this->printer->generateView('flightView.html', $flights);
-        }
 
     }
 }
