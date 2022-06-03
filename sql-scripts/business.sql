@@ -57,9 +57,9 @@ CREATE TABLE type_equipment
 INSERT INTO type_equipment (id, description)
 VALUES (1, 'Orbital');
 INSERT INTO type_equipment (id, description)
-VALUES (2, 'AA');
+VALUES (2, 'BA');
 INSERT INTO type_equipment (id, description)
-VALUES (3, 'BA');
+VALUES (3, 'AA');
 
 CREATE TABLE equipment
 (
@@ -197,44 +197,6 @@ VALUES ('Calandria', 'O6', 1);
 INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Calandria', 'O7', 1);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA1', 2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA5', 2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA9', 2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA13', 2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA17', 2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA8', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA9', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA10', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA11', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA12', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA13', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA14', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA15', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA16', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA17', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA4', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA5', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA6', 3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA7', 3);
-INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Colibri', 'O3', 1);
 INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Colibri', 'O4', 1);
@@ -244,42 +206,82 @@ INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Colibri', 'O8', 1);
 INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Colibri', 'O9', 1);
+
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA2', 2);
+VALUES ('Condor', 'AA2',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA6', 2);
+VALUES ('Condor', 'AA6',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA10', 2);
+VALUES ('Condor', 'AA10',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA14', 2);
+VALUES ('Condor', 'AA14',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA18', 2);
+VALUES ('Condor', 'AA18',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA4', 2);
+VALUES ('Guanaco', 'AA4',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA8', 2);
+VALUES ('Guanaco', 'AA8',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA12', 2);
+VALUES ('Guanaco', 'AA12',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA16', 2);
+VALUES ('Guanaco', 'AA16',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA20', 2);
+VALUES ('Guanaco', 'AA20',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA3', 2);
+VALUES ('Halcon', 'AA3',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA7', 2);
+VALUES ('Halcon', 'AA7',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA11', 2);
+VALUES ('Halcon', 'AA11',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA15', 2);
+VALUES ('Halcon', 'AA15',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA19', 2);
+VALUES ('Halcon', 'AA19',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA1', 2);
+VALUES ('Zorzal', 'BA1',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA2', 2);
+VALUES ('Zorzal', 'BA2',3);
 INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA3', 2);
+VALUES ('Zorzal', 'BA3',3);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguila', 'AA1',3);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguila', 'AA5',3);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguila', 'AA9',3);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguila', 'AA13',3);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguila', 'AA17',3);
+
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguilucho', 'BA8',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguilucho', 'BA9',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguilucho', 'BA10',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguilucho', 'BA11',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Aguilucho', 'BA12',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Canario', 'BA13',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Canario', 'BA14',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Canario', 'BA15',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Canario', 'BA16',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Canario', 'BA17',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Carancho', 'BA4',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Carancho', 'BA5',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Carancho', 'BA6',2);
+INSERT INTO ship (model, domain, id_equipment)
+VALUES ('Carancho', 'BA7',2);
 
 -- Vuelos
 INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,20,'Carancho', '2022-12-11', '15:00', 'Ankara', 'Titan');
