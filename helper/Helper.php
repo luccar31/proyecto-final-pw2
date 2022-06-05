@@ -7,4 +7,9 @@ class Helper
         header("location: $url");
         exit();
     }
+
+    public static function mostrarVarDump($data){
+        echo var_dump($data);
+        exit();
+    }
 }

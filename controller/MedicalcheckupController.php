@@ -11,15 +11,20 @@ class MedicalcheckupController
     }
 
     public function execute(){
-        $nickname = $_SESSION["nickname"];
-        $appointment = $this->appointmentModel->getAppointment($nickname);
+        $appointment = $this->appointmentModel->getAppointment($_SESSION["nickname"]);
         $data = ['appointment' => $appointment];
 
-        $this->printer->generateView('medicalcheckupView.html', $data);
+        if($appointment){
+            return $this->printer->generateView('medicalcheckupView.html', $data);
+        }
+
+        $medicalCenters = $this->appointmentModel->getMedicalCenters();
+        $data = ['medicalCenters' => $medicalCenters];
+
+        return $this->printer->generateView('medicalcheckupFormView.html', $data);
     }
 
     public function getAppointment(){
-        $data = [];
         $nickname = $_SESSION['nickname'];
         $date = new DateTime($_POST['date']);
         $medicalCenter = $_POST['medicalCenter'];
@@ -33,62 +38,26 @@ class MedicalcheckupController
         }
 
         if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupView.html', $data);
+            $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
+            return $this->printer->generateView('medicalcheckupFormView.html', $data);
         }
 
         $data = $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
 
         if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupView.html', $data);
+            $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
+            return $this->printer->generateView('medicalcheckupFormView.html', $data);
         }
 
         return $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
 
     public function deleteAppointment(){
-        $nickname = $_SESSION['nickname'];
+        $data = $this->appointmentModel->getAppointment($_SESSION['nickname']);
 
-        $appointment = $this->appointmentModel->getAppointment($nickname);
-        $data = ['appointment' => $appointment];
-
-        $this->appointmentModel->deleteAppointment($nickname);
+        $this->appointmentModel->deleteAppointment($_SESSION['nickname']);
 
         return $this->printer->generateView('medicalcheckupDeleteView.html', $data);
-    }
-
-    public function modifyAppointment1(){
-        $nickname = $_SESSION["nickname"];
-        $appointment = $this->appointmentModel->getAppointment($nickname);
-        $data = ['appointment' => $appointment];
-
-        return $this->printer->generateView("medicalcheckupModifyView.html", $data);
-    }
-
-    public function modifyAppointment2(){
-        $data = [];
-        $nickname = $_SESSION['nickname'];
-        $date = new DateTime($_POST['date']);
-        $medicalCenter = $_POST['medicalCenter'];
-
-        if( !$this->validDate($date) ){
-            $data['errors'][] = ['error' => 'Ingrese una fecha correcta'];
-        }
-
-        if( !$this->validMedicalCenter($medicalCenter) ){
-            $data['errors'][] = ['error' => 'Ingrese un centro medico'];
-        }
-
-        if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupModifyView.html', $data);
-        }
-
-        $data = $this->appointmentModel->modifyAppointment($nickname, $date, $medicalCenter);
-
-        if( isset($data['errors']) ){
-            return $this->printer->generateView('medicalcheckupModifyView.html', $data);
-        }
-
-        return $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
 
     private function validDate($input){
