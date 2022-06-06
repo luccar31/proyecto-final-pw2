@@ -12,8 +12,7 @@ class TicketModel{
     public function search($typeCabin = null, $typeService = null){
 
         if($typeCabin){
-            $result =  $this->database->query("");
-            return  ['flights' => $result];
+
         }
 
     }
