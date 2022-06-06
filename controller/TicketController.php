@@ -15,8 +15,7 @@ class TicketController{
     }
 
     public function execute(){
-        $flights = $this->flightModel->getAllFlights();
-        $this->printer->generateView('flightView.html', $flights);
+        $this->printer->generateView('ticketView.html');
     }
 
 
