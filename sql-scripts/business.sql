@@ -18,8 +18,9 @@ CREATE TABLE cabin
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     id_type  INT NOT NULL,
-    FOREIGN KEY (id_type) REFERENCES type_cabin (id),
-    capacity INT NOT NULL
+    capacity INT NOT NULL,
+    FOREIGN KEY (id_type) REFERENCES type_cabin (id)
+
 );
 
 -- cabinas
