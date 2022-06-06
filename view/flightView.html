@@ -12,40 +12,45 @@
                     <option value="3">Circuito largo</option>
                     <option value="4">Tour</option>
                 </select>
-                <button class="btn btn-outline-light btn-lg " type="submit" formaction="/flight/searchFlight">Buscar</button>
+                <button class="btn btn-outline-light btn-lg " type="submit" formaction="/flight/searchFlight">Buscar
+                </button>
             </form>
         </div>
-    <table class='table'>
-        <thead>
-        <tr>
-            <th scope="col">Tipo de viaje</th>
-            <th scope="col">Nave</th>
-            <th scope="col">Fecha de partida</th>
-            <th scope="col">Tiempo de viaje</th>
-            <th scope="col">Origen</th>
-            <th scope="col">Destino</th>
-            <th scope="col"></th>
+        <form method="post">
+            <table class='table'>
+                <thead>
+                <tr>
+                    <th scope="col">Tipo de viaje</th>
+                    <th scope="col">Nave</th>
+                    <th scope="col">Fecha de partida</th>
+                    <th scope="col">Hora de partida</th>
+                    <th scope="col">Origen</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col"></th>
 
-        </tr>
-        </thead>
-            {{#flights}}
-        <tr>
-            <td>{{description}}</td>
-            <td>{{ship_model}}</td>
-            <td>{{departure_date}}</td>
-            <td>{{travel_time}}</td>
-            <td>{{origin}}</td>
-            <td>{{destination}}</td>
-            <td><button type="button" class="btn btn-primary">Reservar</button></td>
-        </tr>
-            {{/flights}}
-
-
-    </table>
-    {{#error}}
-    <div style="color: red">{{error}}</div>
-    {{/error}}
-        <a href="http://localhost"><button class="btn btn-outline-light btn-lg px-5" type="submit">Volver</button></a>
+                </tr>
+                </thead>
+                {{#flights}}
+                <tr>
+                    <td>{{description}}</td>
+                    <td>{{ship_model}}</td>
+                    <td>{{departure_date}}</td>
+                    <td>{{departure_time}}</td>
+                    <td>{{departure}}</td>
+                    <td>{{destination}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" type="submit" formaction="/ticket">Reservar</button>
+                    </td>
+                </tr>
+                {{/flights}}
+            </table>
+        </form>
+        {{#error}}
+        <div style="color: red">{{error}}</div>
+        {{/error}}
+        <a href="http://localhost">
+            <button class="btn btn-outline-light btn-lg px-5" type="submit">Volver</button>
+        </a>
     </div>
 </section>
 
