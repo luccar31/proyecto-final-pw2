@@ -8,7 +8,6 @@ class TicketController{
     private $ticketModel;
 
     public function __construct($models, $printer){
-        $this->userModel = $models["userModel"];
         $this->flightModel = $models["flightModel"];
         $this->ticketModel = $models["ticketModel"];
         $this->printer = $printer;
