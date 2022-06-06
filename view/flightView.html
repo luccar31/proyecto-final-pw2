@@ -16,7 +16,6 @@
                 </button>
             </form>
         </div>
-        <form method="post">
             <table class='table'>
                 <thead>
                 <tr>
@@ -39,12 +38,11 @@
                     <td>{{departure}}</td>
                     <td>{{destination}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" type="submit" formaction="/ticket">Reservar</button>
+                        <a class="btn btn-primary" href="/ticket">Reserva</a>
                     </td>
                 </tr>
                 {{/flights}}
             </table>
-        </form>
         {{#error}}
         <div style="color: red">{{error}}</div>
         {{/error}}
