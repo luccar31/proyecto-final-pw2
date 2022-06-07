@@ -11,62 +11,106 @@ class MedicalcheckupController
     }
 
     public function execute(){
-        $appointment = $this->appointmentModel->getAppointment($_SESSION["nickname"]);
-        $data = ['appointment' => $appointment];
+        $ap = $this->appointmentModel->getAppointment($_SESSION["nickname"]);
 
-        if($appointment){
-            return $this->printer->generateView('medicalcheckupView.html', $data);
+        if(!$ap){
+            Helper::redirect("/medicalcheckup/makeAppointmentForm");
+            //return $this->printer->generateView('medicalcheckupView.html', $data);
         }
 
-        $medicalCenters = $this->appointmentModel->getMedicalCenters();
-        $data = ['medicalCenters' => $medicalCenters];
-
-        return $this->printer->generateView('medicalcheckupFormView.html', $data);
+        Helper::redirect("/medicalcheckup/showAppointment?med={$ap['medicalCenter']}&d={$ap['date']}");
     }
 
-    public function getAppointment(){
+    public function showAppointment(){
+        $data['medicalCenter'] = $_GET['med'];
+        $data['date'] = $_GET['d'];
+
+        $this->printer->generateView('medicalcheckupView.html', $data);
+    }
+
+    public function makeAppointmentForm(){
+
+        $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
+        $data['medicalCenter'] = isset($_GET['med']) ? $_GET['med'] : null;
+        $data['date'] = isset($_GET['d']) ? $_GET['d'] : null;
+        $data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
+        unset($_SESSION['errors']);
+
+        $this->printer->generateView('medicalcheckupFormView.html', $data);
+    }
+
+    public function makeAppointment(){
         $nickname = $_SESSION['nickname'];
-        $date = new DateTime($_POST['date']);
+        $date = $_POST['date'];
         $medicalCenter = $_POST['medicalCenter'];
 
-        if( !$this->validDate($date) ){
-            $data['errors'][] = ['error' => 'Ingrese una fecha correcta'];
+        $errors = $this->formValidation($date, $medicalCenter);
+
+        if( $errors ){
+            $_SESSION['errors'] = $errors;
+            Helper::redirect("/medicalcheckup/makeAppointmentForm?med={$medicalCenter}&d={$date}");
         }
 
-        if( !$this->validMedicalCenter($medicalCenter) ){
-            $data['errors'][] = ['error' => 'Ingrese un centro medico'];
+        $response = $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
+
+        if( $response ){
+            $_SESSION['errors'] = $response;
+            Helper::redirect("/medicalcheckup/makeAppointmentForm?med={$medicalCenter}&d={$date}");
         }
 
-        if( isset($data['errors']) ){
-            $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
-            return $this->printer->generateView('medicalcheckupFormView.html', $data);
-        }
+        Helper::redirect("/medicalcheckup/successfullAppointment?med={$medicalCenter}&d={$date}");
+    }
 
-        $data = $this->appointmentModel->createAppointment($nickname, $date, $medicalCenter);
+    public function successfullAppointment(){
+        $data['medicalCenter'] = $_GET['med'];
+        $data['date'] = $_GET['d'];
 
-        if( isset($data['errors']) ){
-            $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
-            return $this->printer->generateView('medicalcheckupFormView.html', $data);
-        }
-
-        return $this->printer->generateView('medicalcheckupSuccessView.html', $data);
+        $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
 
     public function deleteAppointment(){
-        $data = $this->appointmentModel->getAppointment($_SESSION['nickname']);
-
+        $res = $this->appointmentModel->getAppointment($_SESSION['nickname']);
         $this->appointmentModel->deleteAppointment($_SESSION['nickname']);
-
-        return $this->printer->generateView('medicalcheckupDeleteView.html', $data);
+        Helper::redirect("/medicalcheckup/appointmentDeleted?med={$res['medicalCenter']}&d={$res['date']}");
     }
 
-    private function validDate($input){
+    public function appointmentDeleted(){
+        $data['medicalCenter'] = $_GET['med'];
+        $data['date'] = $_GET['d'];
+
+        $this->printer->generateView('medicalcheckupDeleteView.html', $data);
+    }
+
+    private function formValidation($date, $medicalCenter){
+        $error = [];
+
+        if( !$this->isValidDate($date) ){
+            $error[] = 'Ingrese una fecha correcta';
+        }
+
+        if( !$this->isValidMedicalCenter($medicalCenter) ){
+            $error[] = 'Ingrese un centro medico';
+        }
+
+        return $error;
+    }
+
+    private function isValidDate($input){
+        $input = new DateTime($input);
         $now = new DateTime();
         $diff = (int)$now->diff($input)->format('%r%a');
         return $diff >= 0;
     }
 
-    private function validMedicalCenter($input){
+    private function isValidMedicalCenter($input){
         return $input != 0;
+    }
+
+    private function mapErrors($arr){
+        $res = [];
+        foreach ($arr as $valor){
+            $res[] = ['error' => $valor];
+        }
+        return $res;
     }
 }

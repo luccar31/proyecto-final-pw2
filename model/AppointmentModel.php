@@ -9,36 +9,27 @@ class AppointmentModel
     }
 
     public function getAppointment($nickname){
-        return $this->database->query("
+        $res = $this->database->query("
             SELECT ap.date, ap.user_nickname, mc.name as medicalCenter
             FROM appointment ap INNER JOIN medical_center mc ON ap.id_medical_center = mc.id
             WHERE user_nickname = '$nickname'
         ");
+        return $res ? $res[0] : false;
     }
 
     public function createAppointment($nickname, $date, $medicalCenter){
 
-        $data = [];
+        $errors = $this->modelValidation($nickname, $date, $medicalCenter);
 
-        if($this->getAppointment($nickname)){
-            $data['errors'][] = ['error' => 'Usted ya posee un turno asignado'];
+        if( !$errors ){
+            $this->database->query("
+                INSERT INTO appointment (date, user_nickname, id_medical_center)
+                VALUES ('$date','$nickname', '$medicalCenter')
+            ");
+            $this->createTraveler($nickname);
         }
 
-        if(!$this->isRoomForAppointment($date, $medicalCenter)){
-            $data['errors'][] = ['error' => "El día {$date->format('d-m-Y')} no se encuentran turnos disponibles en el centro médico seleccionado"];
-        }
-
-        if(isset($data['errors'])) return $data;
-
-        $this->database->query("
-            INSERT INTO appointment (date, user_nickname, id_medical_center)
-            VALUES ('{$date->format('Y-m-d')}','$nickname', '$medicalCenter')
-        ");
-      
-        $this->createTraveler($nickname);
-        
-        return ['nickname' => $nickname, 'date' => $date->format('d-m-Y'), 'medicalCenter' => $medicalCenter];
-        
+        return $errors;
     }
   
     private function createTraveler($nickname){
@@ -83,6 +74,20 @@ class AppointmentModel
         ");
     }
 
+    private function modelValidation($nickname, $date, $medicalCenter){
+        $errors = [];
+
+        if($this->getAppointment($nickname)){
+            $errors[] = 'Usted ya posee un turno asignado';
+        }
+
+        if(!$this->isRoomForAppointment($date, $medicalCenter)){
+            $errors[] = "El día $date no se encuentran turnos disponibles en el centro médico de $medicalCenter";
+        }
+
+        return $errors;
+    }
+
     private function getAppointmentsInDate($date, $medicalCenter){
         $data = $this->database->query("
             SELECT COUNT(*) as c
@@ -104,7 +109,7 @@ class AppointmentModel
     }
 
     private function isRoomForAppointment($date, $medicalCenter){
-        $appointmentsInDate = $this->getAppointmentsInDate($date->format('Y-m-d'), $medicalCenter);
+        $appointmentsInDate = $this->getAppointmentsInDate($date, $medicalCenter);
         $limit = $this->getLimitAppointments($medicalCenter);
 
         $available = $limit - $appointmentsInDate;
@@ -114,8 +119,7 @@ class AppointmentModel
   
     private function generateTravelerCode(){
         $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomCode = substr(str_shuffle($caracteres), 0, 10);
-        return $randomCode;
+        return substr(str_shuffle($caracteres), 0, 10);
     }
 
     public function getMedicalCenters(){
