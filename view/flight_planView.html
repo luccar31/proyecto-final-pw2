@@ -12,7 +12,7 @@
                     <option value="3">Circuito largo</option>
                     <option value="4">Tour</option>
                 </select>
-                <button class="btn btn-outline-light btn-lg " type="submit" formaction="/flight/searchFlight">Buscar
+                <button class="btn btn-outline-light btn-lg " type="submit" formaction="/flight_plan/searchFlight">Buscar
                 </button>
             </form>
         </div>
@@ -29,7 +29,7 @@
 
                 </tr>
                 </thead>
-                {{#flights}}
+                {{#flight_plans}}
                 <tr>
                     <td>{{departure_day}}</td>
                     <td>{{departure_time}}</td>
@@ -38,10 +38,10 @@
                     <td>{{ship_model}}</td>
                     <td>{{description}}</td>
                     <td>
-                        <a class="btn btn-primary" href="/ticket?id={{id}}">Reserva</a>
+                        <a class="btn btn-primary" href="/flight_plan/flight_planConfirmation?id={{id}}">Reserva</a>
                     </td>
                 </tr>
-                {{/flights}}
+                {{/flight_plans}}
             </table>
         {{#error}}
         <div style="color: red">{{error}}</div>
