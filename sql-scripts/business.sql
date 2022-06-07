@@ -122,7 +122,7 @@ CREATE TABLE flight
     id_type        INT,
     id_ship        INT         NOT NULL,
     ship_model     VARCHAR(30) NOT NULL,
-    departure_date DATE,
+    departure_day VARCHAR (12),
     departure_time TIME,
     departure      VARCHAR(50),
     destination    VARCHAR(50),
@@ -130,7 +130,19 @@ CREATE TABLE flight
     FOREIGN KEY (id_ship) REFERENCES ship(id)
 );
 
-
+CREATE TABLE flight_plan
+(
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    id_type        INT,
+    id_ship        INT         NOT NULL,
+    ship_model     VARCHAR(30) NOT NULL,
+    departure_day VARCHAR (12),
+    departure_time TIME,
+    departure      VARCHAR(50),
+    destination    VARCHAR(50),
+    FOREIGN KEY (id_type) REFERENCES type_flight(id),
+    FOREIGN KEY (id_ship) REFERENCES ship(id)
+);
 
 CREATE TABLE service
 (
@@ -287,101 +299,101 @@ INSERT INTO ship (model, domain, id_equipment)
 VALUES ('Carancho', 'BA7',2);
 
 -- Vuelos
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,20,'Carancho', '2022-12-11', '15:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,39,'Halcon', '2022-08-10', '15:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,34,'Guanaco', '2022-09-18', '20:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,29,'Condor', '2022-09-18', '20:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,40,'Halcon', '2022-09-14', '21:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,11,'Calandria', '2022-09-18', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-09-10', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-08-18', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-07-18', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-09-18', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,21,'Carancho', '2022-09-01', '08:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,16,'Canario', '2022-02-10', '09:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,41,'Halcon', '2022-03-10', '09:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,45,'Zorzal', '2022-04-10', '09:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,44,'Zorzal', '2022-12-10', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,6,'Aguilucho', '2022-04-12', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,30,'Condor', '2022-08-15', '18:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,35,'Guanaco', '2022-04-15', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,36,'Guanaco', '2022-08-05', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,14,'Calandria', '2022-09-13', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,26,'Colibri', '2022-01-18', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-02-17', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,27,'Colibri', '2022-03-08', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-04-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,22,'Carancho', '2022-02-01', '08:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,17,'Canario', '2022-02-10', '09:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,42,'Halcon', '2022-03-15', '09:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,46,'Zorzal', '2022-04-18', '09:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,7,'Aguilucho', '2022-04-22', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,8,'Aguilucho', '2022-04-22', '18:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,18,'Canario', '2022-08-25', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,37,'Guanaco', '2022-11-05', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,11,'Calandria', '2022-11-13', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,28,'Colibri', '2022-10-18', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-12-17', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-10-08', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-07-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,44,'Zorzal', '2022-12-10', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,19,'Canario', '2022-02-10', '08:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,1,'Aguila', '2022-04-15', '09:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,31,'Condor', '2022-08-15', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,43,'Halcon', '2022-03-10', '20:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,32,'Condor', '2022-04-10', '20:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,41,'Halcon', '2022-03-10', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-11-13', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,27,'Colibri', '2022-10-18', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,14,'Calandria', '2022-12-17', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-10-08', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-07-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,46,'Zorzal', '2022-07-28', '08:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,17,'Canario', '2022-02-20', '09:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,2,'Aguila', '2022-04-22', '09:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,22,'Condor', '2022-02-01', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,7,'Aguilucho', '2022-05-22', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,7,'Aguilucho', '2022-08-21', '18:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,18,'Canario', '2022-06-20', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,37,'Guanaco', '2022-10-04', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,37,'Guanaco', '2022-10-07', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-11-13', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-10-10', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-03-14', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,27,'Colibri', '2022-03-15', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-07-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,14,'Calandria', '2022-12-17', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-01-18', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-10-08', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,26,'Colibri', '2022-11-02', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-02-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-11-17', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,27,'Colibri', '2022-10-28', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,28,'Colibri', '2022-01-08', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,32,'Condor', '2022-02-01', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,33,'Condor', '2022-02-01', '20:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,46,'Zorzal', '2022-07-28', '08:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,7,'Aguilucho', '2022-05-22', '18:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,37,'Guanaco', '2022-10-04', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,38,'Guanaco', '2022-10-07', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-05-11', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,11,'Calandria', '2022-02-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,12,'Calandria', '2022-05-13', '08:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-07-17', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,26,'Colibri', '2022-08-14', '09:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,27,'Colibri', '2022-03-15', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,13,'Calandria', '2022-07-10', '12:00', 'Buenos Aires', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,14,'Calandria', '2022-12-17', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,24,'Colibri', '2022-01-10', '08:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (1,25,'Colibri', '2022-01-11', '09:00', 'Ankara', 'Marte');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (4,34,'Guanaco', '2022-10-27', '07:00', 'Buenos Aires', 'Neptuno');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,9,'Aguilucho', '2022-07-24', '15:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,18,'Canario', '2022-01-23', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,10,'Aguilucho', '2022-05-23', '18:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,35,'Guanaco', '2022-01-14', '22:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,43,'Halcon', '2022-03-16', '20:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,41,'Halcon', '2022-05-16', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,32,'Condor', '2022-04-01', '20:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (2,17,'Canario', '2022-07-07', '21:00', 'Buenos Aires', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,7,'Aguilucho', '2022-08-01', '20:00', 'Ankara', 'Titan');
-INSERT INTO flight (id_type, id_ship, ship_model, departure_date, departure_time, departure, destination) VALUES (3,38,'Guanaco', '2022-06-02', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan(id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,20,'Carancho', 'Lunes', '08:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,39,'Halcon', 'Lunes', '15:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,34,'Guanaco', 'Lunes', '20:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,29,'Condor', 'Lunes', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,40,'Halcon', 'Lunes', '21:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 'Lunes', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Lunes', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Lunes', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Lunes', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Lunes', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,21,'Carancho', 'Martes', '08:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,16,'Canario', 'Martes', '09:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,41,'Halcon', 'Martes', '09:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,45,'Zorzal', 'Martes', '09:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,44,'Zorzal', 'Martes', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,6,'Aguilucho', 'Martes', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,30,'Condor', 'Martes', '18:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,35,'Guanaco', 'Martes', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,36,'Guanaco', 'Martes', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 'Martes', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 'Martes', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Martes', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 'Martes', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Martes', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,22,'Carancho', 'Miercoles', '08:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 'Miercoles', '09:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,42,'Halcon', 'Miercoles', '09:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,46,'Zorzal', 'Miercoles', '09:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 'Miercoles', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,8,'Aguilucho', 'Miercoles', '18:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,18,'Canario', 'Miercoles', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 'Miercoles', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 'Miercoles', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,28,'Colibri', 'Miercoles', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Miercoles', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Miercoles', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Miercoles', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,44,'Zorzal', 'Jueves', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,19,'Canario', 'Jueves', '08:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,1,'Aguila', 'Jueves', '09:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,31,'Condor', 'Jueves', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,43,'Halcon', 'Jueves', '20:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,32,'Condor', 'Jueves', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,41,'Halcon', 'Jueves', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Jueves', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 'Jueves', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 'Jueves', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Jueves', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Jueves', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,46,'Zorzal', 'Viernes', '08:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 'Viernes', '09:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,2,'Aguila', 'Viernes', '09:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,22,'Condor', 'Viernes', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 'Viernes', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 'Viernes', '18:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,18,'Canario', 'Viernes', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 'Viernes', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,37,'Guanaco', 'Viernes', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Viernes', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Viernes', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Viernes', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 'Viernes', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Viernes', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 'Sabado', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Sabado', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Sabado', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 'Sabado', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Sabado', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Sabado', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 'Sabado', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,28,'Colibri', 'Sabado', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,32,'Condor', 'Sabado', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,33,'Condor', 'Sabado', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,46,'Zorzal', 'Sabado', '08:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 'Sabado', '18:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 'Sabado', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,38,'Guanaco', 'Sabado', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Domingo', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 'Domingo', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 'Domingo', '08:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Domingo', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 'Domingo', '09:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 'Domingo', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 'Domingo', '12:00', 'Buenos Aires', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 'Domingo', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 'Domingo', '08:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 'Domingo', '09:00', 'Ankara', 'Marte');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (4,34,'Guanaco', 'Domingo', '07:00', 'Buenos Aires', 'Neptuno');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,9,'Aguilucho', 'Domingo', '15:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,18,'Canario', 'Domingo', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,10,'Aguilucho', 'Domingo', '18:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,35,'Guanaco', 'Domingo', '22:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,43,'Halcon', 'Domingo', '20:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,41,'Halcon', 'Domingo', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,32,'Condor', 'Domingo', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 'Domingo', '21:00', 'Buenos Aires', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,7,'Aguilucho', 'Domingo', '20:00', 'Ankara', 'Titan');
+INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,38,'Guanaco', 'Domingo', '20:00', 'Ankara', 'Titan');
