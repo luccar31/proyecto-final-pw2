@@ -31,7 +31,6 @@ class FlightController
 
         if($typeFlight) {
             $flights = $this->flightModel->search($typeFlight);
-            echo var_dump($flights);
             $this->printer->generateView('flightView.html', $flights);
         }else{
             $this->execute();

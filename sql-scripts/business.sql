@@ -130,6 +130,22 @@ CREATE TABLE flight
     FOREIGN KEY (id_ship) REFERENCES ship(id)
 );
 
+
+
+CREATE TABLE service
+(
+    id          INT PRIMARY KEY,
+    description VARCHAR(50) NOT NULL
+);
+
+-- Tipos de servicio (standard, gourmet, spa)
+INSERT INTO service (id, description)
+VALUES (1, 'Standard');
+INSERT INTO service (id, description)
+VALUES (2, 'Gourmet');
+INSERT INTO service (id, description)
+VALUES (3, 'Spa');
+
 CREATE TABLE ticket
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
@@ -148,20 +164,6 @@ CREATE TABLE client_ticket(
     FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
     FOREIGN KEY (id_ticket) REFERENCES ticket(id)
 );
-
-CREATE TABLE service
-(
-    id          INT PRIMARY KEY,
-    description VARCHAR(50) NOT NULL
-);
-
--- Tipos de servicio (standard, gourmet, spa)
-INSERT INTO service (id, description)
-VALUES (1, 'Standard');
-INSERT INTO service (id, description)
-VALUES (2, 'Gourmet');
-INSERT INTO service (id, description)
-VALUES (3, 'Spa');
 
 -- Equipamiento x cabina
 INSERT INTO equipment_cabin(id_equipment, id_cabin) VALUES (1, 1);
