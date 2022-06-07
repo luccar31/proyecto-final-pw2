@@ -30,7 +30,7 @@ class Flight_planController{
 
     public function flight_planConfirmation(){
         $id_flight_plan = $_GET["id"];
-        $flight_plan = $this->flight_planModel->search($id_flight_plan);
+        $flight_plan = $this->flight_planModel->searchForId($id_flight_plan);
         $this->printer->generateView('flight_planConfirmation.html', $flight_plan);
     }
 
