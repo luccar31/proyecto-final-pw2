@@ -62,7 +62,7 @@ class AppointmentModel
                 id_medical_center = '$medicalCenter'
             WHERE user_nickname = '$nickname'
         ");
-
+      
         return ['nickname' => $nickname, 'date' => $date->format('d-m-Y'), 'medicalCenter' => $medicalCenter];
     }
 

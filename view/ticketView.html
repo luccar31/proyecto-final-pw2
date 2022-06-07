@@ -1,0 +1,29 @@
+{{> header}}
+{{> navbar}}
+<section class="home">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100 home_p">
+            <div class="container">
+
+                <form action="ticket/createTicket?id={{id}}" method="post">
+
+                    <select id="type_cabin" name="type_cabin">
+                        <option value="0" selected>Seleccione el tipo de cabina</option>
+                        <option value="1">Turista</option>
+                        <option value="2">Ejecutivo</option>
+                        <option value="3">Primera</option>
+                    </select>
+
+                    <select id="service" name="service">
+                        <option value="0" selected>Seleccione el tipo de servicio</option>
+                        <option value="1">Standard</option>
+                        <option value="2">Gourmet</option>
+                        <option value="3">Spa</option>
+                    </select>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{{> footer}}

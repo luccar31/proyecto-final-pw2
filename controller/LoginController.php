@@ -19,15 +19,14 @@ class LoginController {
 
         $user = $this->userModel->getUser($nickname, $password);
 
-        if($user){
-            $this->startSession($nickname);
-            $this->redirect("http://localhost/");
+        if(!$user){
+            $data = ['nickname' => $nickname,'password' => $password, 'error' => "Usuario o contraseña incorrecto"];
+            return $this->printer->generateView('loginView.html', $data);
         }
-        else{
-            $this->printer->generateView('loginView.html',
-                                        ['nickname' => $nickname,'password' => $password,
-                                         'error' => "Usuario o contraseña incorrecto"]);
-        }
+
+        $this->startSession($nickname);
+        Helper::redirect('/');
+        return 1;
     }
 
     private function startSession($nickname){
@@ -39,13 +38,6 @@ class LoginController {
     public function closeSession(){
         session_unset();
         session_destroy();
-        $this->redirect("http://localhost/");
-    }
-
-    //funcion aplicable para todos los controladores
-    //se repite codigo
-    private function redirect($url){
-        header("location: " . $url);
-        exit();
+        Helper::redirect('/');
     }
 }

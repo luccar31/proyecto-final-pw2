@@ -11,12 +11,14 @@ class UserModel
 
     public function createUser($nickname, $password)
     {
+        $password = hash('md5',$password);
         $this->database->query("INSERT INTO user (nickname, password, role)
                                 VALUES ('$nickname', '$password', 1)");
     }
 
     public function getUser($nickname, $password)
     {
+        $password = hash('md5',$password);
         return $this->database->query("SELECT nickname FROM user
                                        WHERE nickname='$nickname'
                                        AND password='$password'");
