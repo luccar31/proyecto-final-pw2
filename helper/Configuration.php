@@ -11,6 +11,7 @@ include_once('controller/LoginController.php');
 include_once('controller/ProfileController.php');
 include_once('controller/MedicalcheckupController.php');
 include_once('controller/FlightController.php');
+include_once('controller/Flight_planController.php');
 include_once('controller/TicketController.php');
 
 include_once('model/UserModel.php');
@@ -18,6 +19,7 @@ include_once('model/ClientModel.php');
 include_once('model/AppointmentModel.php');
 include_once('model/FlightModel.php');
 include_once('model/TicketModel.php');
+include_once('model/Flight_planModel.php');
 
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
 
@@ -42,12 +44,17 @@ class Configuration {
     public function getMedicalcheckupController(){
       return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter());
     }
+
     public function getFlightController() {
         return new FlightController($this->getFlightModel(),$this->getPrinter());
     }
 
     public function getTicketController() {
         return new TicketController(['userModel' => $this->getUserModel(), 'flightModel' => $this->getFlightModel(), 'ticketModel' => $this->getTicketModel()], $this->getPrinter());
+    }
+
+    public function getFlight_planController() {
+        return new Flight_planController($this->getFlight_planModel(),$this->getPrinter());
     }
 
     private function getUserModel(){
@@ -64,6 +71,10 @@ class Configuration {
 
     private function getFlightModel(){
         return new FlightModel($this->getDatabase());
+    }
+
+    private function getFlight_planModel(){
+        return new Flight_planModel($this->getDatabase());
     }
 
     private function getTicketModel(){
