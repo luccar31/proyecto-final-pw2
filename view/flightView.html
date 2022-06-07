@@ -19,26 +19,24 @@
             <table class='table'>
                 <thead>
                 <tr>
-                    <th scope="col">Tipo de viaje</th>
-                    <th scope="col">Nave</th>
-                    <th scope="col">Fecha de partida</th>
+                    <th scope="col">Día de partida</th>
                     <th scope="col">Hora de partida</th>
                     <th scope="col">Origen</th>
                     <th scope="col">Destino</th>
+                    <th scope="col">Nave</th>
+                    <th scope="col">Tipo de viaje</th>
                     <th scope="col"></th>
 
                 </tr>
                 </thead>
                 {{#flights}}
                 <tr>
-                    <td>{{description}}</td>
-                    <td>{{ship_model}}</td>
                     <td>{{departure_day}}</td>
                     <td>{{departure_time}}</td>
                     <td>{{departure}}</td>
                     <td>{{destination}}</td>
-                    <td>{{id}}</td>
-                    <td>{{id_type}}</td>
+                    <td>{{ship_model}}</td>
+                    <td>{{description}}</td>
                     <td>
                         <a class="btn btn-primary" href="/ticket?id={{id}}">Reserva</a>
                     </td>
