@@ -36,18 +36,18 @@ class FlightModel
     }
 
     public function getAllFlights(){
-        $result =  $this->database->query("SELECT f.id, tf.description, f.departure_day, f.departure_time, f.departure, f.destination, f.ship_model 
-                                            FROM flight f
-                                            INNER JOIN type_flight tf ON f.id_type = tf.id");
+        $result =  $this->database->query("SELECT fp.id, tf.description, fp.departure_day, fp.departure_time, fp.departure, fp.destination, fp.ship_model 
+                                            FROM flight_plan fp
+                                            INNER JOIN type_flight tf ON fp.id_type = tf.id");
         return  ['flights' => $result];
     }
 
     public function search($typeFlight){
 
         if($typeFlight){
-            $result =  $this->database->query("SELECT f.id, tf.description, f.departure_day, f.departure_time, f.departure, f.destination, f.ship_model
-                                                FROM flight f 
-                                                INNER JOIN type_flight tf ON f.id_type = tf.id
+            $result =  $this->database->query("SELECT fp.id, tf.description, fp.departure_day, fp.departure_time, fp.departure, fp.destination, fp.ship_model
+                                                FROM flight_plan fp
+                                                INNER JOIN type_flight tf ON fp.id_type = tf.id
                                                 WHERE id_type = '$typeFlight'");
             return  ['flights' => $result];
         }
