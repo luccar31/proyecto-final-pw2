@@ -10,7 +10,7 @@ class AppointmentModel
 
     public function getAppointment($nickname){
         return $this->database->query("SELECT ap.date, ap.user_nickname, mc.name as medicalCenter
-        FROM appointment ap INNER JOIN medical_center mc ON ap.medical_center_id = mc.id
+        FROM appointment ap INNER JOIN medical_center mc ON ap.id = mc.id
         WHERE user_nickname = '$nickname'");
     }
 
@@ -28,7 +28,7 @@ class AppointmentModel
 
         if(isset($data['errors'])) return $data;
 
-        $this->database->query("INSERT INTO appointment (date, user_nickname, medical_center_id) VALUES ('{$date->format('Y-m-d')}','$nickname', '$medicalCenter')");
+        $this->database->query("INSERT INTO appointment (date, user_nickname, id_medical_center) VALUES ('{$date->format('Y-m-d')}','$nickname', '$medicalCenter')");
         
         
       
@@ -54,8 +54,8 @@ class AppointmentModel
 
     private function getAppointmentsInDate($date, $medicalCenter){
         $data = $this->database->query("SELECT COUNT(*) as c
-        FROM appointment ap INNER JOIN medical_center mc ON ap.medical_center_id = mc.id
-        WHERE medical_center_id = '$medicalCenter' AND date = '$date'");
+        FROM appointment ap INNER JOIN medical_center mc ON ap.id = mc.id
+        WHERE id_medical_center = '$medicalCenter' AND date = '$date'");
 
         return (int)$data[0]["c"];
     }
