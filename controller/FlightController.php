@@ -11,31 +11,8 @@ class FlightController
     }
 
     public function execute(){
-        $flights = $this->flightModel->getAllFlights();
-        $this->printer->generateView('flightView.html', $flights);
+        $this->printer->generateView('flightView.html');
     }
 
-    public function getFlights(){
-        $origin = $_POST['origin'];
-        $destination = $_POST['destination'];
-        $flightType = $_POST['flightType'];
 
-        $data = $this->flightModel->getFlights($origin, $destination, $flightType);
-
-        $this->printer->generateView('flightView.html', $data);
-
-    }
-
-    public function searchFlight(){
-        $typeFlight = isset($_POST['typeFlight'])? $_POST['typeFlight'] : "";
-
-        if($typeFlight) {
-            $flights = $this->flightModel->search($typeFlight);
-            $this->printer->generateView('flightView.html', $flights);
-        }else{
-            $this->execute();
-        }
-
-
-    }
 }
