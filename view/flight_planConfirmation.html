@@ -5,12 +5,9 @@
         {{#flight_plans}}
         <div class="card">
             <div class="card-header gradient-custom text-white" >
-                <img src="/assets/img/gaucho_icon.png"
-                     alt="Avatar" class="" style="width: 80px;" />
-                plan de vuelo
+                <h5 class="my-1">Plan de vuelo</h5>
             </div>
             <div class="card-body">
-
                 <h5 class="card-title">Confirmacion del plan de vuelo</h5>
                 <p class="card-text">Usted elegio el vuelo "{{description}}" que parte el dia {{departure_day}} a las {{departure_time}} de {{departure}} con destino a {{destination}}. Nave asignada "{{ship_model}}"  . ¿Desea continuar y realizar una reserva?</p>
                 <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-2" >Volver a planes de vuelo</a>
