@@ -4,7 +4,6 @@ class TicketController{
 
     private $printer;
     private $flightModel;
-    private $userModel;
     private $ticketModel;
 
     public function __construct($models, $printer){
