@@ -1,29 +1,38 @@
 {{> header}}
 {{> navbar}}
-<section class="home">
+<section class="vh-100 profile" style="background-color: #f4f5f7;">
     <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100 home_p">
-            <div class="container">
-                <p>Reserva</p>
-                <form action="ticket/createTicket?id={{id}}" method="post">
 
-                    <select id="type_cabin" name="type_cabin">
-                        <option value="0" selected>Seleccione el tipo de cabina</option>
-                        <option value="1">Turista</option>
-                        <option value="2">Ejecutivo</option>
-                        <option value="3">Primera</option>
-                    </select>
+        <div class="card">
+            <div class="card-header gradient-custom text-white">
+                <h5 class="my-1">Reserva</h5>
+            </div>
+            <div class="card-body">
+                <form action="ticket/createTicket?id={{id}}" method="post" >
+                    <div class="form-floating ">
+                        <select id="type_cabin" name="type_cabin" class="form-select" id="floatingSelect" >
+                            <option value="1">Turista</option>
+                            <option value="2">Ejecutivo</option>
+                            <option value="3">Primera</option>
+                        </select>
+                        <label for="floatingSelect">Seleccione el tipo de cabina</label>
+                    </div>
+                    <div class="form-floating mt-4">
+                        <select id="service" name="service" class="form-select" id="floatingSelect2" >
+                            <option value="1">Standard</option>
+                            <option value="2">Gourmet</option>
+                            <option value="3">Spa</option>
+                        </select>
+                        <label for="floatingSelect2">Seleccione el tipo de servicio</label>
+                    </div>
 
-                    <select id="service" name="service">
-                        <option value="0" selected>Seleccione el tipo de servicio</option>
-                        <option value="1">Standard</option>
-                        <option value="2">Gourmet</option>
-                        <option value="3">Spa</option>
-                    </select>
-                    <button type="submit">Enviar</button>
+                    <div>
+                        <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Reserar</button>
+                    </div>
                 </form>
             </div>
         </div>
+
     </div>
 </section>
 {{> footer}}
