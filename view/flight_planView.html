@@ -1,55 +1,35 @@
 {{> header}}
 {{> navbar}}
-
-<section class="flight">
-    <div class="container py-5 h-100">
-        <div class="container">
-            <form method="post">
-                <select id="typeFlight" name="typeFlight">
-                    <option value="0" selected>Ingrese un tipo de vuelo</option>
-                    <option value="1">Orbital</option>
-                    <option value="2">Circuito corto</option>
-                    <option value="3">Circuito largo</option>
-                    <option value="4">Tour</option>
+<section class="checkup">
+    <article>
+        <form method="post" action="/medicalcheckup/makeAppointment">
+            <p>
+                <label for="date-input">Seleccione la fecha de su turno: </label>
+                <input type="date" id="date-input" name="date" value={{date}}>
+            </p>
+            <p>
+                {{#medicalCenter}}
+                <label for="med-select">Su centro médico seleccionado fue: {{medicalCenter}}</label>
+                {{/medicalCenter}}
+                {{^medicalCenter}}
+                <label for="med-select">Seleccione su centro médico más cercano: </label>
+                {{/medicalCenter}}
+                <select id="med-select" name="medicalCenter">
+                    <option value="0" selected>Seleccione centro médico</option>
+                    {{#medicalCenters}}
+                    <option value={{id}}>{{name}}</option>
+                    {{/medicalCenters}}
                 </select>
-                <button class="btn btn-outline-light btn-lg " type="submit" formaction="/flight_plan/searchFlight">Buscar
-                </button>
-            </form>
-        </div>
-            <table class='table'>
-                <thead>
-                <tr>
-                    <th scope="col">Día de partida</th>
-                    <th scope="col">Hora de partida</th>
-                    <th scope="col">Origen</th>
-                    <th scope="col">Destino</th>
-                    <th scope="col">Nave</th>
-                    <th scope="col">Tipo de viaje</th>
-                    <th scope="col"></th>
-
-                </tr>
-                </thead>
-                {{#flight_plans}}
-                <tr>
-                    <td>{{departure_day}}</td>
-                    <td>{{departure_time}}</td>
-                    <td>{{departure}}</td>
-                    <td>{{destination}}</td>
-                    <td>{{ship_model}}</td>
-                    <td>{{description}}</td>
-                    <td>
-                        <a class="btn btn-outline-dark btn-sm px-4" href="/flight_plan/flight_planConfirmation?id={{id}}">Reserva</a>
-                    </td>
-                </tr>
-                {{/flight_plans}}
-            </table>
-        {{#error}}
-        <div style="color: red">{{error}}</div>
-        {{/error}}
-        <a href="http://localhost">
-            <button class="btn btn-outline-light btn-lg px-5" type="submit">Volver</button>
-        </a>
-    </div>
+            </p>
+            <p>
+                <button type="submit">Reservar turno</button>
+            </p>
+        </form>
+    </article>
+    <article>
+        {{#errors}}
+        <p style="color: red">{{.}}</p>
+        {{/errors}}
+    </article>
 </section>
-
 {{> footer}}
