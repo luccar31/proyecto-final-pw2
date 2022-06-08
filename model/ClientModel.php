@@ -8,7 +8,7 @@ class ClientModel {
     }
 
     public function createClient($nickname, $firstname, $surname, $email){
-        $this->database->query("INSERT INTO client VALUES ('$nickname', '$firstname', '$surname', '$email', NULL, NULL, NULL)");
+        $this->database->query("INSERT INTO client VALUES ('$nickname', '$firstname', '$surname', '$email', NULL, NULL)");
     }
 
     public function getClient($nickname){

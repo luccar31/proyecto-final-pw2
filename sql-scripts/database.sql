@@ -39,19 +39,17 @@ CREATE TABLE client
     email         VARCHAR(100) NOT NULL UNIQUE,
     traveler_code VARCHAR(10) UNIQUE,
     flight_level  INT,
-    id_flight_plan INT,
-    FOREIGN KEY (user_nickname) REFERENCES user (nickname),
-    FOREIGN KEY (id_flight_plan) REFERENCES flight_plan (id)
+    FOREIGN KEY (user_nickname) REFERENCES user (nickname)
 );
 
 INSERT INTO client
-VALUES ('stefi5678', 'Stefenía', 'Rinaldi', 'stefania@gmail.com', null, null, null);
+VALUES ('stefi5678', 'Stefenía', 'Rinaldi', 'stefania@gmail.com', null, null);
 INSERT INTO client
-VALUES ('tomi4321', 'Tomás', 'Palavecino', 'tomas@gmail.com', null, null, null);
+VALUES ('tomi4321', 'Tomás', 'Palavecino', 'tomas@gmail.com', null, null);
 INSERT INTO client
-VALUES ('maxi9876', 'Maximiliano', 'Davies', 'maxi@gmail.com', null, null, null);
+VALUES ('maxi9876', 'Maximiliano', 'Davies', 'maxi@gmail.com', null, null);
 INSERT INTO client
-VALUES ('alexis7777', 'Alexis', 'Verba', 'alexis@gmail.com', null, null, null);
+VALUES ('alexis7777', 'Alexis', 'Verba', 'alexis@gmail.com', null, null);
 
 CREATE TABLE medical_center
 (
