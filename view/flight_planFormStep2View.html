@@ -1,0 +1,31 @@
+{{> header}}
+{{> navbar}}
+
+<section class="flight">
+    <div class="container py-5 h-100">
+        <div class="container">
+            <form method="post" action="/flight_plan/validateStep2">
+                <select id="departureCity" name="depart">
+                    <option value="0" selected>Seleccione una ciudad de origen</option>
+                    {{#cities}}
+                    <option value={{id}}>{{name}}</option>
+                    {{/cities}}
+                </select>
+                <select id="destinationCity" name="dest">
+                    <option value="0" selected>Seleccione una ciudad de destino</option>
+                    {{#cities}}
+                    <option value={{id}}>{{name}}</option>
+                    {{/cities}}
+                </select>
+                <button class="btn btn-outline-light btn-lg" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+    <div>
+        {{#errors}}
+        <div style="color: red">{{error}}</div>
+        {{/errors}}
+    </div>
+</section>
+
+{{> footer}}

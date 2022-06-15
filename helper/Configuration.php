@@ -10,7 +10,6 @@ include_once('controller/SigninController.php');
 include_once('controller/LoginController.php');
 include_once('controller/ProfileController.php');
 include_once('controller/MedicalcheckupController.php');
-include_once('controller/FlightController.php');
 include_once('controller/Flight_planController.php');
 include_once('controller/TicketController.php');
 
@@ -43,10 +42,6 @@ class Configuration {
 
     public function getMedicalcheckupController(){
       return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter());
-    }
-
-    public function getFlightController() {
-        return new FlightController($this->getFlightModel(),$this->getPrinter());
     }
 
     public function getTicketController() {

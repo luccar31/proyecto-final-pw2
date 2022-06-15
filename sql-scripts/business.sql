@@ -165,8 +165,6 @@ CREATE TABLE equipment_cabin
     FOREIGN KEY (id_cabin) REFERENCES cabin (id)
 );
 
-
-
 CREATE TABLE ship
 (
     id     INT AUTO_INCREMENT PRIMARY KEY,

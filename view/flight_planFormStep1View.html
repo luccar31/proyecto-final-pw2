@@ -1,0 +1,26 @@
+{{> header}}
+{{> navbar}}
+
+<section class="flight">
+  <div class="container py-5 h-100">
+    <div class="container">
+      <form method="post" action="/flight_plan/validateStep1">
+        <select id="typeFlight" name="type">
+          <option value="0" selected>Ingrese un tipo de vuelo</option>
+          {{#typeFlights}}
+          <option value={{id}}>{{description}}</option>
+          {{/typeFlights}}
+        </select>
+        <input type="week" name="week" id="week" value={{week}}>
+        <button class="btn btn-outline-light btn-lg" type="submit">Continuar</button>
+      </form>
+    </div>
+  </div>
+  <div>
+    {{#errors}}
+    <div style="color: red">{{error}}</div>
+    {{/errors}}
+  </div>
+</section>
+
+{{> footer}}

@@ -1,0 +1,39 @@
+{{> header}}
+{{> navbar}}
+
+<section class="search-results">
+  <table class='table'>
+    <thead>
+    <tr>
+      <th scope="col">Día de partida</th>
+      <th scope="col">Hora de partida</th>
+      <th scope="col">Origen</th>
+      <th scope="col">Destino</th>
+      <th scope="col">Nave</th>
+      <th scope="col">Tipo de viaje</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    {{#flight_plans}}
+    <tr>
+      <td>{{departure_day}}</td>
+      <td>{{departure_time}}</td>
+      <td>{{departure}}</td>
+      <td>{{destination}}</td>
+      <td>{{ship_model}}</td>
+      <td>{{description}}</td>
+      <td>
+        <a href="/flight_plan/flight_planConfirmation?id={{id}}" style="color: black; text-decoration: underline aqua">Reserva</a>
+      </td>
+    </tr>
+    {{/flight_plans}}
+  </table>
+  {{#error}}
+  <div style="color: red">{{error}}</div>
+  {{/error}}
+  <a href="/">
+    <button type="submit">Volver</button>
+  </a>
+</section>
+
+{{> footer}}
