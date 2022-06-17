@@ -1,5 +1,3 @@
-CREATE DATABASE gauchorocket;
-USE gauchorocket;
 
 CREATE TABLE role
 (
@@ -37,7 +35,7 @@ CREATE TABLE client
     firstname     VARCHAR(50)  NOT NULL,
     surname       VARCHAR(50)  NOT NULL,
     email         VARCHAR(100) NOT NULL UNIQUE,
-    traveler_code VARCHAR(10) UNIQUE,
+    traveler_code VARCHAR(50) UNIQUE,
     flight_level  INT,
     FOREIGN KEY (user_nickname) REFERENCES user (nickname)
 );
@@ -78,16 +76,17 @@ CREATE TABLE appointment
 CREATE TABLE type_cabin
 (
     id          INT PRIMARY KEY,
-    description VARCHAR(30) NOT NULL
+    description VARCHAR(30) NOT NULL,
+    price DOUBLE NOT NULL
 );
 
 -- Tipos de cabina (turista, ejecutivo, primera)
-INSERT INTO type_cabin (id, description)
-VALUES (1, 'Turista');
-INSERT INTO type_cabin (id, description)
-VALUES (2, 'Ejecutivo');
-INSERT INTO type_cabin (id, description)
-VALUES (3, 'Primera');
+INSERT INTO type_cabin (id, description, price)
+VALUES (1, 'Turista', 500);
+INSERT INTO type_cabin (id, description, price)
+VALUES (2, 'Ejecutivo', 1000);
+INSERT INTO type_cabin (id, description, price)
+VALUES (3, 'Primera', 1500);
 
 CREATE TABLE cabin
 (
@@ -125,36 +124,38 @@ INSERT INTO cabin(id_type,capacity) VALUES (3,100);
 CREATE TABLE type_equipment
 (
     id          INT PRIMARY KEY,
-    description VARCHAR(50) NOT NULL
+    description VARCHAR(50) NOT NULL,
+    price_modifier DOUBLE NOT NULL
 );
 
 -- Tipos de equipos (Orbitales, Alta aceleracion o Baja aceleracion)
-INSERT INTO type_equipment (id, description)
-VALUES (1, 'Orbital');
-INSERT INTO type_equipment (id, description)
-VALUES (2, 'BA');
-INSERT INTO type_equipment (id, description)
-VALUES (3, 'AA');
+INSERT INTO type_equipment (id, description, price_modifier)
+VALUES (1, 'Orbital', 1);
+INSERT INTO type_equipment (id, description, price_modifier)
+VALUES (2, 'BA', 1.2);
+INSERT INTO type_equipment (id, description, price_modifier)
+VALUES (3, 'AA', 2);
 
 CREATE TABLE equipment
 (
-    id      INT AUTO_INCREMENT PRIMARY KEY,
-    id_type INT,
-    model_ship VARCHAR(30),
-    FOREIGN KEY (id_type) REFERENCES type_equipment (id)
+    id      INT PRIMARY KEY,
+    id_type INT NOT NULL,
+    FOREIGN KEY (id_type) REFERENCES type_equipment (id),
+    model VARCHAR(30) -- nombre del equipamiento
+
 );
 
 -- Equipamiento
-INSERT INTO equipment(id_type, model_ship) VALUES (1, 'Calandria');
-INSERT INTO equipment(id_type, model_ship) VALUES (1, 'Colibri');
-INSERT INTO equipment(id_type, model_ship) VALUES (2, 'Aguila');
-INSERT INTO equipment(id_type, model_ship) VALUES (2, 'Condor');
-INSERT INTO equipment(id_type, model_ship) VALUES (2, 'Halcon');
-INSERT INTO equipment(id_type, model_ship) VALUES (2, 'Guanaco');
-INSERT INTO equipment(id_type, model_ship) VALUES (3, 'Zorzal');
-INSERT INTO equipment(id_type, model_ship) VALUES (3, 'Carancho');
-INSERT INTO equipment(id_type, model_ship) VALUES (3, 'Aguilucho');
-INSERT INTO equipment(id_type, model_ship) VALUES (3, 'Canario');
+INSERT INTO equipment(id, id_type, model) VALUES (1,1, 'Calandria');
+INSERT INTO equipment(id, id_type, model) VALUES (2,1, 'Colibri');
+INSERT INTO equipment(id, id_type, model) VALUES (3,2, 'Aguila');
+INSERT INTO equipment(id, id_type, model) VALUES (4,2, 'Condor');
+INSERT INTO equipment(id, id_type, model) VALUES (5,2, 'Halcon');
+INSERT INTO equipment(id, id_type, model) VALUES (6,2, 'Guanaco');
+INSERT INTO equipment(id, id_type, model) VALUES (7,3, 'Zorzal');
+INSERT INTO equipment(id, id_type, model) VALUES (8,3, 'Carancho');
+INSERT INTO equipment(id, id_type, model) VALUES (9,3, 'Aguilucho');
+INSERT INTO equipment(id, id_type, model) VALUES (10,3,'Canario');
 
 CREATE TABLE equipment_cabin
 (
@@ -165,30 +166,30 @@ CREATE TABLE equipment_cabin
     FOREIGN KEY (id_cabin) REFERENCES cabin (id)
 );
 
-CREATE TABLE ship
+CREATE TABLE ship -- la nave vendría a ser la instancia de la clase equipamiento y puede haber varias instancias de la clase equipamiento
 (
     id     INT AUTO_INCREMENT PRIMARY KEY,
-    model  VARCHAR(30) NOT NULL,
     domain VARCHAR(30) NOT NULL,
-    id_equipment INT,
+    id_equipment INT NOT NULL, -- identificador del tipo de equipamiento
     FOREIGN KEY (id_equipment) REFERENCES equipment(id)
 );
 
 CREATE TABLE type_flight
 (
     id          INT PRIMARY KEY,
-    description VARCHAR(50) NOT NULL
+    description VARCHAR(50) NOT NULL,
+    hour_price DOUBLE NOT NULL -- precio base por hora segun tipo de vuelo
 );
 
 -- Tipos de vuelo (orbital o entre destinos)
-INSERT INTO type_flight (id, description)
-VALUES (1, 'Orbital');
-INSERT INTO type_flight (id, description)
-VALUES (2, 'Circuito corto');
-INSERT INTO type_flight (id, description)
-VALUES (3, 'Circuito largo');
-INSERT INTO type_flight (id, description)
-VALUES (4, 'Tour');
+INSERT INTO type_flight (id, description, hour_price)
+VALUES (1, 'Orbital', 100);
+INSERT INTO type_flight (id, description, hour_price)
+VALUES (2, 'Circuito corto', 300);
+INSERT INTO type_flight (id, description, hour_price)
+VALUES (3, 'Circuito largo', 400);
+INSERT INTO type_flight (id, description, hour_price)
+VALUES (4, 'Tour', 500);
 
 CREATE TABLE days(
     id INT PRIMARY KEY,
@@ -223,50 +224,42 @@ INSERT INTO location VALUES (12, 'Neptuno');
 
 CREATE TABLE flight
 (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    id_type        INT NOT NULL,
-    id_ship        INT NOT NULL,
-    ship_model     VARCHAR(30) NOT NULL,
-    departure_date DATE NOT NULL,
-    departure_time TIME NOT NULL,
-    departure      INT NOT NULL,
-    destination    INT NOT NULL,
-    FOREIGN KEY (id_type) REFERENCES type_flight(id),
-    FOREIGN KEY (id_ship) REFERENCES ship(id),
-    FOREIGN KEY (departure) REFERENCES location(id),
-    FOREIGN KEY (destination) REFERENCES location(id)
+    id_flight INT AUTO_INCREMENT PRIMARY KEY, -- identificacion de vuelo
+    id_flight_plan INT NOT NULL, -- plan de vuelo que tiene asociado
+    id_ship INT NOT NULL, -- identificador de la nave que ocupa este vuelo, la matricula
+    departure_date DATE NOT NULL, -- fecha en el que despega
+    departure_hour TIME NOT NULL -- hora en el que despega
 );
 
 CREATE TABLE flight_plan
 (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    id_type        INT NOT NULL,
-    id_ship        INT NOT NULL,
-    ship_model     VARCHAR(30) NOT NULL,
-    departure_day  INT NOT NULL,
-    departure_time TIME NOT NULL,
-    departure      INT NOT NULL,
-    destination    INT NOT NULL,
-    FOREIGN KEY (id_type) REFERENCES type_flight(id),
-    FOREIGN KEY (id_ship) REFERENCES ship(id),
-    FOREIGN KEY (departure) REFERENCES location(id),
-    FOREIGN KEY (destination) REFERENCES location(id),
-    FOREIGN KEY (departure_day) REFERENCES days(id)
+    id             INT AUTO_INCREMENT PRIMARY KEY, -- identificador de plan de vuelo
+    id_equipment   INT  NOT NULL,                  -- identificador de equipamento (calandria, aguila, etc.)
+    FOREIGN KEY (id_equipment) REFERENCES equipment (id),
+    departure_day  INT  NOT NULL,                  -- qué día de la semana despega el vuelo
+    FOREIGN KEY (departure_day) REFERENCES days (id),
+    departure_time TIME NOT NULL,                  -- a qué hora despega este vuelo
+    departure_loc  INT  NOT NULL,                  -- desde dónde despega este vuelo
+    FOREIGN KEY (departure_loc) REFERENCES location (id),
+    type_flight    INT  NOT NULL,                  -- tipo de vuelo que se realiza (orbital, circuito 1, etc)
+    FOREIGN KEY (type_flight) REFERENCES type_flight (id)
 );
+
 
 CREATE TABLE service
 (
     id          INT PRIMARY KEY,
-    description VARCHAR(50) NOT NULL
+    description VARCHAR(50) NOT NULL,
+    price DOUBLE NOT NULL
 );
 
 -- Tipos de servicio (standard, gourmet, spa)
-INSERT INTO service (id, description)
-VALUES (1, 'Standard');
-INSERT INTO service (id, description)
-VALUES (2, 'Gourmet');
-INSERT INTO service (id, description)
-VALUES (3, 'Spa');
+INSERT INTO service (id, description, price)
+VALUES (1, 'Standard', 100);
+INSERT INTO service (id, description, price)
+VALUES (2, 'Gourmet', 200);
+INSERT INTO service (id, description, price)
+VALUES (3, 'Spa', 300);
 
 CREATE TABLE ticket
 (
@@ -275,7 +268,7 @@ CREATE TABLE ticket
     id_flight  INT NOT NULL,
     id_service INT NOT NULL,
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
-    FOREIGN KEY (id_flight) REFERENCES flight (id),
+    FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
     FOREIGN KEY (id_service) REFERENCES service (id)
 );
 
@@ -313,197 +306,258 @@ INSERT INTO equipment_cabin(id_equipment, id_cabin) VALUES (9, 22);
 INSERT INTO equipment_cabin(id_equipment, id_cabin) VALUES (10, 23);
 
 -- Naves
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Calandria', 'O1', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Calandria', 'O2', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Calandria', 'O6', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Calandria', 'O7', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Colibri', 'O3', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Colibri', 'O4', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Colibri', 'O5', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Colibri', 'O8', 1);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Colibri', 'O9', 1);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O1', 1);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O2', 1);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O6', 1);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O7', 1);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O3', 2);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O4', 2);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O5', 2);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O8', 2);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'O9', 2);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA1',3);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA5',3);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA9',3);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA13',3);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA17',3);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA2',4);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA6',4);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA10',4);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA14',4);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA18',4);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA3',5);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA7',5);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA11',5);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA15',5);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA19',5);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA4',6);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA8',6);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA12',6);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA16',6);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'AA20',6);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA1',7);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA2',7);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA3',7);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA4',8);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA5',8);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA6',8);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA7',8);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA8',9);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA9',9);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA10',9);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA11',9);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA12',9);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA13',10);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA14',10);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA15',10);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA16',10);
+INSERT INTO ship ( domain, id_equipment)
+VALUES ( 'BA17',10);
 
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA2',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA6',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA10',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA14',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Condor', 'AA18',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA4',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA8',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA12',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA16',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Guanaco', 'AA20',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA3',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA7',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA11',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA15',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Halcon', 'AA19',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA1',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA2',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Zorzal', 'BA3',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA1',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA5',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA9',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA13',3);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguila', 'AA17',3);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,7,0,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,8,0,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,0,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,0,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,6,0,'20:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,4,0,'20:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,0,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,0,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,0,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,0,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,0,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,0,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,8,1,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,10,1,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,5,1,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,7,1,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,1,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,4,1,'18:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,1,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,6,1,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,1,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,1,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,1,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,1,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,1,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,8,2,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,10,2,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,5,2,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,7,2,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,2,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,2,'18:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,2,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,6,2,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,2,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,2,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,2,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,2,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,2,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,7,3,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,3,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,3,3,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,4,3,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,3,'20:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,4,3,'20:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,3,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,3,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,3,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,3,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,3,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,3,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,7,4,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,4,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,3,4,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,4,4,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,4,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,4,'18:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,4,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,6,4,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,4,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,4,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,4,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,4,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,4,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,4,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,5,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,5,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,5,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,5,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,5,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,5,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,5,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,5,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,4,5,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,4,5,'20:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,7,5,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,5,'18:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,6,5,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,5,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,6,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,6,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'8:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'9:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,6,'12:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,1,6,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'8:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (1,2,6,'9:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (4,6,6,'7:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,6,'15:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,10,6,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,9,6,'18:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,6,'22:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,6,'20:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,5,6,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,4,6,'20:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (2,10,6,'21:00:00',2);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,9,6,'20:00:00',1);
+INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,6,'20:00:00',1);
 
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA8',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA9',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA10',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA11',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Aguilucho', 'BA12',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA13',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA14',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA15',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA16',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Canario', 'BA17',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA4',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA5',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA6',2);
-INSERT INTO ship (model, domain, id_equipment)
-VALUES ('Carancho', 'BA7',2);
+CREATE TABLE route(
+    id INT PRIMARY KEY, -- identificador unico de recorrido
+    id_type INT NOT NULL, -- representa el tipo de vuelo de tal recorrido
+    FOREIGN KEY (id_type) REFERENCES type_flight(id),
+    id_type_equipment INT, -- representa el tipo de equipamento que hace el recorrido
+    FOREIGN KEY (id_type_equipment) REFERENCES type_equipment(id)
+);
 
--- Vuelos
-INSERT INTO flight_plan(id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,20,'Carancho', 0, '08:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,39,'Halcon', 0, '15:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,34,'Guanaco', 0, '20:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,29,'Condor', 0, '20:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,40,'Halcon', 0, '21:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 0, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 0, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 0, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 0, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 0, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,21,'Carancho', 1, '08:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,16,'Canario', 1, '09:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,41,'Halcon', 1, '09:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,45,'Zorzal', 1, '09:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,44,'Zorzal', 1, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,6,'Aguilucho', 1, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,30,'Condor', 1, '18:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,35,'Guanaco', 1, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,36,'Guanaco', 1, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 1, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 1, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 1, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 1, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 1, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,22,'Carancho', 2, '08:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 2, '09:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,42,'Halcon', 2, '09:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,46,'Zorzal', 2, '09:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 2, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,8,'Aguilucho', 2, '18:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,18,'Canario', 2, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 2, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 2, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,28,'Colibri', 2, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 2, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 2, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 2, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,44,'Zorzal', 3, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,19,'Canario', 3, '08:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,1,'Aguila', 3, '09:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,31,'Condor', 3, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,43,'Halcon', 3, '20:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,32,'Condor', 3, '20:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,41,'Halcon', 3, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 3, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 3, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 3, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 3, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 3, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,46,'Zorzal', 4, '08:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 4, '09:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,2,'Aguila', 4, '09:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,22,'Condor', 4, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 4, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 4, '18:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,18,'Canario', 4, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 4, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,37,'Guanaco', 4, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 4, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 4, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 4, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 4, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 4, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 5, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 5, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 5, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 5, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 5, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 5, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 5, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,28,'Colibri', 5, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,32,'Condor', 5, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,33,'Condor', 5, '20:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,46,'Zorzal', 5, '08:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,7,'Aguilucho', 5, '18:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,37,'Guanaco', 5, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,38,'Guanaco', 5, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 6, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,11,'Calandria', 6, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,12,'Calandria', 6, '08:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 6, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,26,'Colibri', 6, '09:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,27,'Colibri', 6, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,13,'Calandria', 6, '12:00', 2, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,14,'Calandria', 6, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,24,'Colibri', 6, '08:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (1,25,'Colibri', 6, '09:00', 1, 6);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (4,34,'Guanaco', 6, '07:00', 2, 12);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,9,'Aguilucho', 6, '15:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,18,'Canario', 6, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,10,'Aguilucho', 6, '18:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,35,'Guanaco', 6, '22:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,43,'Halcon', 6, '20:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,41,'Halcon', 6, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,32,'Condor', 6, '20:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (2,17,'Canario', 6, '21:00', 2, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,7,'Aguilucho', 6, '20:00', 1, 11);
-INSERT INTO flight_plan (id_type, id_ship, ship_model, departure_day, departure_time, departure, destination) VALUES (3,38,'Guanaco', 6, '20:00', 1, 11);
+INSERT INTO route VALUES (1, 1, 1);
+INSERT INTO route VALUES (2, 2, 2);
+INSERT INTO route VALUES (3, 2, 3);
+INSERT INTO route VALUES (4, 3, 2);
+INSERT INTO route VALUES (5, 3, 3);
+INSERT INTO route VALUES (6, 4, NULL);
+
+CREATE TABLE route_location(
+    id INT PRIMARY KEY, -- identificador unico
+    id_route INT NOT NULL, -- identificador del recorrido
+    FOREIGN KEY (id_route) REFERENCES route(id),
+    id_location INT NOT NULL, -- identificador de la locacion
+    FOREIGN KEY (id_location) REFERENCES location(id),
+    diff_time DOUBLE NOT NULL, -- cantidad de tiempo que se tarda en llegar a la siguiente locacion
+    order_ INT NOT NULL -- orden en el que sucede el recorrido
+);
+
+INSERT INTO route_location VALUES (1,1,2,8,1);
+INSERT INTO route_location VALUES (2,1,1,8,1);
+INSERT INTO route_location VALUES (3,2,3,4,1);
+INSERT INTO route_location VALUES (4,2,4,1,2);
+INSERT INTO route_location VALUES (5,2,5,16,3);
+INSERT INTO route_location VALUES (6,2,6,26,4);
+INSERT INTO route_location VALUES (7,3,3,3,1);
+INSERT INTO route_location VALUES (8,3,4,1,2);
+INSERT INTO route_location VALUES (9,3,5,9,3);
+INSERT INTO route_location VALUES (10,3,6,22,4);
+INSERT INTO route_location VALUES (11,4,3,4,1);
+INSERT INTO route_location VALUES (12,4,5,14,2);
+INSERT INTO route_location VALUES (13,4,6,26,3);
+INSERT INTO route_location VALUES (14,4,7,48,4);
+INSERT INTO route_location VALUES (15,4,8,50,5);
+INSERT INTO route_location VALUES (16,4,9,51,6);
+INSERT INTO route_location VALUES (17,4,10,70,7);
+INSERT INTO route_location VALUES (18,4,11,77,8);
+INSERT INTO route_location VALUES (19,5,3,3,1);
+INSERT INTO route_location VALUES (20,5,5,10,2);
+INSERT INTO route_location VALUES (21,5,6,22,3);
+INSERT INTO route_location VALUES (22,5,7,32,4);
+INSERT INTO route_location VALUES (23,5,8,33,5);
+INSERT INTO route_location VALUES (24,5,9,35,6);
+INSERT INTO route_location VALUES (25,5,10,50,7);
+INSERT INTO route_location VALUES (26,5,11,52,8);
+INSERT INTO route_location VALUES (27,6,12,840,1);
+
+CREATE TABLE stop(
+    id INT PRIMARY KEY, -- identificador principal de la escala
+    id_flight INT NOT NULL, -- identificador del vuelo al que pertenece la parada
+    FOREIGN KEY (id_flight) REFERENCES flight(id_flight),
+    id_location INT NOT NULL, -- identificador de la locacion
+    FOREIGN KEY (id_location) REFERENCES location(id),
+    arrive_time TIME NOT NULL, -- hora de llegada a la locacion
+    arrive_date DATE NOT NULL -- fecha de llegada
+);
