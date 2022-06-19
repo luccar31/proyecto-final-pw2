@@ -61,24 +61,38 @@ class Flight_planModel
     }
 
     //función que obtiene el id del tipo de vuelo automáticamente
-    private function getTypeFlightByExistingStop($destination)
+    private function consultTypeFlight($destination)
     {
-        $existingTypes = $this->database->query("SELECT DISTINCT tf.id as type_id FROM stop s
-                                        INNER JOIN flight f ON s.id_flight = f.id_flight
-                                        INNER JOIN flight_plan fp ON f.id_flight_plan = fp.id
-                                        INNER JOIN type_flight tf ON fp.type_flight = tf.id
-                                        WHERE s.id_location = '$destination'");
-        $types = [];
 
-        //itero el array que me trajo como resultado en caso de que haya encontrado 2 tipos de vuelo
-        //y lo retorno ya formateado por ejemplo [2,3]
-        for ($i = 0; $i < sizeof($existingTypes); $i++) {
-            $type = implode("','", $existingTypes[$i]);
-            $types[] = $type;
+        // cada array almacena el id del los destinos
+
+        //orbital
+        $type_flight_1 = ['Buenos Aires' => 1, 'Ankara' => 2];
+
+        //circuito corto
+        $type_flight_2 = ['EEI' => 3, 'Orbital Hotel' => 4, 'Luna' => 5, 'Marte' => 6];
+
+        //circuito largo
+        $type_flight_3 = ['EEI' => 3, 'Luna' => 5, 'Marte' => 6, 'Ganimedes' => 7, 'Europa' => 8, 'Io' => 9, 'Encedalo' => 10, 'Titan' => 11];
+
+        //pregunto si el destino está dentro del respectivo array (recorrido)
+
+        if (in_array($destination, $type_flight_1)) {
+            $type = [1];
+        } elseif (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
+            $type = [2];
+        } elseif (in_array($destination, $type_flight_3) && !in_array($destination, $type_flight_2)) {
+            $type = [3];
+            //si el destino está en el circuito corto y en el circuito largo que me retorne un array con los dos tipos
+        } elseif (in_array($destination, $type_flight_2) && in_array($destination, $type_flight_3)) {
+            $type = [2, 3];
+        } else {
+            $type = [4];
         }
 
-        return $types;
+        return $type;
     }
+
 
     //función para crear el vuelo
     public function createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week)
@@ -231,58 +245,4 @@ class Flight_planModel
         return $location[0];
     }
 
-    private function consultTypeFlight($destination)
-    {
-
-        // cada array almacena el id del los destinos
-
-        //orbital
-        $type_flight_1 = ['Buenos Aires' => 1, 'Ankara' => 2];
-
-        //circuito corto
-        $type_flight_2 = ['EEI' => 3, 'Orbital Hotel' => 4, 'Luna' => 5, 'Marte' => 6];
-
-        //circuito largo
-        $type_flight_3 = ['EEI' => 3, 'Luna' => 5, 'Marte' => 6, 'Ganimedes' => 7, 'Europa' => 8, 'Io' => 9, 'Encedalo' => 10, 'Titan' => 11];
-
-        //pregunto si el destino está dentro del respectivo array (recorrido)
-
-        if (in_array($destination, $type_flight_1)) {
-            $type = [1];
-        } elseif (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
-            $type = [2];
-        } elseif (in_array($destination, $type_flight_3) && !in_array($destination, $type_flight_2)) {
-            $type = [3];
-            //si el destino está en el circuito corto y en el circuito largo que me retorne un array con los dos tipos
-        } elseif (in_array($destination, $type_flight_2) && in_array($destination, $type_flight_3)) {
-            $type = [2, 3];
-        } else {
-            $type = [4];
-        }
-
-        echo "Tipo de vuelo buscado automáticamente:";
-        echo "<br>";
-        echo var_dump($type);
-        echo "<br>";
-
-        //pregunto si existe alguna difrencia (por ejemplo) entre el array type ([2,3]) y el array existingTypes en la
-        //base de datos ([3]). Si hay diferencia
-
-        $existingTypes = $this->getTypeFlightByExistingStop($destination);
-
-        echo "Tipo de vuelo buscado en vuelos creados que comparten el mismo destino:";
-        echo "<br>";
-        echo var_dump($existingTypes);
-        echo "<br>";
-
-        if (array_diff($type, $existingTypes)) {
-            $type = array_unique(array_merge($type, $existingTypes));
-        }
-
-        echo "Tipo de vuelo final:";
-        echo "<br>";
-        echo var_dump($type);
-        echo "<br>";
-        return $type;
-    }
 }
