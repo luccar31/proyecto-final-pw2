@@ -15,6 +15,7 @@ class TicketController{
     public function execute(){
         $id = $_GET['id'];
         $data['id'] = $id;
+
         $this->printer->generateView('ticketView.html', $data);
     }
 
@@ -27,7 +28,7 @@ class TicketController{
 
 
         $data = $this ->ticketModel->validateCapacityCabin($id_flight, $id_type_cabin, $num_tickets);
-        //$date = $this ->ticketModel->validate($id_flight);
+        $date = $this ->ticketModel->validDate($id_flight);
 
         if($data['isValid'] == true){
             $this->ticketModel->createTicket($id_flight, $id_type_cabin, $id_service, $userNickname, $num_tickets);
