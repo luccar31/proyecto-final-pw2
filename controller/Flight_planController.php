@@ -32,7 +32,7 @@ class Flight_planController{
 
     public function searchFlightFormStep2(){
 
-        $data['cities'] = $this->flight_planModel->getCities();
+        $data['cities'] = $this->flight_planModel->getCities($_SESSION['type']);
         $data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
         unset($_SESSION['errors']);
 
@@ -53,7 +53,8 @@ class Flight_planController{
         $destination = isset($_SESSION['dest']) ? $_SESSION['dest'] : null;
         $week = isset($_SESSION['week']) ? $_SESSION['week'] : null;
 
-        $response = $this->flight_planModel->getAllFlight_plans($type, $departure, $destination, $week);
+
+        $response = $this->flight_planModel->getPlansOrFlight($type, $departure, $week, $destination);
 
         //validacion de errores del modelo
 
@@ -96,12 +97,17 @@ class Flight_planController{
         return $input != 0;
     }
 
-    /*
     public function flight_planConfirmation(){
         $id_flight_plan = $_GET["id"];
+        $departure_date = $_GET["date"];
+        $departure_time = $_GET["time"];
+        $departure = $_GET["depart"];
+
+        $flight = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure);
+
+        Helper::redirect('/flight_plan/searchFlightFormStep1');
+
         $flight_plan = $this->flight_planModel->searchForId($id_flight_plan);
         $this->printer->generateView('flight_planConfirmation.html', $flight_plan);
     }
-    */
-
 }
