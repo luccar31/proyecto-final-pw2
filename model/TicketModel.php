@@ -63,7 +63,7 @@ class TicketModel
             $data['isValid'] = true;
         }else{
             $data['capacityCabin'] = "Capacidad maxima de esta cabina: $capacityCabin";
-            $data['countFlightTickets'] = "Capacidad actual de esta cabina: $countFlightTickets, modifique la cantidad de reservas";
+            $data['countFlightTickets'] = "Capacidad actual de esta cabina: $countFlightTickets";
             $data['outOfCapacityError'] = "Se alcanzo la capacidad maxima permitida de pasajeros para este tipo de cabina, por favor elija otra";
             $data['isValid'] = false;
         }
