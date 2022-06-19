@@ -174,7 +174,7 @@ CREATE TABLE ship -- la nave vendría a ser la instancia de la clase equipamient
     FOREIGN KEY (id_equipment) REFERENCES equipment(id),
     available BOOLEAN NOT NULL
 );
-DROP TABLE ship;
+
 CREATE TABLE type_flight
 (
     id          INT PRIMARY KEY,
@@ -564,5 +564,3 @@ CREATE TABLE stop(
     arrive_time TIME NOT NULL, -- hora de llegada a la locacion
     arrive_date DATE NOT NULL -- fecha de llegada
 );
-
-DROP TABLE stop;
