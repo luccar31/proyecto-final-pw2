@@ -110,4 +110,67 @@ class Flight_planController{
         $flight_plan = $this->flight_planModel->searchForId($id_flight_plan);
         $this->printer->generateView('flight_planConfirmation.html', $flight_plan);
     }
+
+    public function progress(){
+
+        $flight_type = 3;
+        $progress = 0;
+        $ubication = 'Marte';
+
+        if ($flight_type == 2){
+
+            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires'){
+                $progress = 9.5;
+            }
+            elseif ($ubication == 'EEI'){
+                $progress = 25;
+            }
+            elseif ($ubication == 'OrbitalHotel'){
+                $progress = 50;
+            }
+            elseif ($ubication == 'Luna'){
+                $progress = 75;
+            }
+            elseif ($ubication == 'Marte'){
+                $progress = 100;
+            }
+
+            $data = ['progress' => $progress, 'flight_type_2' => true, 'flight_type_3' => false ];
+        }
+        elseif ($flight_type == 3) {
+
+            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires'){
+                $progress = 5;
+            }
+            elseif ($ubication == 'EEI') {
+                $progress = 12.5;
+            } elseif ($ubication == 'Luna') {
+                $progress = 25;
+            } elseif ($ubication == 'Marte') {
+                $progress = 37.5;
+            } elseif ($ubication == 'Ganimedes') {
+                $progress = 50;
+            }
+            elseif ($ubication == 'Europa') {
+                $progress = 62.5;
+            }
+            elseif ($ubication == 'Io') {
+                $progress = 75;
+            }
+            elseif ($ubication == 'Encedalo') {
+                $progress = 87.5;
+            }
+            elseif ($ubication == 'Titan') {
+                $progress = 100;
+            }
+
+            $data = ['progress' => $progress, 'flight_type_2' => false, 'flight_type_3' => true ];
+        }
+
+        $this->printer->generateView('flightStatus.html', $data);
+
+
+
+
+    }
 }
