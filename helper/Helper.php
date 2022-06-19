@@ -8,8 +8,14 @@ class Helper
         exit();
     }
 
-    public static function mostrarVarDump($data){
-        echo var_dump($data);
+    public static function debugExit($var){
+        var_dump($var);
+        echo "<br>";
         exit();
+    }
+
+    public static function debug($var){
+        var_dump($var);
+        echo "<br>";
     }
 }

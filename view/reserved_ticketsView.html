@@ -1,0 +1,36 @@
+{{> header}}
+{{> navbar}}
+<section class="vh-100 profile" style="background-color: #f4f5f7;">
+    <div class="container py-5 h-100">
+
+        <div class="card">
+            <div class="card-header gradient-custom text-white">
+                <h5 class="my-1">Sus pasajes fueron reservados exitosamente!</h5>
+            </div>
+            <div class="card-body">
+                <table class='table'>
+                    <thead>
+                    <tr>
+                        <th scope="col">Fecha de partida</th>
+                        <th scope="col">Hora de partida</th>
+                        <th scope="col">Origen</th>
+                        <th scope="col">Tipo de cabina</th>
+                        <th scope="col">Servicio</th>
+                    </tr>
+                    </thead>
+                    {{#tickets}}
+                    <tr>
+                        <td>{{departure_date}}</td>
+                        <td>{{departure_hour}}</td>
+                        <td>{{departure}}</td>
+                        <td>{{type_cabin}}</td>
+                        <td>{{service}}</td>
+                    </tr>
+                    {{/tickets}}
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+{{> footer}}

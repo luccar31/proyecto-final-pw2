@@ -1,0 +1,35 @@
+{{> header}}
+{{> navbar}}
+
+<section class="escalas">
+  <table class='table'>
+    <thead>
+    <tr>
+      <th scope="col">Día</th>
+      <th scope="col">Hora </th>
+      <th scope="col">lugar</th>
+      <th scope="col">fecha</th>
+      <th scope="col">hora</th>
+    </tr>
+    </thead>
+    {{#flights}}
+    <tr>
+      <td>{{id}}</td>
+      <td>{{date}}</td>
+      <td>{{time}}</td>
+      <td>{{loc}}</td>
+      <td>
+        <a href="/flight_plan/flight_planConfirmation?id={{id}}&date={{day}}&time={{time}}&depart={{departure}}" style="color: black; text-decoration: underline #00ffff">Crear</a>
+      </td>
+    </tr>
+    {{/flights}}
+  </table>
+  {{#error}}
+  <div style="color: red">{{error}}</div>
+  {{/error}}
+  <a href="/">
+    <button type="submit">Volver</button>
+  </a>
+</section>
+
+{{> footer}}
