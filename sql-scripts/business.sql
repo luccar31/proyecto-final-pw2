@@ -267,9 +267,11 @@ CREATE TABLE ticket
     id_cabin   INT NOT NULL,
     id_flight  INT NOT NULL,
     id_service INT NOT NULL,
+    user_nickname VARCHAR(50) NOT NULL,
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
     FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
-    FOREIGN KEY (id_service) REFERENCES service (id)
+    FOREIGN KEY (id_service) REFERENCES service (id),
+    FOREIGN KEY (user_nickname) REFERENCES client(user_nickname)
 );
 
 CREATE TABLE client_ticket(
