@@ -1,148 +1,88 @@
 <?php
 
-class Flight_planController{
+class Flight_planController
+{
     private $printer;
     private $flight_planModel;
 
-    public function __construct($flight_planModel, $printer){
+    public function __construct($flight_planModel, $printer)
+    {
         $this->flight_planModel = $flight_planModel;
         $this->printer = $printer;
     }
 
-    public function execute(){
-        Helper::redirect("/flight_plan/searchFlightFormStep1");
+    public function execute()
+    {
+        Helper::redirect("/flight_plan/searchFlightForm");
     }
 
-    public function searchFlightFormStep1(){
+    //muestra la vista
+    public function searchFlightForm()
+    {
 
-        $data['typeFlights'] = $this->flight_planModel->getTypeFlights();
-        $data['week'] = isset($_SESSION['week']) ? $_SESSION['week'] : null;
-        $data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
-        unset($_SESSION['errors']);
+        $data['cities'] = $this->flight_planModel->getCities();
+        /*$data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
+        unset($_SESSION['errors']);*/
 
-        $this->printer->generateView('flight_planFormStep1View.html', $data);
+        $this->printer->generateView('flightPlanFormView.html', $data);
     }
 
-    public function validateStep1(){
-        $_SESSION['week'] = $_POST['week'];
-        $_SESSION['type'] = $_POST['type'];
-        //validacion de inputs
-        Helper::redirect('/flight_plan/searchFlightFormStep2');
+    //busca vuelos creados o planes de vuelo
+    public function searchFlight()
+    {
+        $departure = $_SESSION['departure'] = $_POST['departure'];
+        $destination = $_SESSION['destination'] = $_POST['destination'];
+        $week = $_SESSION['week'] = $_POST['week'];
+
+        $flightPlanList = $this->flight_planModel->getFlightPlanList($departure, $destination, $week);
+
+
+        $this->printer->generateView('flightPlanSearchView.html', $flightPlanList);
     }
 
-    public function searchFlightFormStep2(){
-
-        $data['cities'] = $this->flight_planModel->getCities($_SESSION['type']);
-        $data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
-        unset($_SESSION['errors']);
-
-        $this->printer->generateView('flight_planFormStep2View.html', $data);
-    }
-    
-    public function validateStep2(){
-        $_SESSION['depart'] = $_POST['depart'];
-        $_SESSION['dest'] = $_POST['dest'];
-        //validacion de inputs
-        //habria que validar que haya pasado por el paso 1
-        Helper::redirect("/flight_plan/searchFlight");
-    }
-
-    public function searchFlight(){
-        $type = isset($_SESSION['type']) ? $_SESSION['type'] : null;
-        $departure = isset($_SESSION['depart']) ? $_SESSION['depart'] : null;
-        $destination = isset($_SESSION['dest']) ? $_SESSION['dest'] : null;
-        $week = isset($_SESSION['week']) ? $_SESSION['week'] : null;
-
-
-        $response = $this->flight_planModel->getPlansOrFlight($type, $departure, $week, $destination);
-
-        //validacion de errores del modelo
-
-        $this->printer->generateView('flight_planSearchView.html', $response);
-    }
-
-    private function formValidationStep1($type, $week){
-        $error = [];
-
-        if(!$this->isValidWeek($week)){
-            $error[] = 'Ingrese una semana válida';
-        }
-
-        if(!$this->isValidSelectInput($type)){
-            $error[] = 'Ingrese un tipo de vuelo válido';
-        }
-
-        return $error;
-    }
-
-    private function formValidationStep2($departure, $destination){
-        $error = [];
-
-        if(!$this->isValidSelectInput($departure)){
-            $error[] = 'Ingrese una ciudad de origen válida';
-        }
-
-        if(!$this->isValidSelectInput($destination)){
-            $error[] = 'Ingrese una ciudad de destino válida';
-        }
-
-        return $error;
-    }
-
-    private function isValidWeek($input = true){
-        return $input;
-    }
-
-    private function isValidSelectInput($input){
-        return $input != 0;
-    }
-
-    public function flight_planConfirmation(){
+    //toma los datos y en caso de que no exista el vuelo lo crea y me devuelve el detalle de lo que reservé
+    public function flight_planConfirmation()
+    {
         $id_flight_plan = $_GET["id"];
         $departure_date = $_GET["date"];
         $departure_time = $_GET["time"];
         $departure = $_GET["depart"];
+        $week = $_GET["week"];
 
-        $flight = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure);
+        $id_flight = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week);
 
-        Helper::redirect('/flight_plan/searchFlightFormStep1');
+        $this->printer->generateView('flight_detail.html', $id_flight);
 
-        $flight_plan = $this->flight_planModel->searchForId($id_flight_plan);
-        $this->printer->generateView('flight_planConfirmation.html', $flight_plan);
     }
 
-    public function progress(){
+    //esto es para la barra de progreso dinámica (esta harcodeado)
+    public function progress()
+    {
 
         $flight_type = 3;
         $progress = 0;
         $ubication = 'Marte';
 
-        if ($flight_type == 2){
+        if ($flight_type == 2) {
 
-            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires'){
+            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires') {
                 $progress = 9.5;
-            }
-            elseif ($ubication == 'EEI'){
+            } elseif ($ubication == 'EEI') {
                 $progress = 25;
-            }
-            elseif ($ubication == 'OrbitalHotel'){
+            } elseif ($ubication == 'OrbitalHotel') {
                 $progress = 50;
-            }
-            elseif ($ubication == 'Luna'){
+            } elseif ($ubication == 'Luna') {
                 $progress = 75;
-            }
-            elseif ($ubication == 'Marte'){
+            } elseif ($ubication == 'Marte') {
                 $progress = 100;
             }
 
-            $data = ['progress' => $progress, 'flight_type_2' => true, 'flight_type_3' => false ];
-        }
-        elseif ($flight_type == 3) {
+            $data = ['progress' => $progress, 'flight_type_2' => true, 'flight_type_3' => false];
+        } elseif ($flight_type == 3) {
 
-            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires'){
+            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires') {
                 $progress = 5;
-            }
-            elseif ($ubication == 'EEI') {
+            } elseif ($ubication == 'EEI') {
                 $progress = 12.5;
             } elseif ($ubication == 'Luna') {
                 $progress = 25;
@@ -150,27 +90,61 @@ class Flight_planController{
                 $progress = 37.5;
             } elseif ($ubication == 'Ganimedes') {
                 $progress = 50;
-            }
-            elseif ($ubication == 'Europa') {
+            } elseif ($ubication == 'Europa') {
                 $progress = 62.5;
-            }
-            elseif ($ubication == 'Io') {
+            } elseif ($ubication == 'Io') {
                 $progress = 75;
-            }
-            elseif ($ubication == 'Encedalo') {
+            } elseif ($ubication == 'Encedalo') {
                 $progress = 87.5;
-            }
-            elseif ($ubication == 'Titan') {
+            } elseif ($ubication == 'Titan') {
                 $progress = 100;
             }
 
-            $data = ['progress' => $progress, 'flight_type_2' => false, 'flight_type_3' => true ];
+            $data = ['progress' => $progress, 'flight_type_2' => false, 'flight_type_3' => true];
         }
 
         $this->printer->generateView('flightStatus.html', $data);
 
 
-
-
     }
+
+    /*private function formValidationStep1($type, $week)
+    {
+        $error = [];
+
+        if (!$this->isValidWeek($week)) {
+            $error[] = 'Ingrese una semana válida';
+        }
+
+        if (!$this->isValidSelectInput($type)) {
+            $error[] = 'Ingrese un tipo de vuelo válido';
+        }
+
+        return $error;
+    }
+
+    private function formValidationStep2($departure, $destination)
+    {
+        $error = [];
+
+        if (!$this->isValidSelectInput($departure)) {
+            $error[] = 'Ingrese una ciudad de origen válida';
+        }
+
+        if (!$this->isValidSelectInput($destination)) {
+            $error[] = 'Ingrese una ciudad de destino válida';
+        }
+
+        return $error;
+    }
+
+    private function isValidWeek($input = true)
+    {
+        return $input;
+    }
+
+    private function isValidSelectInput($input)
+    {
+        return $input != 0;
+    }*/
 }

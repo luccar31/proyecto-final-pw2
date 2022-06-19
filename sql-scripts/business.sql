@@ -1,3 +1,8 @@
+DROP DATABASE IF EXISTS gauchorocket;
+
+CREATE DATABASE gauchorocket;
+
+USE gauchorocket;
 
 CREATE TABLE role
 (
@@ -229,7 +234,8 @@ CREATE TABLE flight
     id_flight_plan INT NOT NULL, -- plan de vuelo que tiene asociado
     id_ship INT NOT NULL, -- identificador de la nave que ocupa este vuelo, la matricula
     departure_date DATE NOT NULL, -- fecha en el que despega
-    departure_hour TIME NOT NULL -- hora en el que despega
+    departure_hour TIME NOT NULL, -- hora en el que despega
+    departure_week INT NOT NULL  -- semana en el que despega
 );
 
 CREATE TABLE flight_plan
