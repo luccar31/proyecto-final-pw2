@@ -59,8 +59,15 @@ class TicketModel
         $countFlightTickets = $countFlightTicketsData[0]["num_tickets"];
         $capacityCabin = $capacityCabinData[0]["capacity"];
 
+        if($num_tickets < 0){
+            $data['invalidInput'] = "No puede ingresar valores negativos";
+            $data['isValid'] = false;
+            return $data;
+        }
+
         if($countFlightTickets + $num_tickets <= $capacityCabin){
             $data['isValid'] = true;
+            return $data;
         }else{
             $data['capacityCabin'] = "Capacidad maxima de esta cabina: $capacityCabin";
             $data['countFlightTickets'] = "Capacidad actual de esta cabina: $countFlightTickets";
@@ -72,14 +79,16 @@ class TicketModel
 
     }
 
-    /*public function validate($id_flight){
-        $dateFlightData = this->database->query("SELECT f.departure_date
-                                                 FROM flight f
-                                                 WHERE f.id_flight = '$id_flight'");
+    public function validate($id_flight){
+        //$dateFlightData = this->database->query("");
 
-        $dateFlight = $dateFlightData[0][departure_date];
+        $currentDate_ = new DateTime();
+        $currentDate = $currentDate_->format('Y-m-d');
 
 
-    }*/
+
+
+
+    }
 
 }

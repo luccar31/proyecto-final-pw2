@@ -15,7 +15,6 @@ class TicketController{
     public function execute(){
         $id = $_GET['id'];
         $data['id'] = $id;
-       ;
         $this->printer->generateView('ticketView.html', $data);
     }
 

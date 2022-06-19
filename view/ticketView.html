@@ -36,6 +36,9 @@
                     <div>
                         <label for="num_tickets" class="form-label">¿Cuantas reservas desea realizar?</label>
                         <input type="number" name="num_tickets" id="num_tickets"/>
+                        <div style="color: red">
+                            {{invalidInput}}
+                        </div>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Reservar</button>
