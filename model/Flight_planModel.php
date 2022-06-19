@@ -93,7 +93,6 @@ class Flight_planModel
         return $type;
     }
 
-
     //función para crear el vuelo
     public function createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week)
     {
@@ -103,16 +102,22 @@ class Flight_planModel
             return 'Error';
         }
 
-        $id_flight = $this->generateIdFlight(); //genero un entero random para el id del vuelo
-
         //creo fecha
         $datetime = date_create($departure_date . " " . $departure_time);
         $date = date_format($datetime, 'Y-m-d');
         $time = date_format($datetime, 'H:m:s');
 
         //consulto si ya existe el vuelo
-
         $createdFlight = $this->database->query("SELECT id_flight FROM flight WHERE id_flight_plan = '$id_flight_plan' AND departure_date = '$date' AND departure_hour = '$time'");
+
+        //si existe el vuelo, se toma el mismo id. Sino, se crea otro
+        if (empty($createdFlight)){
+            $id_flight = $this->generateIdFlight(); //genero un entero random para el id del vuelo
+        }
+        else{
+            $id_flight = $createdFlight[0]['id_flight'];
+        }
+
 
         if (empty($createdFlight)) {
 
@@ -127,9 +132,6 @@ class Flight_planModel
 
         return ['id_flight' => $id_flight];;
     }
-
-
-
 
 
     private function getRoute($id_flight_plan)
