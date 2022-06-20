@@ -4,6 +4,7 @@
 <section class="flight">
     <div class="container py-5 h-100">
         <div class="container">
+            {{#enabledClient}}
             <form method="post" action="/flight_plan/searchFlight">
                 <select id="departureCity" name="departure">
                     <option value="0" selected>Seleccione una ciudad de origen</option>
@@ -22,6 +23,11 @@
             </form>
         </div>
     </div>
+    {{/enabledClient}}
+    {{^enabledClient}}
+    <div style="color: red">Aún no se ha realizado el chequeo médico. El código de viajero y nivel de vuelo es requerido.</div>
+    <a class="nav-link" href="/medicalcheckup"><button>Realizar chequeo</button></a>
+    {{/enabledClient}}
     <div>
         {{#errors}}
         <div style="color: red">{{error}}</div>

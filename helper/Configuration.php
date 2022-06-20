@@ -49,7 +49,7 @@ class Configuration {
     }
 
     public function getFlight_planController() {
-        return new Flight_planController($this->getFlight_planModel(),$this->getPrinter());
+        return new Flight_planController(['appointmentModel' => $this->getAppointmentModel(), 'flight_planModel' => $this->getFlight_planModel()],$this->getPrinter());
     }
 
     private function getUserModel(){

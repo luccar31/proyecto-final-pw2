@@ -4,10 +4,11 @@ class Flight_planController
 {
     private $printer;
     private $flight_planModel;
-
-    public function __construct($flight_planModel, $printer)
+    private $appointmentModel;
+    public function __construct($models, $printer)
     {
-        $this->flight_planModel = $flight_planModel;
+        $this->flight_planModel = $models['flight_planModel'];
+        $this->appointmentModel = $models['appointmentModel'];
         $this->printer = $printer;
     }
 
@@ -21,6 +22,7 @@ class Flight_planController
     {
 
         $data['cities'] = $this->flight_planModel->getCities();
+        $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
         /*$data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
         unset($_SESSION['errors']);*/
 
