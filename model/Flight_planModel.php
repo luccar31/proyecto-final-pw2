@@ -61,10 +61,12 @@ class Flight_planModel
                                             INNER JOIN equipment e on fp.id_equipment = e.id
                                             INNER JOIN type_flight tf on fp.type_flight = tf.id
                                             INNER JOIN stop s on f.id_flight = s.id_flight
-                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$types') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination'");
+                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$types') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination' AND e.id_type IN ('$typesOfEquipmentAllowed')");
 
         }
-        if (empty($result) || $departure < 2) {
+
+        //si no encuentra nada, tira mensaje de error
+        if (empty($result)) {
             return ['empty' => ['error' => 'No hay vuelos disponibles']];
         }
 
@@ -91,8 +93,8 @@ class Flight_planModel
         //circuito largo
         $type_flight_3 = ['Buenos Aires' => 1, 'Ankara' => 2, 'EEI' => 3, 'Luna' => 5, 'Marte' => 6, 'Ganimedes' => 7, 'Europa' => 8, 'Io' => 9, 'Encedalo' => 10, 'Titan' => 11];
 
-        //pregunto si el destino está dentro del respectivo array (recorrido)
 
+        //pregunto si el destino está dentro del respectivo array (recorrido)
 
         if (in_array($destination, $type_flight_1)) {
             $type = [1];
@@ -107,6 +109,8 @@ class Flight_planModel
             $type = [4];
         }
 
+        //en el caso de Orbital Hotel, si el origen existe en circuito corto pero no en largo, automaticamente
+        //lo asigna como tipo circuito corto
         if (in_array($departure, $type_flight_2) && !in_array($departure, $type_flight_3)) {
             $type = [2];
         }
