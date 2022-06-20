@@ -4,23 +4,30 @@
 <section class="flight">
     <div class="container py-5 h-100">
         <div class="container">
-            <form method="post" action="/flight_plan/validateStep2">
-                <select id="departureCity" name="depart">
+            {{#enabledClient}}
+            <form method="post" action="/flight_plan/searchFlight">
+                <select id="departureCity" name="departure">
                     <option value="0" selected>Seleccione una ciudad de origen</option>
                     {{#cities}}
                     <option value={{id}}>{{name}}</option>
                     {{/cities}}
                 </select>
-                <select id="destinationCity" name="dest">
+                <select id="destinationCity" name="destination">
                     <option value="0" selected>Seleccione una ciudad de destino</option>
                     {{#cities}}
                     <option value={{id}}>{{name}}</option>
                     {{/cities}}
                 </select>
+                <input type="week" name="week" id="week" value={{week}}>
                 <button class="btn btn-outline-light btn-lg" type="submit">Buscar</button>
             </form>
         </div>
     </div>
+    {{/enabledClient}}
+    {{^enabledClient}}
+    <div style="color: red">Aún no se ha realizado el chequeo médico. El código de viajero y nivel de vuelo es requerido.</div>
+    <a class="nav-link" href="/medicalcheckup"><button>Realizar chequeo</button></a>
+    {{/enabledClient}}
     <div>
         {{#errors}}
         <div style="color: red">{{error}}</div>

@@ -1,3 +1,8 @@
+DROP DATABASE IF EXISTS gauchorocket;
+
+CREATE DATABASE gauchorocket;
+
+USE gauchorocket;
 
 CREATE TABLE role
 (
@@ -148,14 +153,14 @@ CREATE TABLE equipment
 -- Equipamiento
 INSERT INTO equipment(id, id_type, model) VALUES (1,1, 'Calandria');
 INSERT INTO equipment(id, id_type, model) VALUES (2,1, 'Colibri');
-INSERT INTO equipment(id, id_type, model) VALUES (3,2, 'Aguila');
-INSERT INTO equipment(id, id_type, model) VALUES (4,2, 'Condor');
-INSERT INTO equipment(id, id_type, model) VALUES (5,2, 'Halcon');
-INSERT INTO equipment(id, id_type, model) VALUES (6,2, 'Guanaco');
-INSERT INTO equipment(id, id_type, model) VALUES (7,3, 'Zorzal');
-INSERT INTO equipment(id, id_type, model) VALUES (8,3, 'Carancho');
-INSERT INTO equipment(id, id_type, model) VALUES (9,3, 'Aguilucho');
-INSERT INTO equipment(id, id_type, model) VALUES (10,3,'Canario');
+INSERT INTO equipment(id, id_type, model) VALUES (3,3, 'Aguila');
+INSERT INTO equipment(id, id_type, model) VALUES (4,3, 'Condor');
+INSERT INTO equipment(id, id_type, model) VALUES (5,3, 'Halcon');
+INSERT INTO equipment(id, id_type, model) VALUES (6,3, 'Guanaco');
+INSERT INTO equipment(id, id_type, model) VALUES (7,2, 'Zorzal');
+INSERT INTO equipment(id, id_type, model) VALUES (8,2, 'Carancho');
+INSERT INTO equipment(id, id_type, model) VALUES (9,2, 'Aguilucho');
+INSERT INTO equipment(id, id_type, model) VALUES (10,2,'Canario');
 
 CREATE TABLE equipment_cabin
 (
@@ -193,8 +198,8 @@ INSERT INTO type_flight (id, description, hour_price)
 VALUES (4, 'Tour', 500);
 
 CREATE TABLE days(
-    id INT PRIMARY KEY,
-    name VARCHAR(20) NOT NULL
+                     id INT PRIMARY KEY,
+                     name VARCHAR(20) NOT NULL
 );
 
 INSERT INTO days VALUES (0, 'Lunes');
@@ -206,8 +211,8 @@ INSERT INTO days VALUES (5, 'Sabado');
 INSERT INTO days VALUES (6, 'Domingo');
 
 CREATE TABLE location(
-    id INT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
+                         id INT PRIMARY KEY,
+                         name VARCHAR(50) NOT NULL
 );
 
 INSERT INTO location VALUES (1, 'Ankara');
@@ -229,7 +234,8 @@ CREATE TABLE flight
     id_flight_plan INT NOT NULL, -- plan de vuelo que tiene asociado
     id_ship INT NOT NULL, -- identificador de la nave que ocupa este vuelo, la matricula
     departure_date DATE NOT NULL, -- fecha en el que despega
-    departure_hour TIME NOT NULL -- hora en el que despega
+    departure_hour TIME NOT NULL, -- hora en el que despega
+    departure_week INT NOT NULL  -- semana en el que despega
 );
 
 CREATE TABLE flight_plan
@@ -276,11 +282,11 @@ CREATE TABLE ticket
 );
 
 CREATE TABLE client_ticket(
-    user_nickname VARCHAR(50) NOT NULL,
-    id_ticket INT NOT NULL,
-    CONSTRAINT id_client_ticket PRIMARY KEY (user_nickname, id_ticket),
-    FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
-    FOREIGN KEY (id_ticket) REFERENCES ticket(id)
+                              user_nickname VARCHAR(50) NOT NULL,
+                              id_ticket INT NOT NULL,
+                              CONSTRAINT id_client_ticket PRIMARY KEY (user_nickname, id_ticket),
+                              FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
+                              FOREIGN KEY (id_ticket) REFERENCES ticket(id)
 );
 
 -- Equipamiento x cabina
@@ -503,11 +509,11 @@ INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_tim
 INSERT INTO flight_plan (type_flight, id_equipment, departure_day, departure_time, departure_loc) VALUES (3,6,6,'20:00:00',1);
 
 CREATE TABLE route(
-    id INT PRIMARY KEY, -- identificador unico de recorrido
-    id_type_flight INT NOT NULL, -- representa el tipo de vuelo de tal recorrido
-    FOREIGN KEY (id_type_flight) REFERENCES type_flight(id),
-    id_type_equipment INT, -- representa el tipo de equipamento que hace el recorrido
-    FOREIGN KEY (id_type_equipment) REFERENCES type_equipment(id)
+                      id INT PRIMARY KEY, -- identificador unico de recorrido
+                      id_type_flight INT NOT NULL, -- representa el tipo de vuelo de tal recorrido
+                      FOREIGN KEY (id_type_flight) REFERENCES type_flight(id),
+                      id_type_equipment INT, -- representa el tipo de equipamento que hace el recorrido
+                      FOREIGN KEY (id_type_equipment) REFERENCES type_equipment(id)
 );
 
 INSERT INTO route VALUES (1, 1, 1);
@@ -518,13 +524,13 @@ INSERT INTO route VALUES (5, 3, 3);
 INSERT INTO route VALUES (6, 4, NULL);
 
 CREATE TABLE journey(
-    id INT PRIMARY KEY, -- identificador unico
-    id_route INT NOT NULL, -- identificador del recorrido
-    FOREIGN KEY (id_route) REFERENCES route(id),
-    id_location INT NOT NULL, -- identificador de la locacion
-    FOREIGN KEY (id_location) REFERENCES location(id),
-    diff_time DOUBLE NOT NULL, -- cantidad de tiempo que se tarda en llegar a la siguiente locacion
-    order_ INT NOT NULL -- orden en el que sucede el recorrido
+                        id INT PRIMARY KEY, -- identificador unico
+                        id_route INT NOT NULL, -- identificador del recorrido
+                        FOREIGN KEY (id_route) REFERENCES route(id),
+                        id_location INT NOT NULL, -- identificador de la locacion
+                        FOREIGN KEY (id_location) REFERENCES location(id),
+                        diff_time DOUBLE NOT NULL, -- cantidad de tiempo que se tarda en llegar a la siguiente locacion
+                        order_ INT NOT NULL -- orden en el que sucede el recorrido
 );
 
 INSERT INTO journey VALUES (1,1,2,8,1);
@@ -556,11 +562,11 @@ INSERT INTO journey VALUES (26,5,11,52,8);
 INSERT INTO journey VALUES (27,6,12,840,1);
 
 CREATE TABLE stop(
-    id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala
-    id_flight INT NOT NULL, -- identificador del vuelo al que pertenece la parada
-    FOREIGN KEY (id_flight) REFERENCES flight(id_flight),
-    id_location INT NOT NULL, -- identificador de la locacion
-    FOREIGN KEY (id_location) REFERENCES location(id),
-    arrive_time TIME NOT NULL, -- hora de llegada a la locacion
-    arrive_date DATE NOT NULL -- fecha de llegada
+                     id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala
+                     id_flight INT NOT NULL, -- identificador del vuelo al que pertenece la parada
+                     FOREIGN KEY (id_flight) REFERENCES flight(id_flight),
+                     id_location INT NOT NULL, -- identificador de la locacion
+                     FOREIGN KEY (id_location) REFERENCES location(id),
+                     arrive_time TIME NOT NULL, -- hora de llegada a la locacion
+                     arrive_date DATE NOT NULL -- fecha de llegada
 );

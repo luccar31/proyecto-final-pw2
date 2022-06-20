@@ -1,0 +1,45 @@
+{{> header}}
+{{> navbar}}
+
+<section class="search-results">
+    {{#empty}}
+    <div style="color: red">{{error}}</div>
+    {{/empty}}
+
+    <table class='table'>
+        <thead>
+        <tr>
+            <th scope="col">Día de partida</th>
+            <th scope="col">Hora de partida</th>
+            <th scope="col">Origen</th>
+            <th scope="col">Nave</th>
+            <th scope="col">Tipo de viaje</th>
+            <th scope="col">Tipo de equipo</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        {{#flight_plans}}
+
+        <tr>
+            <td>{{day}}</td>
+            <td>{{time}}</td>
+            <td>{{departure}}</td>
+            <td>{{model}}</td>
+            <td>{{type}}</td>
+            <td>{{equipment}}</td>
+            <td>
+                <a href="/flight_plan/flight_planConfirmation?id={{id}}&date={{day}}&time={{time}}&depart={{departure}}&week={{#week}}{{week}}{{/week}}"
+                   style="color: black; text-decoration: underline aqua">Crear</a>
+            </td>
+        </tr>
+        {{/flight_plans}}
+    </table>
+    {{#error}}
+    <div style="color: red">{{error}}</div>
+    {{/error}}
+    <a href="/">
+        <button type="submit">Volver</button>
+    </a>
+</section>
+
+{{> footer}}
