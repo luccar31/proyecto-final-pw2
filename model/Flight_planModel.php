@@ -44,23 +44,26 @@ class Flight_planModel
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
 
-        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, l.name as departure, tf.description as type, fp.departure_time as time FROM flight_plan fp
+        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, l.name as departure, tf.description as type, fp.departure_time as time, te.description as equipment FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
                                            INNER JOIN days d on fp.departure_day = d.id
                                            INNER JOIN location l on fp.departure_loc = l.id
                                            INNER JOIN type_flight tf on fp.type_flight = tf.id
+                                           INNER JOIN type_equipment te on e.id_type = te.id
+
                                            WHERE tf.id IN ('$types') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed')");
 
 
         //consulta para vuelos de origen distintos a Anakara o Buenos Aires, en este caso va a buscar vuelos ya creados.
         //si no encuentra nada, se le muestra un mensaje que no hay vuelos disponibles
         if ($departure > 2) {
-            $result = $this->database->query("SELECT f.*, fp.departure_day as day, fp.id as id, fp.departure_time as time, l.name as departure, e.model as model, tf.description as type FROM flight f
+            $result = $this->database->query("SELECT f.*, fp.departure_day as day, fp.id as id, fp.departure_time as time, l.name as departure, e.model as model, tf.description  as type, te.description as equipment FROM flight f
                                             INNER JOIN flight_plan fp on f.id_flight_plan = fp.id
                                             INNER JOIN location l on fp.departure_loc = l.id
                                             INNER JOIN equipment e on fp.id_equipment = e.id
                                             INNER JOIN type_flight tf on fp.type_flight = tf.id
                                             INNER JOIN stop s on f.id_flight = s.id_flight
+                                            INNER JOIN type_equipment te on e.id_type = te.id
                                             WHERE f.departure_week = '$week_number' AND tf.id IN ('$types') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination' AND e.id_type IN ('$typesOfEquipmentAllowed')");
 
         }
@@ -82,17 +85,23 @@ class Flight_planModel
     private function consultTypeFlight($departure, $destination)
     {
 
-        // cada array almacena el id del los destinos
+        //obtengo el id de los lugares que hace el recorrido
 
         //orbital
-        $type_flight_1 = ['Buenos Aires' => 1, 'Ankara' => 2];
+        $type_flight_1 = $this->database->query("SELECT DISTINCT id_location FROM journey j
+                                                 INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 1");
 
         //circuito corto
-        $type_flight_2 = ['Buenos Aires' => 1, 'Ankara' => 2, 'EEI' => 3, 'Orbital Hotel' => 4, 'Luna' => 5, 'Marte' => 6];
+        $type_flight_2 = $this->database->query("SELECT DISTINCT id_location FROM journey j
+                                                 INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 2");
 
         //circuito largo
-        $type_flight_3 = ['Buenos Aires' => 1, 'Ankara' => 2, 'EEI' => 3, 'Luna' => 5, 'Marte' => 6, 'Ganimedes' => 7, 'Europa' => 8, 'Io' => 9, 'Encedalo' => 10, 'Titan' => 11];
+        $type_flight_3 = $this->database->query("SELECT DISTINCT id_location FROM journey j
+                                                 INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 3");
 
+        $type_flight_1 = array_column($type_flight_1, 'id_location');
+        $type_flight_2 = array_column($type_flight_2, 'id_location');
+        $type_flight_3 = array_column($type_flight_3, 'id_location');
 
         //pregunto si el destino está dentro del respectivo array (recorrido)
 
@@ -111,7 +120,7 @@ class Flight_planModel
 
         //en el caso de Orbital Hotel, si el origen existe en circuito corto pero no en largo, automaticamente
         //lo asigna como tipo circuito corto
-        if (in_array($departure, $type_flight_2) && !in_array($departure, $type_flight_3)) {
+        if (!in_array($departure, $type_flight_3) && in_array($departure, $type_flight_2)) {
             $type = [2];
         }
 
