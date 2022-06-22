@@ -5,6 +5,7 @@ class Flight_planController
     private $printer;
     private $flight_planModel;
     private $appointmentModel;
+
     public function __construct($models, $printer)
     {
         $this->flight_planModel = $models['flight_planModel'];
@@ -14,35 +15,71 @@ class Flight_planController
 
     public function execute()
     {
-        Helper::redirect("/flight_plan/searchFlightForm");
-    }
-
-    //muestra la vista
-    public function searchFlightForm()
-    {
 
         $data['cities'] = $this->flight_planModel->getCities();
-        $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
-        /*$data['errors'] = isset($_SESSION['errors']) ? $_SESSION['errors'] : null;
-        unset($_SESSION['errors']);*/
-
         $this->printer->generateView('flightPlanFormView.html', $data);
     }
 
-    //busca vuelos creados o planes de vuelo
-    public function searchFlight()
+    //muestra el formulario y lo valida
+    public function searchFlightForm()
     {
-        $departure = $_SESSION['departure'] = $_POST['departure'];
-        $destination = $_SESSION['destination'] = $_POST['destination'];
-        $week = $_SESSION['week'] = $_POST['week'];
+        $data['cities'] = $this->flight_planModel->getCities();
+        $data['departure'] = $_POST['departure'];
+        $data['destination'] = $_POST['destination'];
+        $data['week'] = $_POST['week'];
+        $data['selectedDepartureName'] = $this->flight_planModel->getCitieNameById($data['departure']);
+        $data['selectedDestinationName'] = $this->flight_planModel->getCitieNameById($data['destination']);
+        $errors = 0;
 
+
+        // semana vacía
+        if (empty($data['week'])) {
+            $errors++;
+            $data['emptyWeek'] = "Seleccione una semana";
+        }
+        // origen vacío
+        if (empty($data['departure'])) {
+            $errors++;
+            $data['emptyDepartureError'] = "Seleccione un origen";
+        }
+        // destino vacío
+        if (empty($data['destination'])) {
+            $errors++;
+            $data['emptyDestinationError'] = "Seleccione un destino";
+        }
+
+        //si los inputs están todos seteados, se evalua en el backend:
+        if ($errors == 0) {
+
+            //me devuelve errores del backend en caso de que los haya
+            $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week']);
+
+            //si lo devuelto está vacio, no hay errores
+            if (empty($data['errors'])) {
+
+                //por lo tanto, busca los vuelos para mostrar
+                $this->searchFlight($data['departure'], $data['destination'], $data['week']);
+
+            } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario
+            else {
+                $this->printer->generateView('flightPlanFormView.html', $data);
+            }
+
+        } //si sigue habiendo erroes en los input, vuelve al formulario
+        else {
+            $this->printer->generateView('flightPlanFormView.html', $data);
+        }
+    }
+
+    //busca vuelos creados o planes de vuelo
+    private function searchFlight($departure, $destination, $week)
+    {
         $flightPlanList = $this->flight_planModel->getFlightPlanList($departure, $destination, $week);
-
 
         $this->printer->generateView('flightPlanSearchView.html', $flightPlanList);
     }
 
-    //toma los datos y en caso de que no exista el vuelo lo crea y me devuelve el detalle de lo que reservé
+    // una vez elegido el vuelo, se evalua si inició sesion y si hizo o no el chequeo médico. Caso exitoso: reserva el vuelo
     public function flight_planConfirmation()
     {
         $id_flight_plan = $_GET["id"];
@@ -51,9 +88,30 @@ class Flight_planController
         $departure = $_GET["depart"];
         $week = $_GET["week"];
 
-        $id_flight = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week);
+        if (isset($_SESSION['nickname'])) {
 
-        $this->printer->generateView('flight_detail.html', $id_flight);
+            $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
+
+            //inició sesión pero no realizó chequeo médico
+            if (empty($data['enabledClient'])) {
+
+                $data['disabledClient'] = "Debe realizar un chequeo médico. El código de viajero y nivel de vuelo es requerido.";
+
+            } //inició sesión y realizó chequeo médico. Hace la reserva.
+            else {
+
+                $data['id_flight'] = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week);
+                $data['enabledClient'] = "Su vuelo ha sido reservado! N° de vuelo: ";
+
+            }
+
+        } //no inició sesión
+        else {
+            $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
+        }
+
+        $this->printer->generateView('flight_detail.html', $data);
+
 
     }
 
@@ -110,43 +168,4 @@ class Flight_planController
 
     }
 
-    /*private function formValidationStep1($type, $week)
-    {
-        $error = [];
-
-        if (!$this->isValidWeek($week)) {
-            $error[] = 'Ingrese una semana válida';
-        }
-
-        if (!$this->isValidSelectInput($type)) {
-            $error[] = 'Ingrese un tipo de vuelo válido';
-        }
-
-        return $error;
-    }
-
-    private function formValidationStep2($departure, $destination)
-    {
-        $error = [];
-
-        if (!$this->isValidSelectInput($departure)) {
-            $error[] = 'Ingrese una ciudad de origen válida';
-        }
-
-        if (!$this->isValidSelectInput($destination)) {
-            $error[] = 'Ingrese una ciudad de destino válida';
-        }
-
-        return $error;
-    }
-
-    private function isValidWeek($input = true)
-    {
-        return $input;
-    }
-
-    private function isValidSelectInput($input)
-    {
-        return $input != 0;
-    }*/
 }

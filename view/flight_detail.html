@@ -1,8 +1,20 @@
 {{> header}}
 {{> navbar}}
 <section>
+    {{#enabledClient}}
+    <h1 style="color: green">{{enabledClient}}{{#id_flight}}{{id_flight}}{{/id_flight}}</h1>
+    {{/enabledClient}}
 
-    <h1> Su vuelo ha sido reservado! N° de vuelo: {{#id_flight}}{{id_flight}}{{/id_flight}}</h1>
+    {{#disabledClient}}
+    <h1 style="color: red">{{disabledClient}}</h1>
+    <a class="nav-link" href="/medicalcheckup"><button>Realizar chequeo</button></a>
+    {{/disabledClient}}
+
+    {{#notLogged}}
+    <h1 style="color: red">{{notLogged}}</h1>
+    <a class="nav-link" href="/login"><button>Iniciar sesión</button></a>
+    {{/notLogged}}
+
 </section>
 
 
