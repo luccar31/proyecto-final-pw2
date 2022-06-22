@@ -30,9 +30,7 @@ class Flight_planModel
         //en recorrido corto y en recorrido largo debemos mostrar ambas opciones
         //hacemos una conversión para que mysql lo pueda interpretar
         $type = $this->consultTypeFlight($departure, $destination);
-        $types = implode("','", $type);
         echo "Tipo de vuelo que puede elegir: ";
-        echo var_dump($type);
         echo "<br>";
 
         $typesOfEquipmentAllowed = $this->consultFlightLevel();
@@ -51,7 +49,7 @@ class Flight_planModel
                                            INNER JOIN type_flight tf on fp.type_flight = tf.id
                                            INNER JOIN type_equipment te on e.id_type = te.id
 
-                                           WHERE tf.id IN ('$types') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed')");
+                                           WHERE tf.id IN ('$type') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed')");
 
 
         //consulta para vuelos de origen distintos a Anakara o Buenos Aires, en este caso va a buscar vuelos ya creados.
@@ -64,7 +62,7 @@ class Flight_planModel
                                             INNER JOIN type_flight tf on fp.type_flight = tf.id
                                             INNER JOIN stop s on f.id_flight = s.id_flight
                                             INNER JOIN type_equipment te on e.id_type = te.id
-                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$types') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination' AND e.id_type IN ('$typesOfEquipmentAllowed')");
+                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$type') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination' AND e.id_type IN ('$typesOfEquipmentAllowed')");
 
         }
 
@@ -124,7 +122,8 @@ class Flight_planModel
             $type = [2];
         }
 
-        return $type;
+
+        return implode("','", $type);
     }
 
     //función para crear el vuelo
@@ -164,6 +163,76 @@ class Flight_planModel
 
 
         return ['id_flight' => $id_flight];;
+    }
+
+    //consulta el nivel de vuelo del cliente
+    private function consultFlightLevel()
+    {
+        //si inició sesión:
+        if (isset($_SESSION["nickname"])) {
+            $nickname = $_SESSION["nickname"];
+
+            //busca el nivel de vuelo del cliente
+            $flight_level = $this->database->query("SELECT flight_level FROM client WHERE user_nickname = '$nickname'");
+
+            //si no hizo chequeo médico, que muestre all igual, total en la ultima etapa le decimos que no hizo el chequeo:
+            if (empty($flight_level)) {
+                return [1, 2, 3];
+                //si realizó el chequeo, evaluo el nivel de vuelo
+            } else {
+                // si es nivel 1 o 2, puede viajar en circuito corto y largo (1, 2)
+                if ($flight_level[0]["flight_level"] == 1 || $flight_level[0]["flight_level"] == 2) {
+                    return [1, 2];
+                    //de lo contrario es nive 3, puede viajar en todos
+                } else {
+                    return [1, 2, 3];
+                }
+            }
+        } //si no inició sesión, que muestre all tipos total en la ultima etapa le decimos que no hizo el chequeo.
+        else {
+            return [1, 2, 3];
+        }
+    }
+
+
+    //valida los inputs del formulario
+    public function validateInputs($departure, $destination, $week)
+    {
+        $week = isset($week) ? $week : null;
+        $errors = [];
+
+        //consulto el tipo de vuelo
+        $type = $this->consultTypeFlight($departure, $destination);
+
+        //busco las ciudades según el tipo de vuelo
+        $existingLocation = $this->database->query("SELECT DISTINCT id_location FROM journey j
+                                                       INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight IN ('$type')");
+
+        //formula para dejarlo mas limpio el array :P
+        $existingLocation = array_column($existingLocation, 'id_location');
+
+        //si el origen el orbital hotel y el destino está en circuito largo, error
+        if ($departure == 4 && !in_array($destination, $existingLocation)) {
+            $errors['invalidJourney'] = "No ofrecemos ese trayecto actualmente";
+        }
+        //si origen y destino son iguales, error
+        if ($departure == $destination) {
+            $errors['sameLocations'] = "El origen y destino no pueden ser el mismo";
+        }
+
+        //semana anterior a la actual, error
+        if ($week != null) {
+
+            $currentDate = new DateTime();
+            $currentWeek = $currentDate->format("W");
+            $splitWeek = $this->obtainValuesFromWeekStr($week);
+            $week_number = (int)$splitWeek['weekno'];
+
+            if ($week_number < $currentWeek) {
+                $errors['invalidWeek'] = "La semana que seleccionó ya pasó";
+            }
+        }
+        return $errors;
     }
 
 
@@ -237,6 +306,16 @@ class Flight_planModel
         return $this->database->query("SELECT id, name from location");
     }
 
+    //esto es para mostrar devuelta en la vista luego de algun error
+    public function getCitieNameById($id)
+    {
+        $city = $this->database->query("SELECT name from location WHERE id = '$id'");
+        if (!empty($city)) {
+            return $city[0]['name'];
+        }
+
+    }
+
     private function mapDate(&$array, $week)
     {
 
@@ -278,19 +357,6 @@ class Flight_planModel
     {
         $location = $this->database->query("SELECT * FROM location WHERE name = '$name'");
         return $location[0];
-    }
-
-    private function consultFlightLevel()
-    {
-        $nickname = $_SESSION["nickname"];
-        $flight_level = $this->database->query("SELECT flight_level FROM client WHERE user_nickname = '$nickname'");
-
-
-        if ($flight_level[0]["flight_level"] == 1 || $flight_level[0]["flight_level"] == 2) {
-            return [1, 2];
-        } else {
-            return [1, 2, 3];
-        }
     }
 
 }

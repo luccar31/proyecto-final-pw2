@@ -10,8 +10,7 @@ class AppointmentModel
 
     public function getAppointment($nickname){
         $res = $this->database->query("
-            SELECT ap.date, ap.user_nickname, mc.name as medicalCenter
-            FROM appointment ap INNER JOIN medical_center mc ON ap.id_medical_center = mc.id
+            SELECT * FROM appointment
             WHERE user_nickname = '$nickname'
         ");
         return $res ? $res[0] : false;

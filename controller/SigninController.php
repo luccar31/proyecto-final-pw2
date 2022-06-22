@@ -49,7 +49,7 @@ class SigninController
             $data['surnameError'] = 'El apellido debe tener entre 1 y 50 caracteres';
         }
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $data['emailError'] = 'El email debe tener entre 1 y 50 caracteres';
+            $data['emailError'] = 'El email debe tener un formato válido';
         }
 
         //le mando los datos para que valide y me retorna si es valido o no
