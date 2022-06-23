@@ -20,11 +20,15 @@ class TicketController{
     }
 
     public function createTicket(){
-        $id_flight = $_GET['id'];
+        $id_flight_plan = $_GET["id"];
         $id_type_cabin = $_POST['type_cabin'];
         $id_service = $_POST['service'];
         $num_tickets = $_POST['num_tickets'];
         $userNickname = $_SESSION['nickname'];
+        $departure_date = $_GET["date"];
+        $departure_time = $_GET["time"];
+        $departure = $_GET["depart"];
+        $week = $_GET["week"];
 
 
         $data = $this ->ticketModel->validateCapacityCabin($id_flight, $id_type_cabin, $num_tickets);

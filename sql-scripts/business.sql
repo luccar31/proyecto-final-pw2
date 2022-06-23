@@ -275,18 +275,12 @@ CREATE TABLE ticket
     id_flight  INT NOT NULL,
     id_service INT NOT NULL,
     user_nickname VARCHAR(50) NOT NULL,
+    departure INT NOT NULL,
+    destination INT NOT NULL,
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
     FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
     FOREIGN KEY (id_service) REFERENCES service (id),
     FOREIGN KEY (user_nickname) REFERENCES client(user_nickname)
-);
-
-CREATE TABLE client_ticket(
-                              user_nickname VARCHAR(50) NOT NULL,
-                              id_ticket INT NOT NULL,
-                              CONSTRAINT id_client_ticket PRIMARY KEY (user_nickname, id_ticket),
-                              FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
-                              FOREIGN KEY (id_ticket) REFERENCES ticket(id)
 );
 
 -- Equipamiento x cabina

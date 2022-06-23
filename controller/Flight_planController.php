@@ -27,8 +27,8 @@ class Flight_planController
         $data['departure'] = $_POST['departure'];
         $data['destination'] = $_POST['destination'];
         $data['week'] = $_POST['week'];
-        $data['selectedDepartureName'] = $this->flight_planModel->getCitieNameById($data['departure']);
-        $data['selectedDestinationName'] = $this->flight_planModel->getCitieNameById($data['destination']);
+        $data['selectedDepartureName'] = $this->flight_planModel->getCityNameById($data['departure']);
+        $data['selectedDestinationName'] = $this->flight_planModel->getCityNameById($data['destination']);
         $errors = 0;
 
 
@@ -74,9 +74,24 @@ class Flight_planController
     //busca vuelos creados o planes de vuelo
     private function searchFlight($departure, $destination, $week)
     {
-        $flightPlanList = $this->flight_planModel->getFlightPlanList($departure, $destination, $week);
+        $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week);
 
-        $this->printer->generateView('flightPlanSearchView.html', $flightPlanList);
+        $this->printer->generateView('flightPlanSearchView.html', $data);
+    }
+
+    public function showFlightDetail(){
+        $data['id_flight_plan'] = $_GET["id"];
+        $data['departure_date'] = $_GET["date"];
+        $data['departure_time'] = $_GET["time"];
+        $data['arrival_date'] = $_GET["date2"];
+        $data['arrival_time'] = $_GET["time2"];
+        $data['departure'] = $_GET["departure"];
+        $data['destination'] = $_GET["destination"];
+        $data['week'] = $_GET["week"];
+        $data['hours'] = $_GET["hours"];
+
+        $this->printer->generateView('flight_detail.html', $data);
+
     }
 
     // una vez elegido el vuelo, se evalua si inició sesion y si hizo o no el chequeo médico. Caso exitoso: reserva el vuelo
@@ -85,7 +100,7 @@ class Flight_planController
         $id_flight_plan = $_GET["id"];
         $departure_date = $_GET["date"];
         $departure_time = $_GET["time"];
-        $departure = $_GET["depart"];
+        $departure = $_GET["departure"];
         $week = $_GET["week"];
 
         if (isset($_SESSION['nickname'])) {

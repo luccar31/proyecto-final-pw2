@@ -10,7 +10,8 @@ class AppointmentModel
 
     public function getAppointment($nickname){
         $res = $this->database->query("
-            SELECT * FROM appointment
+            SELECT ap.date, ap.user_nickname, mc.name as medicalCenter
+            FROM appointment ap INNER JOIN medical_center mc ON ap.id_medical_center = mc.id
             WHERE user_nickname = '$nickname'
         ");
         return $res ? $res[0] : false;
@@ -50,7 +51,7 @@ class AppointmentModel
         }
 
         if(!$this->isRoomForAppointment($date, $medicalCenter)){
-            $data['errors'][] = ['error' => "El día {$date->format('d-m-Y')} no se encuentran turnos disponibles en el centro médico seleccionado"];
+            $data['errors'][] = ['error' => "El día {$date->format('Y-m-d')} no se encuentran turnos disponibles en el centro médico seleccionado"];
         }
 
         if(isset($data['errors'])) return $data;
@@ -62,7 +63,7 @@ class AppointmentModel
             WHERE user_nickname = '$nickname'
         ");
       
-        return ['nickname' => $nickname, 'date' => $date->format('d-m-Y'), 'medicalCenter' => $medicalCenter];
+        return ['nickname' => $nickname, 'date' => $date->format('Y-m-d'), 'medicalCenter' => $medicalCenter];
     }
 
     public function deleteAppointment($nickname){

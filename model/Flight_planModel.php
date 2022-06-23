@@ -17,6 +17,7 @@ class Flight_planModel
         //como $week viene por ejemplo en formato '2022-W25' tengo que hacer un split y obtener el valor 25 en este caso
         $splitWeek = $this->obtainValuesFromWeekStr($week);
         $week_number = (int)$splitWeek['weekno'];
+        $name_destination = $this->getCityNameById($destination);
 
         echo "Origen: ";
         echo $departure;
@@ -42,27 +43,38 @@ class Flight_planModel
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
 
-        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, l.name as departure, tf.description as type, fp.departure_time as time, te.description as equipment FROM flight_plan fp
+        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, l.name as departure, tf.description as type, fp.departure_time as time, te.description as equipment, j.diff_time as hours FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
                                            INNER JOIN days d on fp.departure_day = d.id
                                            INNER JOIN location l on fp.departure_loc = l.id
                                            INNER JOIN type_flight tf on fp.type_flight = tf.id
                                            INNER JOIN type_equipment te on e.id_type = te.id
+                                           INNER JOIN route r on tf.id = r.id_type_flight
+                                           INNER JOIN journey j on r.id = j.id_route
 
-                                           WHERE tf.id IN ('$type') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed')");
+                                           WHERE tf.id IN ('$type') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed') AND j.id_location = '$destination'
+                                           ORDER BY fp.departure_day");
 
+
+        $this->mapDate($result, $week);
 
         //consulta para vuelos de origen distintos a Anakara o Buenos Aires, en este caso va a buscar vuelos ya creados.
         //si no encuentra nada, se le muestra un mensaje que no hay vuelos disponibles
         if ($departure > 2) {
-            $result = $this->database->query("SELECT f.*, fp.departure_day as day, fp.id as id, fp.departure_time as time, l.name as departure, e.model as model, tf.description  as type, te.description as equipment FROM flight f
+            $result = $this->database->query("SELECT f.*, fp.id as id, s1.arrive_date as day, s2.arrive_date as day2, s1.arrive_time as time, s2.arrive_time as time2, l.name as departure, e.model as model, tf.description  as type, te.description as equipment,  j.diff_time as hours FROM flight f
                                             INNER JOIN flight_plan fp on f.id_flight_plan = fp.id
                                             INNER JOIN location l on fp.departure_loc = l.id
                                             INNER JOIN equipment e on fp.id_equipment = e.id
                                             INNER JOIN type_flight tf on fp.type_flight = tf.id
-                                            INNER JOIN stop s on f.id_flight = s.id_flight
+                                            INNER JOIN stop s1 on f.id_flight = s1.id_flight
+                                            INNER JOIN stop s2 on f.id_flight = s2.id_flight
                                             INNER JOIN type_equipment te on e.id_type = te.id
-                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$type') AND fp.departure_loc IN (1,2) AND s.id_location = '$destination' AND e.id_type IN ('$typesOfEquipmentAllowed')");
+                                            INNER JOIN route r on tf.id = r.id_type_flight
+                                            INNER JOIN journey j on r.id = j.id_route
+                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$type') AND fp.departure_loc IN (1,2) AND e.id_type IN ('$typesOfEquipmentAllowed')
+                                            AND s1.id_location = '$departure' AND s2.id_location = '$destination'
+                                            ");
+
 
         }
 
@@ -72,11 +84,10 @@ class Flight_planModel
         }
 
         //metodo para tranformar el dia del plan de vuelo a una fecha en base a la semana elegida por el usuario
-        $this->mapDate($result, $week);
+        //o dar formato
 
         //retorno la week para después mandárselo al método que crea el vuelo y así asiganrle el campo 'departure_week'
-
-        return ['flight_plans' => $result, 'week' => $week_number];
+        return ['flight_plans' => $result, 'week' => $week_number, 'id_destination' => $destination, 'name_destination' => $name_destination];
     }
 
     //función que obtiene el id del tipo de vuelo automáticamente
@@ -138,7 +149,7 @@ class Flight_planModel
         //creo fecha
         $datetime = date_create($departure_date . " " . $departure_time);
         $date = date_format($datetime, 'Y-m-d');
-        $time = date_format($datetime, 'H:m:s');
+        $time = date_format($datetime, 'H:i:s');
 
         //consulto si ya existe el vuelo
         $createdFlight = $this->database->query("SELECT id_flight FROM flight WHERE id_flight_plan = '$id_flight_plan' AND departure_date = '$date' AND departure_hour = '$time'");
@@ -194,7 +205,6 @@ class Flight_planModel
         }
     }
 
-
     //valida los inputs del formulario
     public function validateInputs($departure, $destination, $week)
     {
@@ -235,7 +245,6 @@ class Flight_planModel
         return $errors;
     }
 
-
     private function getRoute($id_flight_plan)
     {
         $plan = $this->getPlan($id_flight_plan);
@@ -260,7 +269,7 @@ class Flight_planModel
 
         //creo fecha
         $d = date_create($departure_date . " " . $departure_time);
-        $time = date_format($d, 'H:i:s');
+        $time = date_format($d, 'h:i:s');
         $date = date_format($d, 'Y-m-d');
 
         //inserto la primer escala que es el origen
@@ -271,9 +280,10 @@ class Flight_planModel
         //inserto todas las demas escalas
         foreach ($journey as $stop) {
 
-            date_modify($d, "+" . $stop['diff_time'] . "hours");
+            $hours = $stop['diff_time'];
+            date_add($d, date_interval_create_from_date_string("$hours hours"));
 
-            $time = date_format($d, 'H:i:s');
+            $time = date_format($d, 'h:i:s');
             $date = date_format($d, 'Y-m-d');
 
             $this->database->query("INSERT INTO stop (id_flight, id_location, arrive_time, arrive_date)
@@ -307,7 +317,7 @@ class Flight_planModel
     }
 
     //esto es para mostrar devuelta en la vista luego de algun error
-    public function getCitieNameById($id)
+    public function getCityNameById($id)
     {
         $city = $this->database->query("SELECT name from location WHERE id = '$id'");
         if (!empty($city)) {
@@ -318,16 +328,17 @@ class Flight_planModel
 
     private function mapDate(&$array, $week)
     {
+            $res = $this->obtainValuesFromWeekStr($week);
+            $year = (int)$res['year'];
+            echo $year;
+            $week_no = (int)$res['weekno'];
 
-        $res = $this->obtainValuesFromWeekStr($week);
-        $year = (int)$res['year'];
-        $week_no = (int)$res['weekno'];
+            $date = new DateTime();
 
-        $date = new DateTime();
+            foreach ($array as &$register) {
+                $register['day'] = $date->setISODate($year, $week_no, (int)$register['day'] + 1)->format('Y-m-d');
+            }
 
-        foreach ($array as &$register) {
-            $register['day'] = $date->setISODate($year, $week_no, (int)$register['day'] + 1)->format('d-m-Y');
-        }
     }
 
     private function obtainValuesFromWeekStr($str)
@@ -358,5 +369,19 @@ class Flight_planModel
         $location = $this->database->query("SELECT * FROM location WHERE name = '$name'");
         return $location[0];
     }
+
+    /*public function calculateArrivalDate($date, $time, $hours)
+    {
+
+        $dateTime = $date . $time;
+        $dateTime = date_create($dateTime);
+        $calculatedDateTime = date_add($dateTime, date_interval_create_from_date_string("$hours hours"));
+
+        $data['date'] = $calculatedDateTime->format('Y-m-d');
+        $data['time'] = $calculatedDateTime->format('h:i:s');
+
+        return $data;
+
+    }*/
 
 }
