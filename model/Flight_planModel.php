@@ -43,7 +43,7 @@ class Flight_planModel
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
 
-        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, l.name as departure, tf.description as type, fp.departure_time as time, te.description as equipment, j.diff_time as hours FROM flight_plan fp
+        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, l.name as departure, tf.description as type, te.description as equipment, j.diff_time as hours FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
                                            INNER JOIN days d on fp.departure_day = d.id
                                            INNER JOIN location l on fp.departure_loc = l.id
@@ -57,6 +57,7 @@ class Flight_planModel
 
 
         $this->mapDate($result, $week);
+        $this->calculateArrivalDate($result);
 
         //consulta para vuelos de origen distintos a Anakara o Buenos Aires, en este caso va a buscar vuelos ya creados.
         //si no encuentra nada, se le muestra un mensaje que no hay vuelos disponibles
@@ -370,18 +371,23 @@ class Flight_planModel
         return $location[0];
     }
 
-    /*public function calculateArrivalDate($date, $time, $hours)
+    public function calculateArrivalDate(&$result)
     {
 
-        $dateTime = $date . $time;
-        $dateTime = date_create($dateTime);
-        $calculatedDateTime = date_add($dateTime, date_interval_create_from_date_string("$hours hours"));
+        foreach ($result as &$flight){
+            $dateTime =  $flight['day']. $flight['time'];
+            $dateTime = date_create($dateTime);
+            $hours = $flight['hours'];
+            $calculatedDateTime = date_add($dateTime, date_interval_create_from_date_string("$hours hours"));
+            $flight['day2'] = $calculatedDateTime->format('Y-m-d');
+            $flight['time2'] = $calculatedDateTime->format('h:i:s');
+        }
 
-        $data['date'] = $calculatedDateTime->format('Y-m-d');
-        $data['time'] = $calculatedDateTime->format('h:i:s');
+        return $result;
+
 
         return $data;
 
-    }*/
+    }
 
 }
