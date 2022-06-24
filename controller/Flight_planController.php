@@ -94,6 +94,8 @@ class Flight_planController
 
     }
 
+
+
     // una vez elegido el vuelo, se evalua si inició sesion y si hizo o no el chequeo médico. Caso exitoso: reserva el vuelo
     public function flight_planConfirmation()
     {
@@ -125,7 +127,7 @@ class Flight_planController
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
         }
 
-        $this->printer->generateView('flight_detail.html', $data);
+      /*  $this->printer->generateView('flight_detail.html', $data);*/
 
 
     }
@@ -182,5 +184,6 @@ class Flight_planController
 
 
     }
+
 
 }
