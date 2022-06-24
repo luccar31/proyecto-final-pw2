@@ -13,6 +13,8 @@
             <th scope="col">Hora de partida</th>
             <th scope="col">Origen</th>
             <th scope="col">Destino</th>
+            <th scope="col">Día de llegada</th>
+            <th scope="col">Hora de llegada</th>
             <th scope="col">Nave</th>
             <th scope="col">Tipo de viaje</th>
             <th scope="col">Tipo de equipo</th>
@@ -24,14 +26,20 @@
         <tr>
             <td>{{day}}</td>
             <td>{{time}}</td>
-            <td>{{departure}}</td>
+            <td>{{#name_departure}}{{name_departure}}{{/name_departure}}</td>
             <td>{{#name_destination}}{{name_destination}}{{/name_destination}}</td>
+            <td>{{day2}}</td>
+            <td>{{time2}}</td>
             <td>{{model}}</td>
             <td>{{type}}</td>
             <td>{{equipment}}</td>
             <td>
-                <a href="/flight_plan/showFlightDetail?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}"
-                   style="color: black; text-decoration: underline aqua">Reservar</a>
+                <!--<a href="/flight_plan/showFlightDetail?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}"
+                   style="color: black; text-decoration: underline aqua">ver detalle</a>-->
+                <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}"
+                   style="color: black; text-decoration: underline aqua">Continuar</a>
+
+
             </td>
         </tr>
         {{/flight_plans}}
