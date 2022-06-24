@@ -554,6 +554,15 @@ INSERT INTO journey VALUES (24,5,9,35,6);
 INSERT INTO journey VALUES (25,5,10,50,7);
 INSERT INTO journey VALUES (26,5,11,52,8);
 INSERT INTO journey VALUES (27,6,12,840,1);
+-- falta ankara y buenos aires en los circuitos corto y largo de ba y aa
+INSERT INTO journey VALUES (28,2,1,0,0);
+INSERT INTO journey VALUES (29,2,2,0,0);
+INSERT INTO journey VALUES (30,3,1,0,0);
+INSERT INTO journey VALUES (31,3,2,0,0);
+INSERT INTO journey VALUES (32,4,1,0,0);
+INSERT INTO journey VALUES (34,4,2,0,0);
+INSERT INTO journey VALUES (35,4,1,0,0);
+INSERT INTO journey VALUES (36,4,2,0,0);
 
 CREATE TABLE stop(
                      id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala
