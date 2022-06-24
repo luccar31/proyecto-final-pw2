@@ -79,61 +79,16 @@ class TicketModel
 
     }
 
-    public function validDate($id_flight){
-        $dateFlightData = $this->database->query("SELECT f.departure_date
-                                                 FROM flight f
-                                                 WHERE f.id_flight = '$id_flight'");
 
-        $typeFlightData = $this->database->query("SELECT tf.description,tf.id as type_flight,te.description, te.id  as type_equip
-                                                  FROM flight f
-                                                  INNER JOIN flight_plan fp ON f.id_flight_plan = fp.id
-                                                  INNER JOIN type_flight tf on fp.type_flight = tf.id
-                                                  INNER JOIN equipment e on fp.id_equipment = e.id
-                                                  INNER JOIN type_equipment te on e.id_type = te.id
-                                                  WHERE f.id_flight = '$id_flight'");
+    public function calculatePrice($id_flight){
+        $priceCabinData = $this->database->query("SELECT tc.price
+                                                  FROM ticket t
+                                                  INNER JOIN cabin c on t.id_cabin = c.id
+                                                  INNER JOIN type_cabin tc on c.id_type = tc.id
+                                                  WHERE id_flight ='$id_flight'");
 
-
-        // a la fecha de salida del vuelo se le suman las horas que hay hasta departure,
-        // y se lo compara con el dia actual para saber si hay una diferencia de mas de 24 hs
-
-        $currentDate_ = new DateTime();
-        $currentDate = $currentDate_->format('Y-m-d');
-        $dateFlight = $dateFlightData[0]['departure_date'];
-        $typeFlight = $typeFlightData[0]['type_flight'];
-        $typeEquip = $typeFlightData[0]['type_equip'];
-        $departure = 5;          //$_SESSION['depart'];
-
-
-//        echo "fecha vuelo partida: " . $dateFlight;
-//        echo "tipo vuelo partida: " . $typeFlight;
-//        echo "equipo vuelo partida: " . $typeEquip;
-//        echo "origen vuelo partida: " . $departure . "</br>";
-
-
-        $routeDateData = $this->database->query("SELECT rl.id_location,l.name as loc, rl.diff_time, rl.order_
-                                             FROM route r
-                                             INNER JOIN route_location rl on r.id = rl.id_route
-                                             INNER JOIN location l on rl.id_location = l.id
-                                             WHERE id_type = '$typeFlight'
-                                             AND id_type_equipment = '$typeEquip'");
-
-
-        //var_dump($routeDateData);
-
-
-        switch ($departure){
-            case 5:
-                $i = 0;
-                do{
-                    $diff_time = $routeDateData[$i]['diff_time'];
-                    $newDate =+ strtotime("+{$diff_time} hour", strtotime(currentDate));
-                    var_dump($newDate);
-                    $i++;
-                }while($routeDateData[0][id_location] != $departure);
-            break;
-
-        }
-
+        $departure = $_SESSION['depart'];
+        $destination = $_SESSION['dest'];
 
 
 

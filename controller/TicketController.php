@@ -28,7 +28,7 @@ class TicketController{
 
 
         $data = $this ->ticketModel->validateCapacityCabin($id_flight, $id_type_cabin, $num_tickets);
-        $date = $this ->ticketModel->validDate($id_flight);
+        $data3 = $this ->ticketModel-> calculatePrice($id_flight);
 
         if($data['isValid'] == true){
             $this->ticketModel->createTicket($id_flight, $id_type_cabin, $id_service, $userNickname, $num_tickets);
