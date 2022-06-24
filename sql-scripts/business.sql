@@ -275,18 +275,12 @@ CREATE TABLE ticket
     id_flight  INT NOT NULL,
     id_service INT NOT NULL,
     user_nickname VARCHAR(50) NOT NULL,
+    departure INT NOT NULL,
+    destination INT NOT NULL,
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
     FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
     FOREIGN KEY (id_service) REFERENCES service (id),
     FOREIGN KEY (user_nickname) REFERENCES client(user_nickname)
-);
-
-CREATE TABLE client_ticket(
-                              user_nickname VARCHAR(50) NOT NULL,
-                              id_ticket INT NOT NULL,
-                              CONSTRAINT id_client_ticket PRIMARY KEY (user_nickname, id_ticket),
-                              FOREIGN KEY (user_nickname) REFERENCES client(user_nickname),
-                              FOREIGN KEY (id_ticket) REFERENCES ticket(id)
 );
 
 -- Equipamiento x cabina
@@ -560,6 +554,15 @@ INSERT INTO journey VALUES (24,5,9,35,6);
 INSERT INTO journey VALUES (25,5,10,50,7);
 INSERT INTO journey VALUES (26,5,11,52,8);
 INSERT INTO journey VALUES (27,6,12,840,1);
+-- falta ankara y buenos aires en los circuitos corto y largo de ba y aa
+INSERT INTO journey VALUES (28,2,1,0,0);
+INSERT INTO journey VALUES (29,2,2,0,0);
+INSERT INTO journey VALUES (30,3,1,0,0);
+INSERT INTO journey VALUES (31,3,2,0,0);
+INSERT INTO journey VALUES (32,4,1,0,0);
+INSERT INTO journey VALUES (34,4,2,0,0);
+INSERT INTO journey VALUES (35,4,1,0,0);
+INSERT INTO journey VALUES (36,4,2,0,0);
 
 CREATE TABLE stop(
                      id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala

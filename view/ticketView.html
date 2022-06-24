@@ -9,12 +9,12 @@
             </div>
             <div class="card-body">
 
-                <form action="/ticket/createTicket?id={{id}}" method="post" >
+                <form action="/ticket/payInfo" method="post" >
                     <div class="form-floating ">
                         <select id="type_cabin" name="type_cabin" class="form-select" id="floatingSelect" >
-                            <option value="1">Turista</option>
-                            <option value="2">Ejecutivo</option>
-                            <option value="3">Primera</option>
+                            {{#cabins}}
+                            <option value={{id}} selected>{{description}}</option>
+                            {{/cabins}}
                         </select>
                         <label for="floatingSelect">Seleccione el tipo de cabina</label>
                         {{#outOfCapacityError}}
@@ -27,15 +27,15 @@
                     </div>
                     <div class="form-floating mt-4">
                         <select id="service" name="service" class="form-select" id="floatingSelect2" >
-                            <option value="1">Standard</option>
-                            <option value="2">Gourmet</option>
-                            <option value="3">Spa</option>
+                            {{#services}}
+                            <option value={{id}} selected>{{description}}</option>
+                            {{/services}}
                         </select>
                         <label for="floatingSelect2">Seleccione el tipo de servicio</label>
                     </div>
                     <div>
                         <label for="num_tickets" class="form-label">¿Cuantas reservas desea realizar?</label>
-                        <input type="number" name="num_tickets" id="num_tickets"/>
+                        <input type="number" min="0" name="num_tickets" id="num_tickets"/>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Reservar</button>
