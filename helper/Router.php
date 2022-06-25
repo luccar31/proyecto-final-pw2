@@ -12,7 +12,7 @@ class Router {
         $this->defaultController = $defaultController;
         $this->defaultMethod = $defaultMethod;
         $this->session = $session;
-        $this->validController = ['login', 'signin','flight_plan', ''];
+        $this->validController = ['login', 'signin','flight_plan', 'ticket', ''];
     }
 
     public function executeMethodFromController($controllerName, $methodName) {
