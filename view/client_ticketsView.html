@@ -14,8 +14,10 @@
                         <th scope="col">Fecha de partida</th>
                         <th scope="col">Hora de partida</th>
                         <th scope="col">Origen</th>
+                        <th scope="col">Destino</th>
                         <th scope="col">Tipo de cabina</th>
                         <th scope="col">Servicio</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     {{#tickets}}
@@ -23,8 +25,10 @@
                         <td>{{departure_date}}</td>
                         <td>{{departure_hour}}</td>
                         <td>{{departure}}</td>
+                        <td>{{destination}}</td>
                         <td>{{type_cabin}}</td>
                         <td>{{service}}</td>
+                        <td><a href="/flight_plan/progress?id_ship={{id_ship}}" style="color: black; text-decoration: underline aqua">¿¿¿Dónde está mi nave???</a></td>
                     </tr>
                     {{/tickets}}
                 </table>

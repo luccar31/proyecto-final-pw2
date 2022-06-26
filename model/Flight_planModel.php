@@ -393,4 +393,47 @@ class Flight_planModel
 
     }
 
+    public function findShipPosition($id_ship){
+
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $actualDate = date('Y-m-d');
+        $actualTime = date(' H:i:s');
+
+        $actualDate = '2022-07-02';
+        $actualTime = '13:00:00';
+
+        $actualDateTime = $actualDate . " " . $actualTime;
+
+       $position = $this->database->query("SELECT (CONCAT(s.arrive_date, ' ', s.arrive_time)) as dateTime, s.id_location, s2.id_location as lastLocation FROM stop s
+                               INNER JOIN flight f on s.id_flight = f.id_flight
+                               INNER JOIN stop s2 on s.id_flight = s2.id_flight
+
+                               WHERE f.id_ship = 33 AND s.arrive_date in (SELECT max(arrive_date) FROM stop WHERE arrive_date <= '$actualDate')
+                               AND s.arrive_time in (SELECT arrive_time FROM stop WHERE arrive_time >= '$actualTime' AND arrive_time >= (SELECT min(arrive_time) FROM stop WHERE arrive_date = s.arrive_date))
+                               AND s2.id_location = (SELECT max(id_location) from stop WHERE id_location < s.id_location)
+                               ORDER BY s.arrive_time asc ");
+
+
+       if (!empty($position)){
+           if ($position[0]['dateTime'] > $actualDateTime){
+               return $position[0]['lastLocation'];
+           }
+           else{
+               return $position[0]['id_location'];
+           }
+       }
+       else{
+
+           $lastPosition = $this->database->query("SELECT max(id_location) as id_location FROM stop WHERE arrive_date <= '$actualDate'");
+
+           return $lastPosition[0]['id_location'];
+       }
+
+
+
+
+
+
+    }
+
 }
