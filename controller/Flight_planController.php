@@ -136,51 +136,27 @@ class Flight_planController
     public function progress()
     {
 
-        $flight_type = 3;
-        $progress = 0;
-        $ubication = 'Marte';
+        $id_ship = $_GET['id_ship'];
 
-        if ($flight_type == 2) {
+        $data['circuitoLargo'] = ['3' => 'disabled3', '5' => 'disabled5', '6' => 'disabled6', '7' => 'disabled7',
+            '8' => 'disabled8', '9' => 'disabled9', '10' => 'disabled10', '11' => 'disabled11'];
 
-            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires') {
-                $progress = 9.5;
-            } elseif ($ubication == 'EEI') {
-                $progress = 25;
-            } elseif ($ubication == 'OrbitalHotel') {
-                $progress = 50;
-            } elseif ($ubication == 'Luna') {
-                $progress = 75;
-            } elseif ($ubication == 'Marte') {
-                $progress = 100;
-            }
+        $data['circuitoCorto'] = ['3' => 'disabled3', '4' => 'disabled4', '5' => 'disabled5', '6' => 'disabled6'];
 
-            $data = ['progress' => $progress, 'flight_type_2' => true, 'flight_type_3' => false];
-        } elseif ($flight_type == 3) {
 
-            if ($ubication == 'Ankara' || $ubication == 'Buenos Aires') {
-                $progress = 5;
-            } elseif ($ubication == 'EEI') {
-                $progress = 12.5;
-            } elseif ($ubication == 'Luna') {
-                $progress = 25;
-            } elseif ($ubication == 'Marte') {
-                $progress = 37.5;
-            } elseif ($ubication == 'Ganimedes') {
-                $progress = 50;
-            } elseif ($ubication == 'Europa') {
-                $progress = 62.5;
-            } elseif ($ubication == 'Io') {
-                $progress = 75;
-            } elseif ($ubication == 'Encedalo') {
-                $progress = 87.5;
-            } elseif ($ubication == 'Titan') {
-                $progress = 100;
-            }
+        $id_position = $this->flight_planModel->findShipPosition($id_ship);
 
-            $data = ['progress' => $progress, 'flight_type_2' => false, 'flight_type_3' => true];
+
+        for ($i = 3; $i<=$id_position; $i++){
+
+                    $data['circuitoLargo'][$i] = "active" . $i . " active";
         }
 
-        $this->printer->generateView('flightStatus.html', $data);
+        $data['circuitoLargo']['lastPosition'.$id_position] = $id_position;
+
+
+
+        return$this->printer->generateView('flightStatus.html', $data);
 
 
     }

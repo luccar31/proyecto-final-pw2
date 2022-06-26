@@ -1,72 +1,37 @@
 {{> header}}
 {{> navbar}}
-<section class="flightStatus" style="background: #cbcbcb">
+<section class="flightStatus" style="background: url(/assets/img/space.jpg)">
     <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100 home_p">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+
 
             <div class="container">
+                <h1>Ubicación actual de la nave:</h1>
+                <div class="d-flex justify-content-center">
+                {{#circuitoLargo}}
+                <div class="progressbar-wrapper">
+                    <ul class="progressbar">
+                        <li class="active2 active">Tierra</li>
+                        <li class="{{3}}">{{#lastPosition3}}<img src="/assets/img/spaceship1.png">{{/lastPosition3}}EEI</li>
+                        <li class="{{5}}">{{#lastPosition5}}<img src="/assets/img/spaceship1.png">{{/lastPosition5}}Luna</li>
+                        <li class="{{6}}">{{#lastPosition6}}<img src="/assets/img/spaceship1.png">{{/lastPosition6}}Marte</li>
+                        <li class="{{7}}">{{#lastPosition7}}<img src="/assets/img/spaceship1.png">{{/lastPosition7}}Ganimedes</li>
+                        <li class="{{8}}">{{#lastPosition8}}<img src="/assets/img/spaceship1.png">{{/lastPosition8}}Europa</li>
+                        <li class="{{9}}">{{#lastPosition9}}<img src="/assets/img/spaceship1.png">{{/lastPosition9}}Io</li>
+                        <li class="{{10}}">{{#lastPosition10}}<img src="/assets/img/spaceship1.png">{{/lastPosition10}}Encedalo</li>
+                        <li class="{{11}}">{{#lastPosition11}}<img src="/assets/img/spaceship1.png">{{/lastPosition11}}Titan</li>
 
-                {{#flight_type_2}}
-                <table class='table' style="background-color:rgba(0, 0, 0, 0)">
-                    <thead>
-                    <tr style="border-style: hidden">
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/tierra.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/eei.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/orbitalHotel.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/luna.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/marte.png" alt="" width="100" height="100"></th>
-                    </tr>
-                    </thead>
-                    <tr style="border-style: hidden">
-                        <td style="text-align: center; font-size: x-large">Tierra</td>
-                        <td style="text-align: center; font-size: x-large">EEI</td>
-                        <td style="text-align: center; font-size: x-large">Orbital Hotel</td>
-                        <td style="text-align: center; font-size: x-large">Luna</td>
-                        <td style="text-align: center; font-size: x-large">Marte</td>
-                    </tr>
-                </table>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%; color: #151515; text-align: right; display: block; padding-right: 4%"><img src="/assets/img/spaceship.png" alt="" width="100" height="100" style="position: absolute"></div>
+                    </ul>
                 </div>
-                {{/flight_type_2}}
-
-                {{#flight_type_3}}
-
-                <table class='table' style="background-color:rgba(0, 0, 0, 0)">
-                    <thead>
-                    <tr style="border-style: hidden">
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/tierra.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/eei.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/luna.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/marte.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/ganimedes.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/europa.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/io.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/encedalo.png" alt="" width="100" height="100"></th>
-                        <th scope="col" style="text-align: center"><img src="/assets/img/escalas/titan.png" alt="" width="100" height="100"></th>
-                    </tr>
-                    </thead>
-                    <tr style="border-style: hidden">
-                        <td style="text-align: center; font-size: x-large">Tierra</td>
-                        <td style="text-align: center; font-size: x-large">EEI</td>
-                        <td style="text-align: center; font-size: x-large">Luna</td>
-                        <td style="text-align: center; font-size: x-large">Marte</td>
-                        <td style="text-align: center; font-size: x-large">Ganimedes</td>
-                        <td style="text-align: center; font-size: x-large">Europa</td>
-                        <td style="text-align: center; font-size: x-large">Io</td>
-                        <td style="text-align: center; font-size: x-large">Encedalo</td>
-                        <td style="text-align: center; font-size: x-large">Titan</td>
-                    </tr>
-                </table>
-
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%; color: #151515; text-align: right; display: block; padding-right: 4%"><img src="/assets/img/spaceship.png" alt="" width="100" height="100" style="position: absolute"></div>
+                {{/circuitoLargo}}
                 </div>
-                {{/flight_type_3}}
+
+
 
             </div>
 
         </div>
     </div>
+
 </section>
 {{> footer}}
