@@ -4,18 +4,16 @@ class Flight_planController
 {
     private $printer;
     private $flight_planModel;
-    private $appointmentModel;
 
     public function __construct($models, $printer)
     {
         $this->flight_planModel = $models['flight_planModel'];
-        $this->appointmentModel = $models['appointmentModel'];
         $this->printer = $printer;
     }
 
+    //lanza la vista con las ciudades para elegir
     public function execute()
     {
-
         $data['cities'] = $this->flight_planModel->getCities();
         $this->printer->generateView('flightPlanFormView.html', $data);
     }
@@ -54,13 +52,13 @@ class Flight_planController
             //me devuelve errores del backend en caso de que los haya
             $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week']);
 
-            //si lo devuelto está vacio, no hay errores
+            //si lo devuelto está vacio, no hay errores:
             if (empty($data['errors'])) {
 
                 //por lo tanto, busca los vuelos para mostrar
                 $this->searchFlight($data['departure'], $data['destination'], $data['week']);
 
-            } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario
+            } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario:
             else {
                 $this->printer->generateView('flightPlanFormView.html', $data);
             }
@@ -79,60 +77,7 @@ class Flight_planController
         $this->printer->generateView('flightPlanSearchView.html', $data);
     }
 
-    public function showFlightDetail(){
-        $data['id_flight_plan'] = $_GET["id"];
-        $data['departure_date'] = $_GET["date"];
-        $data['departure_time'] = $_GET["time"];
-        $data['arrival_date'] = $_GET["date2"];
-        $data['arrival_time'] = $_GET["time2"];
-        $data['departure'] = $_GET["departure"];
-        $data['destination'] = $_GET["destination"];
-        $data['week'] = $_GET["week"];
-        $data['hours'] = $_GET["hours"];
-
-        $this->printer->generateView('flight_detail.html', $data);
-
-    }
-
-
-
-    // una vez elegido el vuelo, se evalua si inició sesion y si hizo o no el chequeo médico. Caso exitoso: reserva el vuelo
-    public function flight_planConfirmation()
-    {
-        $id_flight_plan = $_GET["id"];
-        $departure_date = $_GET["date"];
-        $departure_time = $_GET["time"];
-        $departure = $_GET["departure"];
-        $week = $_GET["week"];
-
-        if (isset($_SESSION['nickname'])) {
-
-            $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
-
-            //inició sesión pero no realizó chequeo médico
-            if (empty($data['enabledClient'])) {
-
-                $data['disabledClient'] = "Debe realizar un chequeo médico. El código de viajero y nivel de vuelo es requerido.";
-
-            } //inició sesión y realizó chequeo médico. Hace la reserva.
-            else {
-
-                $data['id_flight'] = $this->flight_planModel->createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week);
-                $data['enabledClient'] = "Su vuelo ha sido reservado! N° de vuelo: ";
-
-            }
-
-        } //no inició sesión
-        else {
-            $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
-        }
-
-      /*  $this->printer->generateView('flight_detail.html', $data);*/
-
-
-    }
-
-    //esto es para la barra de progreso dinámica (esta harcodeado)
+    //esto es para la barra de progreso dinámica
     public function progress()
     {
 
@@ -140,44 +85,39 @@ class Flight_planController
         $id_type_flight = $_GET['id_type_flight'];
 
 
-
+        //busca la posición actual de la nave según la fecha y hora
         $id_position = $this->flight_planModel->findShipPosition($id_ship);
 
 
-        if ($id_type_flight == 1){
-
+        if ($id_type_flight == 1) {
 
             $data['orbital'][1] = "active" . 1 . " active";
             $data['orbital'][2] = "active" . 2 . " active";
-            $data['orbital']['lastPosition'. $id_position] = $id_position;
-        }
+            $data['orbital']['lastPosition' . $id_position] = $id_position;
 
-        elseif ($id_type_flight == 2){
-
+        } elseif ($id_type_flight == 2) {
 
             $data['circuitoCorto'] = ['3' => 'disabled3', '4' => 'disabled4', '5' => 'disabled5', '6' => 'disabled6'];
 
-            for ($i = 3; $i<=$id_position; $i++){
-
+            for ($i = 3; $i <= $id_position; $i++) {
                 $data['circuitoCorto'][$i] = "active" . $i . " active";
             }
 
-            $data['circuitoCorto']['lastPosition'.$id_position] = $id_position;
-        }
-        else{
+            $data['circuitoCorto']['lastPosition' . $id_position] = $id_position;
+
+        } else {
 
             $data['circuitoLargo'] = ['3' => 'disabled3', '5' => 'disabled5', '6' => 'disabled6', '7' => 'disabled7',
                 '8' => 'disabled8', '9' => 'disabled9', '10' => 'disabled10', '11' => 'disabled11'];
 
-            for ($i = 3; $i<=$id_position; $i++){
-
+            for ($i = 3; $i <= $id_position; $i++) {
                 $data['circuitoLargo'][$i] = "active" . $i . " active";
             }
 
-            $data['circuitoLargo']['lastPosition'.$id_position] = $id_position;
+            $data['circuitoLargo']['lastPosition' . $id_position] = $id_position;
         }
 
-        return$this->printer->generateView('flightStatus.html', $data);
+        return $this->printer->generateView('flightStatus.html', $data);
 
 
     }

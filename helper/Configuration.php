@@ -45,11 +45,11 @@ class Configuration {
     }
 
     public function getTicketController() {
-        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel()], $this->getPrinter());
+        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel(), 'appointmentModel' => $this->getAppointmentModel()], $this->getPrinter());
     }
 
     public function getFlight_planController() {
-        return new Flight_planController(['appointmentModel' => $this->getAppointmentModel(), 'flight_planModel' => $this->getFlight_planModel()],$this->getPrinter());
+        return new Flight_planController(['flight_planModel' => $this->getFlight_planModel()],$this->getPrinter());
     }
 
     private function getUserModel(){
