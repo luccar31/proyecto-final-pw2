@@ -137,24 +137,47 @@ class Flight_planController
     {
 
         $id_ship = $_GET['id_ship'];
+        $id_type_flight = $_GET['id_type_flight'];
 
-        $data['circuitoLargo'] = ['3' => 'disabled3', '5' => 'disabled5', '6' => 'disabled6', '7' => 'disabled7',
-            '8' => 'disabled8', '9' => 'disabled9', '10' => 'disabled10', '11' => 'disabled11'];
-
-        $data['circuitoCorto'] = ['3' => 'disabled3', '4' => 'disabled4', '5' => 'disabled5', '6' => 'disabled6'];
 
 
         $id_position = $this->flight_planModel->findShipPosition($id_ship);
 
 
-        for ($i = 3; $i<=$id_position; $i++){
+        if ($id_type_flight == 1){
 
-                    $data['circuitoLargo'][$i] = "active" . $i . " active";
+            for ($i = 0; $i<=$id_position; $i++){
+
+                $data['orbital'][$i] = "active" . $i . " active";
+            }
+
+            $data['orbital']['lastPosition'.$id_position] = $id_position;
         }
 
-        $data['circuitoLargo']['lastPosition'.$id_position] = $id_position;
+        elseif ($id_type_flight == 2){
 
 
+            $data['circuitoCorto'] = ['3' => 'disabled3', '4' => 'disabled4', '5' => 'disabled5', '6' => 'disabled6'];
+
+            for ($i = 3; $i<=$id_position; $i++){
+
+                $data['circuitoCorto'][$i] = "active" . $i . " active";
+            }
+
+            $data['circuitoCorto']['lastPosition'.$id_position] = $id_position;
+        }
+        else{
+
+            $data['circuitoLargo'] = ['3' => 'disabled3', '5' => 'disabled5', '6' => 'disabled6', '7' => 'disabled7',
+                '8' => 'disabled8', '9' => 'disabled9', '10' => 'disabled10', '11' => 'disabled11'];
+
+            for ($i = 3; $i<=$id_position; $i++){
+
+                $data['circuitoLargo'][$i] = "active" . $i . " active";
+            }
+
+            $data['circuitoLargo']['lastPosition'.$id_position] = $id_position;
+        }
 
         return$this->printer->generateView('flightStatus.html', $data);
 
