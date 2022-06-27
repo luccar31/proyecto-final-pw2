@@ -3,11 +3,11 @@
 class TicketController{
 
     private $printer;
-    private $flightModel;
+    private $flight_planModel;
     private $ticketModel;
 
     public function __construct($models, $printer){
-        $this->flightModel = $models['flightModel'];
+        $this->flight_planModel = $models['flight_planModel'];
         $this->ticketModel = $models['ticketModel'];
         $this->printer = $printer;
     }
@@ -22,6 +22,9 @@ class TicketController{
         $data['id_type_cabin'] = $_POST['type_cabin'];
         $data['id_service']  = $_POST['service'];
         $data['num_tickets']  =  $_POST['num_tickets'];
+        $_SESSION['id_type_cabin'] = $_POST['type_cabin'];
+        $_SESSION['id_service']  = $_POST['service'];
+        $_SESSION['num_tickets']  =  $_POST['num_tickets'];
 
         $data['price'] = $this->ticketModel->calculatePrice($_SESSION['id_flight_plan'], $data['num_tickets'], $data['id_service'], $data['id_type_cabin']);
 
@@ -32,18 +35,15 @@ class TicketController{
 
     public function createTicket(){
 
-/*
-        $data = $this ->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $id_type_cabin, $num_tickets);
+       /* $data = $this ->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $id_type_cabin, $num_tickets);*/
 
 
-        if($data['isValid'] == true){
-
-
-            $data['id_flight'] = $this->flight_planModel->createFlight($_SESSION['id_flight_plan'], $_SESSION['departure_date'], $_SESSION['departure_time'], $_SESSION['departure'], $_SESSION['week']);
-            $this->ticketModel->createTicket($data['id_flight'], $id_type_cabin, $id_service, $userNickname, $num_tickets);
+        /*if($data['isValid'] == true){*/
+            $id_flight = $this->flight_planModel->createFlight($_SESSION['id_flight_plan'], $_SESSION['departure_date'], $_SESSION['departure_time'], $_SESSION['departure'], $_SESSION['week']);
+            $this->ticketModel->createTicket($id_flight, $_SESSION['id_type_cabin'], $_SESSION['id_service'], $_SESSION['nickname'], $_SESSION['num_tickets'], $_SESSION['departure'], $_SESSION['destination']);
             $ticketsClient = $this->findClientTickets();
             $this->printer->generateView('reserved_ticketsView.html', $ticketsClient);
-        }else{
+      /*  }else{
             $this->printer->generateView('ticketView.html', $data);
         }*/
 

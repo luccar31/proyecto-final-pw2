@@ -17,15 +17,26 @@ class TicketModel
 
     }
 
-    public function createTicket($id_flight, $id_type_cabin, $id_service, $userNickname, $num_tickets){
+    public function createTicket($id_flight, $id_type_cabin, $id_service, $userNickname, $num_tickets, $departure, $destination){
+        echo var_dump($id_flight);
+        echo "<br>";
+        echo var_dump($id_type_cabin);
+        echo "<br>";
+        echo var_dump($id_service);
+        echo "<br>";
+        echo var_dump($userNickname);
+        echo "<br>";
+        echo var_dump($num_tickets);
+        echo "<br>";
         for ($i = 0; $i < $num_tickets; $i++) {
-            $this->database->query("INSERT INTO ticket (id_flight, id_cabin, id_service, user_nickname)
-                                    VALUES ('$id_flight', '$id_type_cabin', '$id_service', '$userNickname')");
+            $this->database->query("INSERT INTO ticket (id_flight, id_cabin, id_service, user_nickname, departure, destination)
+                                    VALUES ('$id_flight', '$id_type_cabin', '$id_service', '$userNickname', '$departure', '$destination')");
         }
     }
 
     public function findClientTickets($nickname){
-        $resu = $this->database->query("SELECT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, tc.description as type_cabin, s.description as service, f.id_ship
+        $resu = $this->database->query("SELECT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
+                                        tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
                                         FROM ticket t
                                         INNER JOIN cabin c ON t.id_cabin = c.id
                                         INNER JOIN type_cabin tc ON c.id_type = tc.id

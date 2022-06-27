@@ -138,7 +138,7 @@ class Flight_planModel
     }
 
     //función para crear el vuelo
-    public function createFlight($id_flight_plan, $departure_date, $departure_time, $departure, $week)
+    public function createFlight($id_flight_plan, $departure_date, $departure_time, $departure_id, $week)
     {
         $ship = $this->getAvailableShip($id_flight_plan);
 
@@ -169,11 +169,11 @@ class Flight_planModel
                                 VALUES ('$id_flight','$id_flight_plan','$ship[id]','$date','$time', '$week')
                                 ");
 
-            $this->createStops($id_flight_plan, $id_flight, $departure_date, $departure_time, $departure, 'asc'); //creo sus escalas en el orden comun
+            $this->createStops($id_flight_plan, $id_flight, $departure_date, $departure_time, $departure_id, 'asc'); //creo sus escalas en el orden comun
         }
 
 
-        return ['id_flight' => $id_flight];;
+        return $id_flight;
     }
 
     //consulta el nivel de vuelo del cliente
@@ -260,12 +260,11 @@ class Flight_planModel
         return $this->database->query("SELECT * FROM journey WHERE id_route = '$route_id' AND id_location <> '$origin' ORDER BY order_ $order");
     }
 
-    private function createStops($id_flight_plan, $id_flight, $departure_date, $departure_time, $name_origin, $order)
+    private function createStops($id_flight_plan, $id_flight, $departure_date, $departure_time, $departure_id, $order)
     {
 
-        $origin = $this->getLocationByName($name_origin); //obtengo el registro de la locacion de origen
         $route = $this->getRoute($id_flight_plan); //obtengo el registro de la ruta
-        $journey = $this->getJourney($route['id'], $order, $origin['id']); //obtengo el recorrido que sigue esa ruta en un determinado orden
+        $journey = $this->getJourney($route['id'], $order, $departure_id); //obtengo el recorrido que sigue esa ruta en un determinado orden
 
         //creo fecha
         $d = date_create($departure_date . " " . $departure_time);
@@ -274,7 +273,7 @@ class Flight_planModel
 
         //inserto la primer escala que es el origen
         $this->database->query("INSERT INTO stop (id_flight, id_location, arrive_time, arrive_date)
-                                    VALUES ('$id_flight','$origin[id]','$time','$date')
+                                    VALUES ('$id_flight','$departure_id','$time','$date')
                                    ");
 
         //inserto todas las demas escalas
@@ -368,12 +367,6 @@ class Flight_planModel
         return $equipment[0];
     }
 
-    private function getLocationByName($name)
-    {
-        $location = $this->database->query("SELECT * FROM location WHERE name = '$name'");
-        return $location[0];
-    }
-
     public function calculateArrivalDate(&$result)
     {
 
@@ -399,7 +392,7 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-02';
+        $actualDate = '2022-07-03';
         $actualTime = '13:00:00';
 
         $actualDateTime = $actualDate . " " . $actualTime;

@@ -45,7 +45,7 @@ class Configuration {
     }
 
     public function getTicketController() {
-        return new TicketController(['userModel' => $this->getUserModel(), 'flightModel' => $this->getFlightModel(), 'ticketModel' => $this->getTicketModel()], $this->getPrinter());
+        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel()], $this->getPrinter());
     }
 
     public function getFlight_planController() {
