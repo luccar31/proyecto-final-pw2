@@ -392,7 +392,7 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-01';
+        $actualDate = '2022-07-03';
         $actualTime = '09:00:00';
 
         $actualDateTime = $actualDate . " " . $actualTime;
