@@ -146,12 +146,10 @@ class Flight_planController
 
         if ($id_type_flight == 1){
 
-            for ($i = 0; $i<=$id_position; $i++){
 
-                $data['orbital'][$i] = "active" . $i . " active";
-            }
-
-            $data['orbital']['lastPosition'.$id_position] = $id_position;
+            $data['orbital'][1] = "active" . 1 . " active";
+            $data['orbital'][2] = "active" . 2 . " active";
+            $data['orbital']['lastPosition'. $id_position] = $id_position;
         }
 
         elseif ($id_type_flight == 2){
