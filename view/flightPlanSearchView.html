@@ -1,13 +1,14 @@
 {{> header}}
 {{> navbar}}
 
-<section class="search-results">
+<section class="home">
+    <div class="container">
     {{#empty}}
     <div style="color: red">{{error}}</div>
     {{/empty}}
 
-    <table class='table'>
-        <thead>
+    <table class='table table-hover' style="text-align: center">
+        <thead class="table-light">
         <tr>
             <th scope="col">Día de partida</th>
             <th scope="col">Hora de partida</th>
@@ -15,8 +16,9 @@
             <th scope="col">Destino</th>
             <th scope="col">Día de llegada</th>
             <th scope="col">Hora de llegada</th>
+            <th scope="col">Duración</th>
             <th scope="col">Nave</th>
-            <th scope="col">Patente</th>
+           <!-- <th scope="col">Patente</th>-->
             <th scope="col">Tipo de viaje</th>
             <th scope="col">Tipo de equipo</th>
             <th scope="col"></th>
@@ -27,12 +29,13 @@
         <tr>
             <td>{{day}}</td>
             <td>{{time}}</td>
-            <td>{{#name_departure}}{{name_departure}}{{/name_departure}}</td>
-            <td>{{#name_destination}}{{name_destination}}{{/name_destination}}</td>
+            <td>{{#name_departure}}<img src="/assets/img/escalas2/{{name_departure}}.png" alt="" width="50" height="50">{{/name_departure}}</td>
+            <td>{{#name_destination}}<img src="/assets/img/escalas2/{{name_destination}}.png" alt="" width="50" height="50">{{/name_destination}}</td>
             <td>{{day2}}</td>
             <td>{{time2}}</td>
+            <td>{{hours}}hs</td>
             <td>{{model}}</td>
-            <td>{{domain}}</td>
+      <!--      <td>{{domain}}</td>-->
             <td>{{type}}</td>
             <td>{{equipment}}</td>
             <td>
@@ -51,6 +54,7 @@
     <a href="/">
         <button type="submit">Volver</button>
     </a>
+    </div>
 </section>
 
 {{> footer}}

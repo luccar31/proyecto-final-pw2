@@ -16,7 +16,6 @@ include_once('controller/TicketController.php');
 include_once('model/UserModel.php');
 include_once('model/ClientModel.php');
 include_once('model/AppointmentModel.php');
-include_once('model/FlightModel.php');
 include_once('model/TicketModel.php');
 include_once('model/Flight_planModel.php');
 
@@ -37,7 +36,7 @@ class Configuration {
     }
 
     public function getHomeController() {
-        return new HomeController($this->getPrinter());
+        return new HomeController($this->getPrinter(), $this->getFlight_planModel());
     }
 
     public function getMedicalcheckupController(){
@@ -62,10 +61,6 @@ class Configuration {
 
     private function getAppointmentModel(){
         return new AppointmentModel($this->getDatabase());
-    }
-
-    private function getFlightModel(){
-        return new FlightModel($this->getDatabase());
     }
 
     private function getFlight_planModel(){

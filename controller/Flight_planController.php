@@ -15,7 +15,7 @@ class Flight_planController
     public function execute()
     {
         $data['cities'] = $this->flight_planModel->getCities();
-        $this->printer->generateView('flightPlanFormView.html', $data);
+        $this->printer->generateView('homeView.html', $data);
     }
 
     //muestra el formulario y lo valida
@@ -60,12 +60,12 @@ class Flight_planController
 
             } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario:
             else {
-                $this->printer->generateView('flightPlanFormView.html', $data);
+                $this->printer->generateView('homeView.html', $data);
             }
 
         } //si sigue habiendo erroes en los input, vuelve al formulario
         else {
-            $this->printer->generateView('flightPlanFormView.html', $data);
+            $this->printer->generateView('homeView.html', $data);
         }
     }
 
