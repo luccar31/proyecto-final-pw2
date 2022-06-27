@@ -45,10 +45,6 @@
     content: none;
 }
 
-.progressbar .active:last-child {
-    margin-top: 100px;
-}
-
 .progressbar li.active {
     color: white;
     font-weight: bold;

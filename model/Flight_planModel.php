@@ -392,8 +392,8 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-03';
-        $actualTime = '13:00:00';
+        $actualDate = '2022-07-01';
+        $actualTime = '09:00:00';
 
         $actualDateTime = $actualDate . " " . $actualTime;
 
@@ -401,7 +401,7 @@ class Flight_planModel
                                INNER JOIN flight f on s.id_flight = f.id_flight
                                INNER JOIN stop s2 on s.id_flight = s2.id_flight
 
-                               WHERE f.id_ship = 33 AND s.arrive_date in (SELECT max(arrive_date) FROM stop WHERE arrive_date <= '$actualDate')
+                               WHERE f.id_ship = '$id_ship' AND s.arrive_date in (SELECT max(arrive_date) FROM stop WHERE arrive_date <= '$actualDate')
                                AND s.arrive_time in (SELECT arrive_time FROM stop WHERE arrive_time >= '$actualTime' AND arrive_time >= (SELECT min(arrive_time) FROM stop WHERE arrive_date = s.arrive_date))
                                AND s2.id_location = (SELECT max(id_location) from stop WHERE id_location < s.id_location)
                                ORDER BY s.arrive_time asc ");
