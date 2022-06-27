@@ -1,17 +1,16 @@
 {{> header}}
 {{> navbar}}
+
+{{#circuitoLargo}}
 <section class="flightStatus" style="background: url(/assets/img/space.jpg)">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-
-
             <div class="container">
                 <h1>Ubicación actual de la nave:</h1>
                 <div class="d-flex justify-content-center">
-                {{#circuitoLargo}}
                 <div class="progressbar-wrapper">
                     <ul class="progressbar">
-                        <li class="active2 active">Tierra</li>
+                        <li class="active0 active">Tierra</li>
                         <li class="{{3}}">{{#lastPosition3}}<img src="/assets/img/spaceship1.png">{{/lastPosition3}}EEI</li>
                         <li class="{{5}}">{{#lastPosition5}}<img src="/assets/img/spaceship1.png">{{/lastPosition5}}Luna</li>
                         <li class="{{6}}">{{#lastPosition6}}<img src="/assets/img/spaceship1.png">{{/lastPosition6}}Marte</li>
@@ -20,18 +19,58 @@
                         <li class="{{9}}">{{#lastPosition9}}<img src="/assets/img/spaceship1.png">{{/lastPosition9}}Io</li>
                         <li class="{{10}}">{{#lastPosition10}}<img src="/assets/img/spaceship1.png">{{/lastPosition10}}Encedalo</li>
                         <li class="{{11}}">{{#lastPosition11}}<img src="/assets/img/spaceship1.png">{{/lastPosition11}}Titan</li>
-
                     </ul>
                 </div>
-                {{/circuitoLargo}}
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
-
 </section>
+{{/circuitoLargo}}
+
+{{#circuitoCorto}}
+<section class="flightStatus" style="background: url(/assets/img/space.jpg)">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="container">
+                <h1>Ubicación actual de la nave:</h1>
+                <div class="d-flex justify-content-center">
+                    <div class="progressbar-wrapper">
+                        <ul class="progressbar">
+                            <li class="activeTierra active">Tierra</li>
+                            <li class="{{3}}">{{#lastPosition3}}<img src="/assets/img/spaceship1.png">{{/lastPosition3}}EEI</li>
+                            <li class="{{4}}">{{#lastPosition4}}<img src="/assets/img/spaceship1.png">{{/lastPosition4}}Hotel Orbital</li>
+                            <li class="{{5}}">{{#lastPosition5}}<img src="/assets/img/spaceship1.png">{{/lastPosition5}}Luna</li>
+                            <li class="{{6}}">{{#lastPosition6}}<img src="/assets/img/spaceship1.png">{{/lastPosition6}}Marte</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{/circuitoCorto}}
+
+
+{{#orbital}}
+<section class="flightStatus" style="background: url(/assets/img/earth.jpg) no-repeat; background-size: cover;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="container">
+                <h1>Ubicación actual de la nave:</h1>
+                <div class="d-flex justify-content-center">
+                    <div class="progressbar-wrapper">
+                        <ul class="progressbar">
+                            <li class="{{1}}">{{#lastPosition1}}<img src="/assets/img/spaceship1.png">{{/lastPosition1}}Ankara</li>
+                            <li class="{{2}}">{{#lastPosition2}}<img src="/assets/img/spaceship1.png">{{/lastPosition2}}Buenos Aires</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{/orbital}}
+
+
 {{> footer}}

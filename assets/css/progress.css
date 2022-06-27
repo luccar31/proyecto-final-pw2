@@ -88,6 +88,20 @@
     opacity: 100%;
 }
 
+.progressbar li.disabled1:before {
+    background: black url(/assets/img/escalas/ankara.png) no-repeat center center;
+    filter: grayscale(70%) brightness(30%);
+    background-size: 100%;
+    opacity: initial;
+}
+
+.progressbar li.disabled2:before {
+    background: black url(/assets/img/escalas/buenosAires.png) no-repeat center center;
+    filter: grayscale(70%) brightness(30%);
+    background-size: 100%;
+    opacity: initial;
+}
+
 .progressbar li.disabled3:before {
     background: black url(/assets/img/escalas/eei.png) no-repeat center center;
     filter: grayscale(70%) brightness(30%);
@@ -152,8 +166,22 @@
     opacity: initial;
 }
 
-.progressbar li.active2:before {
+.progressbar li.active0:before {
     background: black url(/assets/img/escalas/tierra.png) no-repeat center center;
+    filter: brightness(100%);
+    background-size: 100%;
+    opacity: initial;
+}
+
+.progressbar li.active1:before {
+    background: black url(/assets/img/escalas/ankara.png) no-repeat center center;
+    filter: brightness(100%);
+    background-size: 100%;
+    opacity: initial;
+}
+
+.progressbar li.active2:before {
+    background: black url(/assets/img/escalas/buenosAires.png) no-repeat center center;
     filter: brightness(100%);
     background-size: 100%;
     opacity: initial;
@@ -223,6 +251,7 @@
     background-size: 100%;
     opacity: initial;
 }
+
 
 
 
