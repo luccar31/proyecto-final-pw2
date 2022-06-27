@@ -44,7 +44,8 @@ class Flight_planModel
 
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
-        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, te.description as equipment, j.diff_time as hours FROM flight_plan fp
+        $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, 
+                                           te.description as equipment, j.diff_time as hours FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
                                            INNER JOIN days d on fp.departure_day = d.id
                                            INNER JOIN location l on fp.departure_loc = l.id
@@ -52,7 +53,8 @@ class Flight_planModel
                                            INNER JOIN type_equipment te on e.id_type = te.id
                                            INNER JOIN route r on tf.id = r.id_type_flight
                                            INNER JOIN journey j on r.id = j.id_route
-                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed') AND j.id_location = '$destination' AND r.id_type_equipment IN ('$typesOfEquipmentAllowed')
+                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed') 
+                                           AND j.id_location = '$destination' AND r.id_type_equipment IN ('$typesOfEquipmentAllowed')
                                            ORDER BY fp.departure_day");
 
 
@@ -400,7 +402,7 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-10';
+        $actualDate = '2022-07-6';
         $actualTime = '09:00:00';
 
         $actualDateTime = $actualDate . " " . $actualTime;
