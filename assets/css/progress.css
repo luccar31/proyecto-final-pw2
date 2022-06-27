@@ -45,7 +45,7 @@
     content: none;
 }
 
-.progressbar li.active {
+.progressbar li.activ:last-child {
     color: white;
     font-weight: bold;
 }

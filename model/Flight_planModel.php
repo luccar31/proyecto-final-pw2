@@ -232,6 +232,10 @@ class Flight_planModel
             $errors['sameLocations'] = "El origen y destino no pueden ser el mismo";
         }
 
+        if ($this->getStopsOrder($departure, $destination) == false){
+            $errors['badOrder'] = "El origen que eligió es posterior al destino";
+        }
+
         //semana anterior a la actual, error
         if ($week != null) {
 
@@ -396,7 +400,7 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-03';
+        $actualDate = '2022-07-10';
         $actualTime = '09:00:00';
 
         $actualDateTime = $actualDate . " " . $actualTime;
@@ -434,6 +438,19 @@ class Flight_planModel
 
 
 
+    }
+
+    private function getStopsOrder($departure, $destination)
+    {
+        $departureOrder = $this->database->query("SELECT id from location WHERE id = '$departure'");
+        $destinationOrder = $this->database->query("SELECT id from location WHERE id = '$destination'");
+
+        if ($destinationOrder < $departureOrder){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 }
