@@ -561,8 +561,8 @@ INSERT INTO journey VALUES (30,3,1,0,0);
 INSERT INTO journey VALUES (31,3,2,0,0);
 INSERT INTO journey VALUES (32,4,1,0,0);
 INSERT INTO journey VALUES (34,4,2,0,0);
-INSERT INTO journey VALUES (35,4,1,0,0);
-INSERT INTO journey VALUES (36,4,2,0,0);
+INSERT INTO journey VALUES (35,5,1,0,0);
+INSERT INTO journey VALUES (36,5,2,0,0);
 
 CREATE TABLE stop(
                      id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala

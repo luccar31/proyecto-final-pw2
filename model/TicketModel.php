@@ -35,7 +35,7 @@ class TicketModel
     }
 
     public function findClientTickets($nickname){
-        $resu = $this->database->query("SELECT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
+        $resu = $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
                                         tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
                                         FROM ticket t
                                         INNER JOIN cabin c ON t.id_cabin = c.id
