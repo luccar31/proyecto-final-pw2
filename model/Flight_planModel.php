@@ -44,7 +44,6 @@ class Flight_planModel
 
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
-
         $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, te.description as equipment, j.diff_time as hours FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
                                            INNER JOIN days d on fp.departure_day = d.id
@@ -53,11 +52,13 @@ class Flight_planModel
                                            INNER JOIN type_equipment te on e.id_type = te.id
                                            INNER JOIN route r on tf.id = r.id_type_flight
                                            INNER JOIN journey j on r.id = j.id_route
-
-                                           WHERE tf.id IN ('$type') AND l.id = '$departure' AND e.id_type IN ('$typesOfEquipmentAllowed') AND j.id_location = '$destination'
+                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed') AND j.id_location = '$destination' AND r.id_type_equipment IN ('$typesOfEquipmentAllowed')
                                            ORDER BY fp.departure_day");
 
 
+
+        //metodo para tranformar el dia del plan de vuelo a una fecha en base a la semana elegida por el usuario
+        //o dar formato
         $this->mapDate($result, $week);
         $this->calculateArrivalDate($result);
 
@@ -83,8 +84,6 @@ class Flight_planModel
             return ['empty' => ['error' => 'No hay vuelos disponibles']];
         }
 
-        //metodo para tranformar el dia del plan de vuelo a una fecha en base a la semana elegida por el usuario
-        //o dar formato
 
         //retorno la week para después mandárselo al método que crea el vuelo y así asiganrle el campo 'departure_week'
         return ['flight_plans' => $result, 'week' => $week_number, 'id_destination' => $destination, 'name_destination' => $name_destination , 'name_departure' => $name_departure, 'id_departure' => $departure];
@@ -108,12 +107,13 @@ class Flight_planModel
         $type_flight_3 = $this->database->query("SELECT DISTINCT id_location FROM journey j
                                                  INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 3");
 
+
+        //"limpio" los array para que sean mas facil de leer
         $type_flight_1 = array_column($type_flight_1, 'id_location');
         $type_flight_2 = array_column($type_flight_2, 'id_location');
         $type_flight_3 = array_column($type_flight_3, 'id_location');
 
         //pregunto si el destino está dentro del respectivo array (recorrido)
-
         if (in_array($destination, $type_flight_1)) {
             $type = [1];
         } elseif (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
@@ -134,6 +134,7 @@ class Flight_planModel
         }
 
 
+        //el implode me retorna algo asi (1,2,3)
         return implode("','", $type);
     }
 
@@ -169,6 +170,7 @@ class Flight_planModel
                                 VALUES ('$id_flight','$id_flight_plan','$ship[id]','$date','$time', '$week')
                                 ");
 
+            //creo las escalas
             $this->createStops($id_flight_plan, $id_flight, $departure_date, $departure_time, $departure_id, 'asc'); //creo sus escalas en el orden comun
         }
 
@@ -367,27 +369,29 @@ class Flight_planModel
         return $equipment[0];
     }
 
+    //en el caso que no haya vuelo existente, se tiene que convertir el dia (L,M,X,J,V,S,D) en un formato fecha y calcular
+    //con las horas
     public function calculateArrivalDate(&$result)
     {
 
         foreach ($result as &$flight){
-            $dateTime =  $flight['day']. $flight['time'];
+            // le paso el dia y la hora
+            $dateTime =  $flight['day'] . $flight['time'];
+            // este metodo me crea la fecha con esos parámetros :)
             $dateTime = date_create($dateTime);
             $hours = $flight['hours'];
+            //con este método le sumo las horas a la fecha
             $calculatedDateTime = date_add($dateTime, date_interval_create_from_date_string("$hours hours"));
             $flight['day2'] = $calculatedDateTime->format('Y-m-d');
-            $flight['time2'] = $calculatedDateTime->format('h:i:s');
+            $flight['time2'] = $calculatedDateTime->format('H:i:s');
         }
-
-        return $result;
-
-
-        return $data;
 
     }
 
+    //metodo para buscar donde esta la nave, sirve para la barra de progreso
     public function findShipPosition($id_ship){
 
+        //fecha y hora actual
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
@@ -397,6 +401,9 @@ class Flight_planModel
 
         $actualDateTime = $actualDate . " " . $actualTime;
 
+        //busco de la tabla stop, aquellos relacionados a un vuelo que utilice la nave. Obtengo sus fechas y hora de llegada y las concateno
+        //para después compararlos con la fecha y hora actual. Solo quiero aquellos resultados anteriores a la fecha actual.
+        //Me los trae en orden descentende.
        $position = $this->database->query("SELECT (CONCAT(s.arrive_date, ' ', s.arrive_time)) as dateTime, s.id_location, s2.id_location as lastLocation FROM stop s
                                INNER JOIN flight f on s.id_flight = f.id_flight
                                INNER JOIN stop s2 on s.id_flight = s2.id_flight

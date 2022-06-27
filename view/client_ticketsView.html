@@ -28,7 +28,13 @@
                         <td>{{destination}}</td>
                         <td>{{type_cabin}}</td>
                         <td>{{service}}</td>
-                        <td><a href="/flight_plan/progress?id_ship={{id_ship}}&id_type_flight={{id_type_flight}}" style="color: black; text-decoration: underline aqua">¿¿¿Dónde está mi nave???</a></td>
+                        <td>
+                            <button type="button" class="btn btn-primary">
+                                <a href="/flight_plan/progress?id_ship={{id_ship}}&id_type_flight={{id_type_flight}}">
+                                Dónde está mi nave <i class="fas fa-search"></i>
+                                </a>
+                            </button>
+                        </td>
                     </tr>
                     {{/tickets}}
                 </table>
@@ -37,6 +43,4 @@
 
     </div>
 </section>
-{{> footer}}
-
 {{> footer}}

@@ -36,12 +36,11 @@
             <td>{{type}}</td>
             <td>{{equipment}}</td>
             <td>
-                <!--<a href="/flight_plan/showFlightDetail?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}"
-                   style="color: black; text-decoration: underline aqua">ver detalle</a>-->
-                <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}"
-                   style="color: black; text-decoration: underline aqua">Continuar</a>
-
-
+                <button type="button" class="btn btn-primary">
+                    <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}">
+                        Continuar
+                    </a>
+                </button>
             </td>
         </tr>
         {{/flight_plans}}

@@ -9,25 +9,16 @@ class TicketModel
         $this->database = $database;
     }
 
-    public function search($typeCabin = null, $typeService = null){
+    /*public function search($typeCabin = null, $typeService = null){
 
         if ($typeCabin) {
 
         }
 
-    }
+    }*/
 
     public function createTicket($id_flight, $id_type_cabin, $id_service, $userNickname, $num_tickets, $departure, $destination){
-        echo var_dump($id_flight);
-        echo "<br>";
-        echo var_dump($id_type_cabin);
-        echo "<br>";
-        echo var_dump($id_service);
-        echo "<br>";
-        echo var_dump($userNickname);
-        echo "<br>";
-        echo var_dump($num_tickets);
-        echo "<br>";
+
         for ($i = 0; $i < $num_tickets; $i++) {
             $this->database->query("INSERT INTO ticket (id_flight, id_cabin, id_service, user_nickname, departure, destination)
                                     VALUES ('$id_flight', '$id_type_cabin', '$id_service', '$userNickname', '$departure', '$destination')");
@@ -35,7 +26,7 @@ class TicketModel
     }
 
     public function findClientTickets($nickname){
-        $resu = $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
+        return $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
                                         tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
                                         FROM ticket t
                                         INNER JOIN cabin c ON t.id_cabin = c.id
@@ -46,7 +37,6 @@ class TicketModel
                                         INNER JOIN location l2 ON t.destination = l2.id
                                         INNER JOIN service s ON t.id_service = s.id 
                                         WHERE user_nickname = '$nickname'");
-        return ['tickets' => $resu];
     }
 
     public function getCabins($id_flight_plan){
@@ -88,6 +78,19 @@ class TicketModel
 
     }
 
+    public function findClientTicket($id_flight, $nickname){
+        return $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
+                                        tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
+                                        FROM ticket t
+                                        INNER JOIN cabin c ON t.id_cabin = c.id
+                                        INNER JOIN type_cabin tc ON c.id_type = tc.id
+                                        INNER JOIN flight f ON t.id_flight = f.id_flight
+                                        INNER JOIN flight_plan fp ON f.id_flight_plan = fp.id
+                                        INNER JOIN location l ON fp.departure_loc = l.id
+                                        INNER JOIN location l2 ON t.destination = l2.id
+                                        INNER JOIN service s ON t.id_service = s.id 
+                                        WHERE user_nickname = '$nickname' AND t.id_flight = '$id_flight'");
+    }
 
     public function validateCapacityCabin($id_flight, $id_type_cabin, $num_tickets){
         //trae la capacidad de la cabina elegida
