@@ -42,17 +42,18 @@ CREATE TABLE client
     email         VARCHAR(100) NOT NULL UNIQUE,
     traveler_code VARCHAR(50) UNIQUE,
     flight_level  INT,
-    FOREIGN KEY (user_nickname) REFERENCES user (nickname)
+    FOREIGN KEY (user_nickname) REFERENCES user (nickname),
+    verification BOOLEAN NOT NULL
 );
 
 INSERT INTO client
-VALUES ('stefi5678', 'Stefenía', 'Rinaldi', 'stefania@gmail.com', null, null);
+VALUES ('stefi5678', 'Stefenía', 'Rinaldi', 'stefania@gmail.com', null, null, true);
 INSERT INTO client
-VALUES ('tomi4321', 'Tomás', 'Palavecino', 'tomas@gmail.com', null, null);
+VALUES ('tomi4321', 'Tomás', 'Palavecino', 'tomas@gmail.com', null, null, true);
 INSERT INTO client
-VALUES ('maxi9876', 'Maximiliano', 'Davies', 'maxi@gmail.com', null, null);
+VALUES ('maxi9876', 'Maximiliano', 'Davies', 'maxi@gmail.com', null, null, true);
 INSERT INTO client
-VALUES ('alexis7777', 'Alexis', 'Verba', 'alexis@gmail.com', null, null);
+VALUES ('alexis7777', 'Alexis', 'Verba', 'alexis@gmail.com', null, null, true);
 
 CREATE TABLE medical_center
 (
