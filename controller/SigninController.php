@@ -60,13 +60,11 @@ class SigninController
 
         }
         else{
-            //todo: mandar confirmacion por mail
             $this->userModel->createUser($nickname, $password);
             $this->clientModel->createClient($nickname, $firstname, $surname, $email);
-            header("location: /login");
-            exit();
+            $_SESSION['nickname'] = $nickname;
+            $_SESSION['email'] = $email;
+            Helper::redirect('/login');
         }
-
-
     }
 }

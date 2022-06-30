@@ -4,19 +4,17 @@ class Router {
     private $configuration;
     private $defaultController;
     private $defaultMethod;
-    private $session;
     private $validController;
 
-    public function __construct($configuration, $defaultController, $defaultMethod, $session) {
+    public function __construct($configuration, $defaultController, $defaultMethod) {
         $this->configuration = $configuration;
         $this->defaultController = $defaultController;
         $this->defaultMethod = $defaultMethod;
-        $this->session = $session;
         $this->validController = ['login', 'signin','flight_plan', 'ticket', ''];
     }
 
     public function executeMethodFromController($controllerName, $methodName) {
-        if(!$this->session->isSessionActive() && !$this->isValidController($controllerName)){
+        if(!Session::isSessionActive() && !$this->isValidController($controllerName)){
             $controllerName = 'login';
         }
         $controller = $this->getControllerFrom($controllerName);

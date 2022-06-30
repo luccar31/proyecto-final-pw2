@@ -1,7 +1,7 @@
 <?php
+
 include_once('helper/MySqlDatabase.php');
 include_once('helper/Router.php');
-require_once('helper/MustachePrinter.php');
 include_once('helper/Session.php');
 include_once('helper/Helper.php');
 
@@ -19,12 +19,14 @@ include_once('model/AppointmentModel.php');
 include_once('model/TicketModel.php');
 include_once('model/Flight_planModel.php');
 
+require_once('helper/MustachePrinter.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
+require_once('helper/Mailer.php');
 
 class Configuration {
 
     public function getSigninController() {
-        return new SigninController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter());
+        return new SigninController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter(), $this->getMailer());
     }
 
     public function getProfileController() {
@@ -32,7 +34,7 @@ class Configuration {
     }
 
     public function getLoginController() {
-        return new LoginController($this->getUserModel(), $this->getPrinter());
+        return new LoginController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter(), $this->getMailer());
     }
 
     public function getHomeController() {
@@ -81,18 +83,14 @@ class Configuration {
     }
 
     private function getPrinter() {
-        return new MustachePrinter("view", $this->getSession());
+        return new MustachePrinter("view");
     }
 
     public function getRouter() {
-        return new Router($this, "getHomeController", "execute", $this->getSession());
+        return new Router($this, "getHomeController", "execute");
     }
 
-    private function getSession(){
-        return new Session();
-    }
-
-    private function getHelper(){
-        return new Helper();
+    public function getMailer() {
+        return new Mailer(); //en realidad todas las configuraciones deberian ir acá
     }
 }

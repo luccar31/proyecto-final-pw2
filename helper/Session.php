@@ -6,7 +6,7 @@ class Session {
 
     }
 
-    public function isSessionActive(){
+    public static function isSessionActive(){
         return isset($_SESSION["logged"]);
     }
 }
