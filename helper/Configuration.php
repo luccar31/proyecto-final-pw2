@@ -12,12 +12,14 @@ include_once('controller/ProfileController.php');
 include_once('controller/MedicalcheckupController.php');
 include_once('controller/Flight_planController.php');
 include_once('controller/TicketController.php');
+include_once('controller/CreditController.php');
 
 include_once('model/UserModel.php');
 include_once('model/ClientModel.php');
 include_once('model/AppointmentModel.php');
 include_once('model/TicketModel.php');
 include_once('model/Flight_planModel.php');
+include_once('model/CreditModel.php');
 
 require_once('helper/MustachePrinter.php');
 require_once('third-party/mustache/src/Mustache/Autoloader.php');
@@ -51,6 +53,14 @@ class Configuration {
 
     public function getFlight_planController() {
         return new Flight_planController(['flight_planModel' => $this->getFlight_planModel()],$this->getPrinter());
+    }
+
+    public function getCreditController(){
+        return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter());
+    }
+
+    private function getCreditModel(){
+        return new CreditModel($this->getDatabase());
     }
 
     private function getUserModel(){

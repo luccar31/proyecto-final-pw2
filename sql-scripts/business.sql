@@ -528,8 +528,8 @@ CREATE TABLE journey(
                         order_ INT NOT NULL -- orden en el que sucede el recorrido
 );
 
-INSERT INTO journey VALUES (1,1,2,8,1);
-INSERT INTO journey VALUES (2,1,1,8,1);
+INSERT INTO journey VALUES (1,1,2,8,0);
+INSERT INTO journey VALUES (2,1,1,8,0);
 INSERT INTO journey VALUES (3,2,3,4,1);
 INSERT INTO journey VALUES (4,2,4,1,2);
 INSERT INTO journey VALUES (5,2,5,16,3);
@@ -564,6 +564,10 @@ INSERT INTO journey VALUES (32,4,1,0,0);
 INSERT INTO journey VALUES (34,4,2,0,0);
 INSERT INTO journey VALUES (35,5,1,0,0);
 INSERT INTO journey VALUES (36,5,2,0,0);
+INSERT INTO journey VALUES (37,6,1,0,0);
+INSERT INTO journey VALUES (38,6,2,0,0);
+
+
 
 CREATE TABLE stop(
                      id INT AUTO_INCREMENT PRIMARY KEY, -- identificador principal de la escala

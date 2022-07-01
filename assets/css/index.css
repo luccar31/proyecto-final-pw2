@@ -17,7 +17,7 @@ a:hover {
     background: white;
 }
 
-.login, .home, .flight, .profile, .tickets{
+.login, .home, .flight, .profile, .tickets, .pay{
     background: url("/assets/img/fondo_blur.jpg");
     background-size: cover;
     padding: 20px 0 60px 0;
@@ -36,4 +36,17 @@ a:hover {
     font-size: 40px;
     color: white;
     padding: 150px 0 300px 0;
+}
+
+.botonVuelo{
+    float: right;
+}
+
+.pay{
+    padding-top: 200px;
+    padding-bottom: 200px;
+}
+
+.payForm{
+    background: white;
 }

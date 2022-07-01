@@ -19,23 +19,7 @@ class TicketController{
         $this->printer->generateView('ticketView.html');
     }
 
-    //info de los precios del vuelo elegido
-    public function payInfo(){
 
-        $data['id_type_cabin'] = $_POST['type_cabin'];
-        $data['id_service']  = $_POST['service'];
-        $data['num_tickets']  =  $_POST['num_tickets'];
-
-        $_SESSION['id_type_cabin'] = $_POST['type_cabin'];
-        $_SESSION['id_service']  = $_POST['service'];
-        $_SESSION['num_tickets']  =  $_POST['num_tickets'];
-
-        $data['price'] = $this->ticketModel->calculatePrice($_SESSION['id_flight_plan'], $data['num_tickets'], $data['id_service'], $data['id_type_cabin']);
-
-        $this->printer->generateView('priceView.html', $data);
-
-
-    }
 
     //crea ticket y el vuelo en caso de que no exista
     public function createTicket(){

@@ -14,20 +14,26 @@ class Flight_planController
     //lanza la vista con las ciudades para elegir
     public function execute()
     {
-        $data['cities'] = $this->flight_planModel->getCities();
-        $this->printer->generateView('homeView.html', $data);
+        $data['type'] = $_POST['type'];
+        $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
+        $data['destinationCities'] = $this->flight_planModel->getDestinationCities($data['type']);
+        $this->printer->generateView('flightPlanFormView.html', $data);
     }
 
     //muestra el formulario y lo valida
     public function searchFlightForm()
     {
-        $data['cities'] = $this->flight_planModel->getCities();
+        $data['type'] = $_POST['type'];
+        $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
+        $data['destinationCities'] = $this->flight_planModel->getDestinationCities($data['type']);
         $data['departure'] = $_POST['departure'];
         $data['destination'] = $_POST['destination'];
         $data['week'] = $_POST['week'];
         $data['selectedDepartureName'] = $this->flight_planModel->getCityNameById($data['departure']);
         $data['selectedDestinationName'] = $this->flight_planModel->getCityNameById($data['destination']);
         $errors = 0;
+
+
 
 
         // semana vacía
@@ -50,29 +56,29 @@ class Flight_planController
         if ($errors == 0) {
 
             //me devuelve errores del backend en caso de que los haya
-            $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week']);
+            $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week'], $data['type']);
 
             //si lo devuelto está vacio, no hay errores:
             if (empty($data['errors'])) {
 
                 //por lo tanto, busca los vuelos para mostrar
-                $this->searchFlight($data['departure'], $data['destination'], $data['week']);
+                $this->searchFlight($data['departure'], $data['destination'], $data['week'], $data['type']);
 
             } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario:
             else {
-                $this->printer->generateView('homeView.html', $data);
+                $this->printer->generateView('flightPlanFormView.html', $data);
             }
 
         } //si sigue habiendo erroes en los input, vuelve al formulario
         else {
-            $this->printer->generateView('homeView.html', $data);
+            $this->printer->generateView('flightPlanFormView.html', $data);
         }
     }
 
     //busca vuelos creados o planes de vuelo
-    private function searchFlight($departure, $destination, $week)
+    private function searchFlight($departure, $destination, $week, $type)
     {
-        $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week);
+        $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week, $type);
 
         $this->printer->generateView('flightPlanSearchView.html', $data);
     }

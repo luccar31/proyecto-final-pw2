@@ -11,7 +11,7 @@ class Flight_planModel
     }
 
     //funcion que busca vuelos
-    public function getFlightPlanList($departure, $destination, $week)
+    public function getFlightPlanList($departure, $destination, $week, $type)
     {
 
         //como $week viene por ejemplo en formato '2022-W25' tengo que hacer un split y obtener el valor 25 en este caso
@@ -20,43 +20,26 @@ class Flight_planModel
         $name_destination = $this->getCityNameById($destination);
         $name_departure = $this->getCityNameById($departure);
 
-        echo "Origen: ";
-        echo $departure;
-        echo "<br>";
-
-        echo "Destino: ";
-        echo $destination;
-        echo "<br>";
-
-        //obtengo el tipo de vuelo, me retorna en forma de array xq hay veces que para ir a un destino que se repite
-        //en recorrido corto y en recorrido largo debemos mostrar ambas opciones
-        //hacemos una conversión para que mysql lo pueda interpretar
-        $type = $this->consultTypeFlight($departure, $destination);
-        echo "Tipo de vuelo que puede elegir: ";
-        echo $type;
-        echo "<br>";
+        if ($type == 2){
+            $type = $this->consultTypeFlight($departure, $destination);
+        }
 
         $typesOfEquipmentAllowed = $this->consultFlightLevel();
         $typesOfEquipmentAllowed = implode("','", $typesOfEquipmentAllowed);
-        echo "Tipo de equipamiento que puede elegir (Orbital, AA, BA): ";
-        echo var_dump($typesOfEquipmentAllowed);
-        echo "<br>";
 
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
         $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, 
                                            te.description as equipment, j.diff_time as hours FROM flight_plan fp
                                            INNER JOIN equipment e on fp.id_equipment = e.id
-                                           INNER JOIN days d on fp.departure_day = d.id
                                            INNER JOIN location l on fp.departure_loc = l.id
                                            INNER JOIN type_flight tf on fp.type_flight = tf.id
                                            INNER JOIN type_equipment te on e.id_type = te.id
                                            INNER JOIN route r on tf.id = r.id_type_flight
                                            INNER JOIN journey j on r.id = j.id_route
-                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed') 
-                                           AND j.id_location = '$destination' AND r.id_type_equipment IN ('$typesOfEquipmentAllowed')
+                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed')
+                                           GROUP BY fp.id
                                            ORDER BY fp.departure_day");
-
 
 
         //metodo para tranformar el dia del plan de vuelo a una fecha en base a la semana elegida por el usuario
@@ -97,10 +80,6 @@ class Flight_planModel
 
         //obtengo el id de los lugares que hace el recorrido
 
-        //orbital
-        $type_flight_1 = $this->database->query("SELECT DISTINCT id_location FROM journey j
-                                                 INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 1");
-
         //circuito corto
         $type_flight_2 = $this->database->query("SELECT DISTINCT id_location FROM journey j
                                                  INNER JOIN route r on j.id_route = r.id WHERE r.id_type_flight = 2");
@@ -111,22 +90,17 @@ class Flight_planModel
 
 
         //"limpio" los array para que sean mas facil de leer
-        $type_flight_1 = array_column($type_flight_1, 'id_location');
         $type_flight_2 = array_column($type_flight_2, 'id_location');
         $type_flight_3 = array_column($type_flight_3, 'id_location');
 
         //pregunto si el destino está dentro del respectivo array (recorrido)
-        if (in_array($destination, $type_flight_1)) {
-            $type = [1];
-        } elseif (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
+        if (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
             $type = [2];
         } elseif (in_array($destination, $type_flight_3) && !in_array($destination, $type_flight_2)) {
             $type = [3];
             //si el destino está en el circuito corto y en el circuito largo que me retorne un array con los dos tipos
-        } elseif (in_array($destination, $type_flight_2) && in_array($destination, $type_flight_3)) {
+        } else{
             $type = [2, 3];
-        } else {
-            $type = [4];
         }
 
         //en el caso de Orbital Hotel, si el origen existe en circuito corto pero no en largo, automaticamente
@@ -181,7 +155,7 @@ class Flight_planModel
     }
 
     //consulta el nivel de vuelo del cliente
-    private function consultFlightLevel()
+   private function consultFlightLevel()
     {
         //si inició sesión:
         if (isset($_SESSION["nickname"])) {
@@ -210,13 +184,10 @@ class Flight_planModel
     }
 
     //valida los inputs del formulario
-    public function validateInputs($departure, $destination, $week)
+    public function validateInputs($departure, $destination, $week, $type)
     {
         $week = isset($week) ? $week : null;
         $errors = [];
-
-        //consulto el tipo de vuelo
-        $type = $this->consultTypeFlight($departure, $destination);
 
         //busco las ciudades según el tipo de vuelo
         $existingLocation = $this->database->query("SELECT DISTINCT id_location FROM journey j
@@ -234,7 +205,7 @@ class Flight_planModel
             $errors['sameLocations'] = "El origen y destino no pueden ser el mismo";
         }
 
-        if ($this->getStopsOrder($departure, $destination) == false){
+        if ($this->getStopsOrder($departure, $destination, $type) == false ){
             $errors['badOrder'] = "El origen que eligió es posterior al destino";
         }
 
@@ -318,9 +289,45 @@ class Flight_planModel
         return $this->database->query("SELECT * FROM type_flight");
     }
 
-    public function getCities()
+    public function getDepartureCities($type)
     {
-        return $this->database->query("SELECT id, name from location");
+        if($type == 4 || $type == 1) {
+        return $this->database->query("SELECT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
+                                           ORDER BY j.order_");
+    }
+        else{
+            return $this->database->query("SELECT DISTINCT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ <8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
+                                           ORDER BY j.order_");
+
+        }
+
+    }
+
+    public function getDestinationCities($type)
+    {
+        if($type == 1) {
+            return $this->database->query("SELECT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
+                                           ORDER BY j.order_");
+        }
+        elseif($type == 4){
+            return $this->database->query("SELECT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.id_location = 12");
+        }
+        else{
+            return $this->database->query("SELECT DISTINCT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.id_location > 2 AND j.id_location <12 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
+                                           ORDER BY j.order_");
+
+        }
+
     }
 
     //esto es para mostrar devuelta en la vista luego de algun error
@@ -333,15 +340,10 @@ class Flight_planModel
 
     }
 
-   /* public function getDestinationCities($departure){
-        return $this->database->query("SELECT id, name from location");
-    }*/
-
     private function mapDate(&$array, $week)
     {
             $res = $this->obtainValuesFromWeekStr($week);
             $year = (int)$res['year'];
-            echo $year;
             $week_no = (int)$res['weekno'];
 
             $date = new DateTime();
@@ -402,9 +404,6 @@ class Flight_planModel
         $actualDate = date('Y-m-d');
         $actualTime = date(' H:i:s');
 
-        $actualDate = '2022-07-6';
-        $actualTime = '09:00:00';
-
         $actualDateTime = $actualDate . " " . $actualTime;
 
         //busco de la tabla stop, aquellos relacionados a un vuelo que utilice la nave. Obtengo sus fechas y hora de llegada y las concateno
@@ -442,12 +441,12 @@ class Flight_planModel
 
     }
 
-    private function getStopsOrder($departure, $destination)
+    private function getStopsOrder($departure, $destination, $type)
     {
         $departureOrder = $this->database->query("SELECT id from location WHERE id = '$departure'");
         $destinationOrder = $this->database->query("SELECT id from location WHERE id = '$destination'");
 
-        if ($destinationOrder < $departureOrder){
+        if ($destinationOrder < $departureOrder && $type != 1){
             return false;
         }
         else{

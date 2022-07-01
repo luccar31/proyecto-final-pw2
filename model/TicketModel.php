@@ -47,36 +47,7 @@ class TicketModel
         return $this->database->query("SELECT * FROM service GROUP BY price desc");
     }
 
-    public function calculatePrice($id_flight_plan, $num_tickets, $id_service, $id_type_cabin)
-    {
 
-        $departure = $_SESSION['departure'];
-        $destination = $_SESSION['destination'];
-        $segmentPrice = 1000;
-
-        $priceCabin = $this->database->query("SELECT price FROM type_cabin WHERE id = '$id_type_cabin'");
-        $priceService = $this->database->query("SELECT price FROM service WHERE id = '$id_service'");
-        $segments = $this->database->query("SELECT (j2.order_ - j1.order_) resta FROM flight_plan fp
-
-                                            INNER JOIN equipment e on fp.id_equipment = e.id
-                                            INNER JOIN type_equipment te on e.id_type = te.id
-                                            INNER JOIN route r1 on te.id = r1.id_type_equipment
-                                            INNER JOIN journey j1 on r1.id = j1.id_route
-                                            INNER JOIN journey j2 on r1.id = j2.id_route
-                                            
-                                            WHERE fp.id = '$id_flight_plan' AND r1.id_type_flight = fp.type_flight AND j1.id_location = '$departure' AND j2.id_location = '$destination'");
-
-
-        //si llega a ser un vuelo ankara - buenos aires no hay tramo real, al ser ambos posición 0 la resta da 0, por lo tanto le seteamos el tramo en 1
-        if ($segments[0]['resta'] == 0){
-            $segments[0]['resta'] = 1;
-        }
-
-        $totalPrice = (($priceCabin[0]['price']+$priceService[0]['price'] + ($segments[0]['resta'] * $segmentPrice))   * $num_tickets);
-       return ['totalPrice' => $totalPrice, 'priceCabin' => $priceCabin[0]['price'], 'priceService' => $priceService[0]['price'],
-           'segments' => $segments[0]['resta'], 'num_tickets' => $num_tickets, 'segmentPrice' => $segmentPrice];
-
-    }
 
     public function findClientTicket($id_flight, $nickname){
         return $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 

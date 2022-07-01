@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
 
-                <form action="/ticket/payInfo" method="post" >
+                <form action="/credit/payInfo" method="post" >
                     <div class="form-floating ">
                         <select id="type_cabin" name="type_cabin" class="form-select" id="floatingSelect" >
                             {{#cabins}}
@@ -35,9 +35,10 @@
                     </div>
                     <div>
                         <label for="num_tickets" class="form-label">¿Cuantas reservas desea realizar?</label>
-                        <input type="number" min="0" name="num_tickets" id="num_tickets"/>
+                        <input type="number" min="1" name="num_tickets" id="num_tickets"/>
                     </div>
                     <div>
+
                         <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Reservar</button>
                     </div>
                     <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-3 mt-4">Volver a buscar vuelo</a>
