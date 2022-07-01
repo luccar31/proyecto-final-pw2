@@ -2,108 +2,65 @@
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
     <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-lg-8 mb-4 mb-lg-0">
-                <div class="card mb-3" style="border-radius: .5rem;">
-                    <div class="row g-0">
-                        <div class="col-md-4 text-center text-white homeSection"
-                             style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background: url(/assets/img/ship.jpg); background-size: cover">
-
-                        </div>
-                        <div class="col-md-8">
-                            <form method="post" action="/flight_plan/searchFlightForm">
-                                <div class="card-body p-4">
-                                    <h5 te>¿A dónde quiere viajar?</h5>
-                                    <hr class="mt-0 mb-4">
-                                    <div class="row pt-1">
-                                        <div class="col-6 mb-3">
-                                            <h6><label>Origen</label></h6>
-                                            <select id="departureCity" name="departure" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                                {{#departure}}
-                                                <option value={{departure}} selected>{{selectedDepartureName}}</option>
-                                                {{/departure}}
-                                                {{^departure}}
-                                                <option value=0 selected>Seleccione una ciudad de origen</option>
-                                                {{/departure}}
-                                                {{#cities}}
-                                                <option value={{id}}>{{name}}</option>
-                                                {{/cities}}
-                                            </select>
-
-                                            {{#emptyDepartureError}}
-                                            <div style="color: red">
-                                                {{emptyDepartureError}}
-                                            </div>
-                                            {{/emptyDepartureError}}
-
-                                        </div>
-                                        <div class="col-6 mb-3">
-                                            <h6><label>Destino</label></h6>
-                                            <select id="destinationCity" name="destination" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                                {{#destination}}
-                                                <option value={{destination}} selected>{{selectedDestinationName}}</option>
-                                                {{/destination}}
-                                                {{^destination}}
-                                                <option value=0 selected>Seleccione una ciudad de origen</option>
-                                                {{/destination}}
-                                                {{#cities}}
-                                                <option value={{id}}>{{name}}</option>
-                                                {{/cities}}
-                                            </select>
-
-
-                                            {{#emptyDestinationError}}
-                                            <div style="color: red">
-                                                {{emptyDestinationError}}
-                                            </div>
-                                            {{/emptyDestinationError}}
-                                        </div>
-                                    </div>
-                                    <div class="row pt-1">
-                                        <hr class="mt-0 mb-4">
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                    <div class="row pt-1" style="padding-bottom: 50px; padding-left: 12px">
-                                        <h6><label>Elija una semana</label></h6>
-                                        <input type="week" name="week" id="week" value={{week}} class="form-control ">
-
-                                        {{#emptyWeek}}
-                                        <div style="color: red">
-                                            {{emptyWeek}}
-                                        </div>
-                                        {{/emptyWeek}}
-
-                                    </div>
-                                    </div>
-                                    <div class="row pt-1" style="text-align: right">
-                                        <a href="/medicalcheckup"><button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar</button></a>
-                                    </div>
-                                    <div class="errors">
-                                        {{#errors}}
-                                        <div style="color: red">
-                                            {{invalidWeek}}
-                                        </div>
-                                        <div style="color: red">
-                                            {{sameLocations}}
-                                        </div>
-                                        <div style="color: red">
-                                            {{invalidJourney}}
-                                        </div>
-                                        <div style="color: red">
-                                            {{badOrder}}
-                                        </div>
-                                        {{/errors}}
-                                    </div>
-
-
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100">
+            <img src="/assets/img/fondo.jpg" class="card-img-top" alt="..." style="object-fit: cover; height: 400px">
+            <div class="card-body">
+                <h5 class="card-title">Orbitales</h5>
+                <p class="card-text">Los viajes orbitales incluyen las siguientes rutas: <br><br> ■ Ankara -> Buenos Aires<br>■ Buenos Aires -> Ankara</p>
+            <a data-scroll href="#section1">Hola</a>
+            </div>
+            <div class="container">
+                <form action="flight_plan" method="post">
+                    <input hidden type="hidden" value=1 name="type">
+                    <button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar Vuelos</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="/assets/img/entreDestinos.jpg" class="card-img-top" alt="..." style="object-fit: cover; height: 400px">
+            <div class="card-body">
+                <h5 class="card-title">Entre Destinos</h5>
+                <p class="card-text">Los viajes entre destinos pueden ser:<br><br>■ Circuito corto: Buenos Aires/Ankara -> EEI -> Hotel Orbital -> Luna -> Marte<br>
+                ■ Circuito Largo: Buenos Aires/Ankara -> EEI -> Luna -> Marte -> Ganimedes -> Europa -> Io -> Encedalo -> Titan</p>
+            </div>
+
+            <div class="container">
+                <form action="flight_plan" method="post">
+                    <input hidden type="hidden" value=2 name="type">
+                    <button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar Vuelos</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="/assets/img/tour.jpg" class="card-img-top" alt="..." style="object-fit: cover; height: 400px">
+            <div class="card-body">
+                <h5 class="card-title">Tour</h5>
+                <p class="card-text">El Tour dura 35 dias y sale desde Buenos Aires/Ankara hasta Neptuno, pasando por todos los destinos anteriores</p>
+            </div>
+            <div class="container">
+                <form action="flight_plan" method="post">
+                    <input hidden type="hidden" value=4 name="type">
+                    <button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar Vuelos</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 </section>
 {{> footer}}
