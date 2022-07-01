@@ -12,8 +12,7 @@ class HomeController{
 
     public function execute() {
 
-        $data['cities'] = $this->flight_planModel->getCities();
-        $this->printer->generateView('homeView.html', $data);
+        $this->printer->generateView('homeView.html');
     }
 
 }
