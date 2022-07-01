@@ -1,0 +1,86 @@
+{{> header}}
+{{>navbar}}
+
+<section class="pay">
+    <div class="container">
+
+
+        {{#payError}}
+        <div class="card-header gradient-custom text-white" style="; text-align: center">
+            <h5 class="my-1" style="color: red">{{payError}}</h5>
+            <br>
+            <img src="/assets/img/ojo.jpg" style="text-align: center">
+        </div>
+        {{/payError}}
+        {{^payError}}
+        <div class="container px-4">
+            <div class="row gx-5">
+                <div class="col">
+                    <div class="cardCredit">
+                        <div class="cardCredit__front cardCredit__part">
+                            <img class="cardCredit__front-square cardCredit__square" src="/assets/img/bbva.png">
+                            <img class="cardCredit__front-logo cardCredit__logo" src="/assets/img/visa.png">
+                            <p class="cardCredit_numer">**** **** **** 6258</p>
+                            <div class="cardCredit__space-75">
+                                <span class="cardCredit__label">Titular de la tarjeta</span>
+                                <p class="cardCredit__info">{{#firstname}}{{firstname}}{{/firstname}} {{#surname}}{{surname}}{{/surname}}</p>
+                            </div>
+                            <div class="cardCredit__space-25">
+                                <span class="cardCredit__label">Expira</span>
+                                <p class="cardCredit__info">10/25</p>
+                            </div>
+                        </div>
+
+                        <div class="cardCredit__back cardCredit__part">
+                            <div class="cardCredit__black-line"></div>
+                            <div class="cardCredit__back-content">
+                                <div class="cardCredit__secret">
+                                    <p class="cardCredit__secret--last">420</p>
+                                </div>
+                                <img class="cardCredit__back-square cardCredit__square" src="/assets/img/banelco.png">
+                                <img class="cardCredit__back-logo cardCredit__logo" src="/assets/img/PLUS.png">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col">
+                    <form action="/credit/confirmPay" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Número de tarjeta</label>
+                            <input type="number" class="form-control" id="nroTarjeta" >
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Titular</label>
+                            <input type="titular" class="form-control" id="titular">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <label class="form-label">Vencimiento</label>
+                            <input type="text" class="form-control" id="vencimiento">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <label class="form-label">CCV</label>
+                            <input type="text" class="form-control" id="ccv">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <label class="form-label">Monto a pagar: </label>
+                            {{#totalPrice}}
+                            <input type="hidden" value="{{totalPrice}}" name="totalPrice">
+                            <h3>{{totalPrice}}</h3>
+                            {{/totalPrice}}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Pagar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/payError}}
+        
+
+
+
+    </div>
+</section>
+
+{{>footer}}
