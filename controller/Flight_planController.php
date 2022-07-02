@@ -33,9 +33,6 @@ class Flight_planController
         $data['selectedDestinationName'] = $this->flight_planModel->getCityNameById($data['destination']);
         $errors = 0;
 
-
-
-
         // semana vacía
         if (empty($data['week'])) {
             $errors++;

@@ -4,6 +4,9 @@ include_once('helper/MySqlDatabase.php');
 include_once('helper/Router.php');
 include_once('helper/Session.php');
 include_once('helper/Helper.php');
+require_once('helper/MustachePrinter.php');
+require_once('helper/Mailer.php');
+require_once('helper/PDFGenerator.php');
 
 include_once('controller/HomeController.php');
 include_once('controller/SigninController.php');
@@ -21,14 +24,10 @@ include_once('model/TicketModel.php');
 include_once('model/Flight_planModel.php');
 include_once('model/CreditModel.php');
 
-require_once('helper/MustachePrinter.php');
-require_once('third-party/mustache/src/Mustache/Autoloader.php');
-require_once('helper/Mailer.php');
-
 class Configuration {
 
     public function getSigninController() {
-        return new SigninController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter(), $this->getMailer());
+        return new SigninController(['userModel' => $this->getUserModel(), 'clientModel' => $this->getClientModel()], $this->getPrinter());
     }
 
     public function getProfileController() {
@@ -48,7 +47,7 @@ class Configuration {
     }
 
     public function getTicketController() {
-        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel(), 'appointmentModel' => $this->getAppointmentModel()], $this->getPrinter(), $this->getPrinterForPDF());
+        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel(), 'appointmentModel' => $this->getAppointmentModel()], $this->getPrinter(), $this->getPrinterForPDF(), $this->getPDFGenerator());
     }
 
     public function getFlight_planController() {
@@ -56,7 +55,7 @@ class Configuration {
     }
 
     public function getCreditController(){
-        return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter(), $this->getPrinterForPDF());
+        return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter());
     }
 
     private function getCreditModel(){
@@ -106,5 +105,9 @@ class Configuration {
 
     public function getMailer() {
         return new Mailer(); //en realidad todas las configuraciones deberian ir acá
+    }
+
+    public function getPDFGenerator(){
+        return new PDFGenerator();
     }
 }

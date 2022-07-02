@@ -1,5 +1,7 @@
 <?php
 
+require_once('third-party/mustache/src/Mustache/Autoloader.php');
+
 class MustachePrinter {
 
     private $mustache;
@@ -22,7 +24,7 @@ class MustachePrinter {
         echo  $this->mustache->render($contentAsString, $data);
     }
 
-    public function generateViewForPDF($template , $data = []){
+    public function generateTemplatedStringForPDF($template , $data = []){
         $contentAsString =  file_get_contents($this->viewPath . "/" .$template);
 
         return $this->mustache->render($contentAsString, $data);

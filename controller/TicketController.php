@@ -3,15 +3,19 @@
 class TicketController{
 
     private $printer;
+    private $printer2;
+    private $pdf;
     private $flight_planModel;
     private $ticketModel;
     private $appointmentModel;
 
-    public function __construct($models, $printer){
+    public function __construct($models, $printer, $printer2, $pdf){
         $this->flight_planModel = $models['flight_planModel'];
         $this->ticketModel = $models['ticketModel'];
         $this->appointmentModel = $models['appointmentModel'];
         $this->printer = $printer;
+        $this->printer2 = $printer2;
+        $this->pdf = $pdf;
     }
 
     public function execute(){
@@ -19,16 +23,8 @@ class TicketController{
         $this->printer->generateView('ticketView.html');
     }
 
-
-
     //crea ticket y el vuelo en caso de que no exista
     public function createTicket(){
-
-       /* $data = $this ->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $id_type_cabin, $num_tickets);*/
-
-
-        /*if($data['isValid'] == true){*/
-
 
         //si inició sesión:
         if (isset($_SESSION['nickname'])) {
@@ -54,12 +50,14 @@ class TicketController{
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
         }
 
-            $this->printer->generateView('reserved_ticketsView.html', $data);
+        $this->generatePDF($data['ticket'][0]);
+        $this->printer->generateView('reserved_ticketsView.html', $data);
+    }
 
-      /*  }else{
-            $this->printer->generateView('ticketView.html', $data);
-        }*/
-
+    private function generatePDF($data){
+        $html = $this->printer2->generateTemplatedStringForPDF('templatepdf.html', $data);
+        $this->pdf->getPDF($html);
+        exit();
     }
 
     //selecciona cabina y servicio
@@ -91,9 +89,5 @@ class TicketController{
     private function findClientTickets(){
         return $this->ticketModel->findClientTickets($_SESSION["nickname"]);
     }
-
-
-
-
 
 }

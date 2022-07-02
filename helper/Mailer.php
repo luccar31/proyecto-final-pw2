@@ -1,12 +1,12 @@
 <?php
 
+require_once ('third-party/PHPMailer/src/Exception.php');
+require_once ('third-party/PHPMailer/src/PHPMailer.php');
+require_once ('third-party/PHPMailer/src/SMTP.php');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
-require_once 'third-party/PHPMailer/src/Exception.php';
-require_once 'third-party/PHPMailer/src/PHPMailer.php';
-require_once 'third-party/PHPMailer/src/SMTP.php';
 
 class Mailer extends PHPMailer
 {
