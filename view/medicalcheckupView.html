@@ -1,18 +1,18 @@
 {{> header}}
 {{> navbar}}
 <section class="checkup vh-100 profile" style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
-        <div class="card">
-            <div class="card-header gradient-custom text-white">
-                <h5 class="my-1">Chequeo Médico</h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text">Usted ya tiene cita el día {{date}} en el centro médico de {{medicalCenter}}</p>
-            </div>
-        </div>
-        <button class="btn">
-            <a href="/medicalcheckup/deleteAppointment">Eliminar turno</a>
-        </button>
+  <div class="container py-5 h-100">
+    <div class="card">
+      <div class="card-header gradient-custom text-white">
+        <h5 class="my-1">Chequeo Médico</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">Usted ya tiene cita el día {{date}} en el centro médico de {{medicalCenter}}</p>
+      </div>
     </div>
+    <button class="btn">
+      <a href="/medicalcheckup/deleteAppointment">Eliminar turno</a>
+    </button>
+  </div>
 </section>
 {{> footer}}

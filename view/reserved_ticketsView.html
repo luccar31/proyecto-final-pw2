@@ -1,50 +1,50 @@
 {{> header}}
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
-        {{#notLogged}}
-        <div class="card-header gradient-custom text-white" style="text-align: center">
-            <h5 class="my-1" style="color: red; text-align: center">{{notLogged}}</h5>
-            <br>
-            <button type="button" class="btn btn-secondary"><a href="/login">Iniciar sesión</a></button>
-        </div>
-        {{/notLogged}}
-        {{#disabledClient}}
-        <div class="card-header gradient-custom text-white" style="text-align: center">
-            <h5 class="my-1" style="color: red; text-align: center">{{disabledClient}}</h5>
-            <br>
-            <button type="button" class="btn btn-secondary"><a href="/medicalcheckup">Chequeo Médico</a></button>
-        </div>
-        {{/disabledClient}}
-        {{#enabledClient}}
-        <div class="card">
-            <div class="card-header gradient-custom text-white">
-                <h5 class="my-1" style="color: limegreen">{{enabledClient}} {{id_flight}}</h5>
-            </div>
-            <div class="card-body">
-                <table class='table'>
-                    <thead>
-                    <tr>
-                        <th scope="col">Fecha de partida</th>
-                        <th scope="col">Hora de partida</th>
-                        <th scope="col">Origen</th>
-                        <th scope="col">Tipo de cabina</th>
-                        <th scope="col">Servicio</th>
-                    </tr>
-                    </thead>
-                    {{#ticket}}
-                    <tr>
-                        <td>{{departure_date}}</td>
-                        <td>{{departure_hour}}</td>
-                        <td>{{departure}}</td>
-                        <td>{{type_cabin}}</td>
-                        <td>{{service}}</td>
-                    </tr>
-                    {{/ticket}}
-                </table>
-            </div>
-        </div>
-        {{/enabledClient}}
+  <div class="container py-5 h-100">
+    {{#notLogged}}
+    <div class="card-header gradient-custom text-white" style="text-align: center">
+      <h5 class="my-1" style="color: red; text-align: center">{{notLogged}}</h5>
+      <br>
+      <button class="btn btn-secondary" type="button"><a href="/login">Iniciar sesión</a></button>
     </div>
+    {{/notLogged}}
+    {{#disabledClient}}
+    <div class="card-header gradient-custom text-white" style="text-align: center">
+      <h5 class="my-1" style="color: red; text-align: center">{{disabledClient}}</h5>
+      <br>
+      <button class="btn btn-secondary" type="button"><a href="/medicalcheckup">Chequeo Médico</a></button>
+    </div>
+    {{/disabledClient}}
+    {{#enabledClient}}
+    <div class="card">
+      <div class="card-header gradient-custom text-white">
+        <h5 class="my-1" style="color: limegreen">{{enabledClient}} {{id_flight}}</h5>
+      </div>
+      <div class="card-body">
+        <table class='table'>
+          <thead>
+          <tr>
+            <th scope="col">Fecha de partida</th>
+            <th scope="col">Hora de partida</th>
+            <th scope="col">Origen</th>
+            <th scope="col">Tipo de cabina</th>
+            <th scope="col">Servicio</th>
+          </tr>
+          </thead>
+          {{#ticket}}
+          <tr>
+            <td>{{departure_date}}</td>
+            <td>{{departure_hour}}</td>
+            <td>{{departure}}</td>
+            <td>{{type_cabin}}</td>
+            <td>{{service}}</td>
+          </tr>
+          {{/ticket}}
+        </table>
+      </div>
+    </div>
+    {{/enabledClient}}
+  </div>
 </section>
 {{> footer}}

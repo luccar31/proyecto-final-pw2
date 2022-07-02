@@ -1,53 +1,53 @@
 {{> header}}
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
+  <div class="container py-5 h-100">
 
-        <div class="card">
-            <div class="card-header gradient-custom text-white">
-                <h5 class="my-1">Reserva</h5>
+    <div class="card">
+      <div class="card-header gradient-custom text-white">
+        <h5 class="my-1">Reserva</h5>
+      </div>
+      <div class="card-body">
+
+        <form action="/credit/payInfo" method="post">
+          <div class="form-floating ">
+            <select class="form-select" id="type_cabin" id="floatingSelect" name="type_cabin">
+              {{#cabins}}
+              <option selected value={{id}}>{{description}}</option>
+              {{/cabins}}
+            </select>
+            <label for="floatingSelect">Seleccione el tipo de cabina</label>
+            {{#outOfCapacityError}}
+            <div style="color: red">
+              {{outOfCapacityError}} </br>
+              {{capacityCabin}}</br>
+              {{countFlightTickets}}
             </div>
-            <div class="card-body">
+            {{/outOfCapacityError}}
+          </div>
+          <div class="form-floating mt-4">
+            <select class="form-select" id="service" id="floatingSelect2" name="service">
+              {{#services}}
+              <option selected value={{id}}>{{description}}</option>
+              {{/services}}
+            </select>
+            <label for="floatingSelect2">Seleccione el tipo de servicio</label>
+          </div>
+          <div>
+            <label class="form-label" for="num_tickets">¿Cuantas reservas desea realizar?</label>
+            <input id="num_tickets" min="1" name="num_tickets" type="number"/>
+          </div>
+          <div>
 
-                <form action="/credit/payInfo" method="post" >
-                    <div class="form-floating ">
-                        <select id="type_cabin" name="type_cabin" class="form-select" id="floatingSelect" >
-                            {{#cabins}}
-                            <option value={{id}} selected>{{description}}</option>
-                            {{/cabins}}
-                        </select>
-                        <label for="floatingSelect">Seleccione el tipo de cabina</label>
-                        {{#outOfCapacityError}}
-                        <div style="color: red">
-                            {{outOfCapacityError}} </br>
-                            {{capacityCabin}}</br>
-                            {{countFlightTickets}}
-                        </div>
-                        {{/outOfCapacityError}}
-                    </div>
-                    <div class="form-floating mt-4">
-                        <select id="service" name="service" class="form-select" id="floatingSelect2" >
-                            {{#services}}
-                            <option value={{id}} selected>{{description}}</option>
-                            {{/services}}
-                        </select>
-                        <label for="floatingSelect2">Seleccione el tipo de servicio</label>
-                    </div>
-                    <div>
-                        <label for="num_tickets" class="form-label">¿Cuantas reservas desea realizar?</label>
-                        <input type="number" min="1" name="num_tickets" id="num_tickets"/>
-                    </div>
-                    <div>
-
-                        <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Reservar</button>
-                    </div>
-                    <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-3 mt-4">Volver a buscar vuelo</a>
-                </form>
+            <button class="btn btn-outline-dark btn-sm px-3 mt-4" type="submit">Reservar</button>
+          </div>
+          <a class="btn btn-outline-dark btn-sm px-3 mt-4" href="/flight_plan">Volver a buscar vuelo</a>
+        </form>
 
 
-            </div>
-        </div>
-
+      </div>
     </div>
+
+  </div>
 </section>
 {{> footer}}

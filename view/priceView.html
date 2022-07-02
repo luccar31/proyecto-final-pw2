@@ -9,7 +9,7 @@
       </div>
       <div class="card-body">
 
-        <form action="/credit/pay" method="post" >
+        <form action="/credit/pay" method="post">
           {{#price}}
           <div class="form-floating ">
 
@@ -45,10 +45,10 @@
           </div>
           <div>
 
-            <input type="hidden" name="totalPrice" value="{{totalPrice}}">
-            <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Pagar</button>
+            <input name="totalPrice" type="hidden" value="{{totalPrice}}">
+            <button class="btn btn-outline-dark btn-sm px-3 mt-4" type="submit">Pagar</button>
           </div>
-          <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-3 mt-4">Volver a buscar vuelo</a>
+          <a class="btn btn-outline-dark btn-sm px-3 mt-4" href="/flight_plan">Volver a buscar vuelo</a>
           {{/price}}
         </form>
 

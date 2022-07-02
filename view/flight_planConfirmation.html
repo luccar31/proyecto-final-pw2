@@ -1,20 +1,22 @@
 {{> header}}
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
-        {{#flight_plans}}
-        <div class="card">
-            <div class="card-header gradient-custom text-white" >
-                <h5 class="my-1">Plan de vuelo</h5>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Confirmacion del plan de vuelo</h5>
-                <p class="card-text">Usted elegio el vuelo "{{description}}" que parte el dia {{departure_day}} a las {{departure_time}} de {{departure}} con destino a {{destination}}. Nave asignada "{{ship_model}}"  . ¿Desea continuar y realizar una reserva?</p>
-                <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-2" >Volver a planes de vuelo</a>
-                <a href="/ticket?id={{id}}" class="btn btn-outline-dark btn-sm px-2" >Continuar</a>
-            </div>
-        </div>
-        {{/flight_plans}}
+  <div class="container py-5 h-100">
+    {{#flight_plans}}
+    <div class="card">
+      <div class="card-header gradient-custom text-white">
+        <h5 class="my-1">Plan de vuelo</h5>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Confirmacion del plan de vuelo</h5>
+        <p class="card-text">Usted elegio el vuelo "{{description}}" que parte el dia {{departure_day}} a las
+          {{departure_time}} de {{departure}} con destino a {{destination}}. Nave asignada "{{ship_model}}" . ¿Desea
+          continuar y realizar una reserva?</p>
+        <a class="btn btn-outline-dark btn-sm px-2" href="/flight_plan">Volver a planes de vuelo</a>
+        <a class="btn btn-outline-dark btn-sm px-2" href="/ticket?id={{id}}">Continuar</a>
+      </div>
     </div>
+    {{/flight_plans}}
+  </div>
 </section>
 {{> footer}}

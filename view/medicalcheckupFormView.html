@@ -2,10 +2,10 @@
 {{> navbar}}
 <section class="checkup">
   <article>
-    <form method="post" action="/medicalcheckup/makeAppointment">
+    <form action="/medicalcheckup/makeAppointment" method="post">
       <p>
         <label for="date-input">Seleccione la fecha de su turno: </label>
-        <input type="date" id="date-input" name="date" value={{date}}>
+        <input id="date-input" name="date" type="date" value={{date}}>
       </p>
       <p>
         {{#medicalCenter}}
@@ -15,7 +15,7 @@
         <label for="med-select">Seleccione su centro médico más cercano: </label>
         {{/medicalCenter}}
         <select id="med-select" name="medicalCenter">
-          <option value="0" selected>Seleccione centro médico</option>
+          <option selected value="0">Seleccione centro médico</option>
           {{#medicalCenters}}
           <option value={{id}}>{{name}}</option>
           {{/medicalCenters}}
@@ -28,7 +28,7 @@
   </article>
   <article>
     {{#errors}}
-      <p style="color: red">{{.}}</p>
+    <p style="color: red">{{.}}</p>
     {{/errors}}
   </article>
 </section>
