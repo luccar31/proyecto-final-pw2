@@ -44,11 +44,11 @@ class Configuration {
     }
 
     public function getMedicalcheckupController(){
-      return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter());
+      return new MedicalcheckupController($this->getAppointmentModel(), $this->getPrinter(), $this->getMailer());
     }
 
     public function getTicketController() {
-        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel(), 'appointmentModel' => $this->getAppointmentModel()], $this->getPrinter());
+        return new TicketController(['userModel' => $this->getUserModel(), 'flight_planModel' => $this->getFlight_planModel(), 'ticketModel' => $this->getTicketModel(), 'appointmentModel' => $this->getAppointmentModel()], $this->getPrinter(), $this->getPrinterForPDF());
     }
 
     public function getFlight_planController() {
@@ -56,7 +56,7 @@ class Configuration {
     }
 
     public function getCreditController(){
-        return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter());
+        return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter(), $this->getPrinterForPDF());
     }
 
     private function getCreditModel(){
@@ -94,6 +94,10 @@ class Configuration {
 
     private function getPrinter() {
         return new MustachePrinter("view");
+    }
+
+    private function getPrinterForPDF() {
+        return new MustachePrinter("assets");
     }
 
     public function getRouter() {

@@ -7,35 +7,12 @@
                 <h5 class="my-1">Chequeo Médico</h5>
             </div>
             <div class="card-body">
-                {{#appointment}}
-                <p class="card-text">Usted ya tiene cita el día {{date}} en {{medicalCenter}}</p>
-                {{/appointment}}
-                {{^appointment}}
-                <form method="post">
-                    <p>
-                        <label for="date">Seleccione una fecha para realizarse el chequeo médico</label>
-                    </p>
-                    <p>
-                        <input type="date" id="date" name="date">
-                    </p>
-                    <p>
-                        <select id="medical-center" name="medicalCenter">
-                            <option value="0" selected>Ingrese un centro médico</option>
-                            <option value="1">Buenos Aires</option>
-                            <option value="2">Shanghái</option>
-                            <option value="3">Ankara</option>
-                        </select>
-                    </p>
-                    <p>
-                        <button type="submit" class="btn btn-outline-dark btn-sm px-2" formaction="/medicalcheckup/getAppointment">Reservar turno</button>
-                    </p>
-                </form>
-                {{/appointment}}
-                {{#errors}}
-                <p style="color: red">{{error}}</p>
-                {{/errors}}
+                <p class="card-text">Usted ya tiene cita el día {{date}} en el centro médico de {{medicalCenter}}</p>
             </div>
         </div>
+        <button class="btn">
+            <a href="/medicalcheckup/deleteAppointment">Eliminar turno</a>
+        </button>
     </div>
 </section>
 {{> footer}}

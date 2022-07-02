@@ -4,10 +4,12 @@ class MedicalcheckupController
 {
     private $printer;
     private $appointmentModel;
+    private $mailer;
 
-    public function __construct($appointmentModel, $printer) {
+    public function __construct($appointmentModel, $printer, $mailer) {
         $this->appointmentModel = $appointmentModel;
         $this->printer = $printer;
+        $this->mailer = $mailer;
     }
 
     public function execute(){
@@ -15,7 +17,6 @@ class MedicalcheckupController
 
         if(!$ap){
             Helper::redirect("/medicalcheckup/makeAppointmentForm");
-            //return $this->printer->generateView('medicalcheckupView.html', $data);
         }
 
         Helper::redirect("/medicalcheckup/showAppointment?med={$ap['medicalCenter']}&d={$ap['date']}");
@@ -62,8 +63,10 @@ class MedicalcheckupController
     }
 
     public function successfullAppointment(){
-        $data['medicalCenter'] = $_GET['med'];
+        $data['medicalCenter'] = $this->appointmentModel->getNameMedicalCenter($_GET['med']);
         $data['date'] = $_GET['d'];
+
+        $this->sendConfirmationEmail($_SESSION['email'], $_SESSION['nickname'], $data['medicalCenter'], $data['date']);
 
         $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }
@@ -112,5 +115,13 @@ class MedicalcheckupController
             $res[] = ['error' => $valor];
         }
         return $res;
+    }
+
+    private function sendConfirmationEmail($to, $nickname, $medicalCenter, $date){
+        $subject = 'Confirmación de turno médico GauchoRocket';
+
+        $message = "<h1>¡Hola, $nickname!</h1><p>Este es un email de confirmacion de turno .</p><p>Usted tiene turno el día $date en el centro médico de $medicalCenter}.</p><p>Recuerde que su realización es de caracter obligatorio para poder volar con Gaucho Rocket</p><p>Puede cancelar su turno ingresando aquí: <a href='http://localhost/medicalcheckup/deleteAppointment'>Cancelar turno</a></p>";
+
+        $this->mailer->sendEmail($to, $subject, $message);
     }
 }

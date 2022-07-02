@@ -43,29 +43,6 @@ class AppointmentModel
         ");
     }
 
-    public function modifyAppointment($nickname, $date, $medicalCenter){
-        $data = [];
-
-        if(!$this->getAppointment($nickname)){
-            $data['errors'][] = ['error' => 'Usted NO posee un turno asignado'];
-        }
-
-        if(!$this->isRoomForAppointment($date, $medicalCenter)){
-            $data['errors'][] = ['error' => "El día {$date->format('Y-m-d')} no se encuentran turnos disponibles en el centro médico seleccionado"];
-        }
-
-        if(isset($data['errors'])) return $data;
-
-        $this->database->query("
-            UPDATE appointment
-            SET date = '{$date->format('Y-m-d')}',
-                id_medical_center = '$medicalCenter'
-            WHERE user_nickname = '$nickname'
-        ");
-      
-        return ['nickname' => $nickname, 'date' => $date->format('Y-m-d'), 'medicalCenter' => $medicalCenter];
-    }
-
     public function deleteAppointment($nickname){
         $this->database->query("
             DELETE
@@ -127,5 +104,9 @@ class AppointmentModel
             SELECT id, name
             FROM medical_center
         ");
+    }
+
+    public function getNameMedicalCenter($id){
+        return $this->database->query("SELECT * FROM medical_center WHERE id=$id")[0]['name'];
     }
 }

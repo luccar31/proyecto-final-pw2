@@ -10,6 +10,7 @@ class CreditController {
     }
 
     public function execute(){
+        Helper::redirect('/');
     }
 
     //info de los precios del vuelo elegido

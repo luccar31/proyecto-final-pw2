@@ -21,4 +21,10 @@ class MustachePrinter {
 
         echo  $this->mustache->render($contentAsString, $data);
     }
+
+    public function generateViewForPDF($template , $data = []){
+        $contentAsString =  file_get_contents($this->viewPath . "/" .$template);
+
+        return $this->mustache->render($contentAsString, $data);
+    }
 }

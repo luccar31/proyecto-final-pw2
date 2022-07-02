@@ -76,7 +76,7 @@ class LoginController {
         $verifCode = $this->getGenerateVerificationCode();
 
         $subject = 'Verificacion de cuenta Gaucho Rocket';
-        $message = "<h1>¡Hola, {$_SESSION['nickname']}!</h1><p>Este es un mail de verificacion de cuenta.</p><p>Por favor, ingrese en el siguiente link para verificar su cuenta: <a href='localhost/login/verifyCode?verif=$verifCode'>Link de verificacion</a>.</p>";
+        $message = "<h1>¡Hola, {$_SESSION['nickname']}!</h1><p>Este es un mail de verificacion de cuenta.</p><p>Por favor, ingrese en el siguiente link para verificar su cuenta: <a href='http://localhost/login/verifyCode?verif=$verifCode'>Link de verificacion</a>.</p>";
 
         $this->mailer->sendEmail($_SESSION['email'], $subject, $message);
 
@@ -124,7 +124,6 @@ class LoginController {
 
     public function verificationSuccess(){
         unset($_SESSION['verifCode']);
-        unset($_SESSION['email']);
         $this->printer->generateView('verificationSuccessView.html');
     }
 
