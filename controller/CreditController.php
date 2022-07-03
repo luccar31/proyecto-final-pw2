@@ -16,16 +16,7 @@ class CreditController {
     //info de los precios del vuelo elegido
     public function payInfo(){
 
-        $data['id_type_cabin'] = $_POST['type_cabin'];
-        $data['id_service']  = $_POST['service'];
-        $data['num_tickets']  =  $_POST['num_tickets'];
-
-        $_SESSION['id_type_cabin'] = $_POST['type_cabin'];
-        $_SESSION['id_service']  = $_POST['service'];
-        $_SESSION['num_tickets']  =  $_POST['num_tickets'];
-
-        $data['price'] = $this->creditModel->calculatePrice($_SESSION['id_flight_plan'], $data['num_tickets'], $data['id_service'], $data['id_type_cabin']);
-
+        $data['price'] = $this->creditModel->calculatePrice($_SESSION['id_flight_plan'], $_SESSION['num_tickets'], $_SESSION['service'], $_SESSION['type_cabin']);
 
         $_SESSION['totalPrice'] = $data['price']['totalPrice'];
 
@@ -38,31 +29,12 @@ class CreditController {
 
         $data['firstname'] = $_SESSION['user_firstname'];
         $data['surname'] = $_SESSION['user_surname'];
-        $data['totalPrice'] = $_POST['totalPrice'];
-
-        $status = $this->creditModel->validateTotalPrice($data['totalPrice']);
-
-        if ($status){
-            $this->printer->generateView('payView.html', $data);
-        }
-        else{
-            echo "Hubo un error";
-        }
+        $data['totalPrice'] = $_SESSION['totalPrice'];
+        $this->printer->generateView('payView.html', $data);
 
     }
 
     public function confirmPay(){
-
-        $data['totalPrice'] = $_POST['totalPrice'];
-
-        $status = $this->creditModel->validateTotalPrice($data['totalPrice']);
-
-        if ($status){
-            Helper::redirect('/ticket/createTicket');        }
-        else{
-            $data['payError'] = 'Disculpe. Hubo un error en la transacción';
-            $this->printer->generateView('payView.html', $data);
-        }
-
+            Helper::redirect('/ticket/createTicket');
     }
 }

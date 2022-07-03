@@ -14,6 +14,13 @@ class Flight_planController
     //lanza la vista con las ciudades para elegir
     public function execute()
     {
+
+        //con esta variable evitamos que puedan comprar muchos tickets al recargar la página una vez que
+        //está hecha la reserva. En ese momento le seteamos createTicketComplete a true y no podrá comprar hasta que
+        //realice el proceso nuevamente. Por eso, en la primer etapa, lo ponemos en false para que pueda buscar.
+        $_SESSION['createTicketComplete'] = false;
+
+
         $data['type'] = $_POST['type'];
         $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
         $data['destinationCities'] = $this->flight_planModel->getDestinationCities($data['type']);
@@ -24,6 +31,7 @@ class Flight_planController
     public function searchFlightForm()
     {
         $data['type'] = $_POST['type'];
+        $_SESSION['type'] = $_POST['type'];
         $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
         $data['destinationCities'] = $this->flight_planModel->getDestinationCities($data['type']);
         $data['departure'] = $_POST['departure'];

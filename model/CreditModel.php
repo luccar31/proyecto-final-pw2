@@ -3,6 +3,8 @@
 class CreditModel
 {
     private $database;
+    private $segmentPrice = 100;
+    private $creditPrice = 10;
 
     public function __construct($database)
     {
@@ -14,7 +16,7 @@ class CreditModel
 
         $departure = $_SESSION['departure'];
         $destination = $_SESSION['destination'];
-        $segmentPrice = 1000;
+
 
         $priceCabin = $this->database->query("SELECT price FROM type_cabin WHERE id = '$id_type_cabin'");
         $priceService = $this->database->query("SELECT price FROM service WHERE id = '$id_service'");
@@ -31,7 +33,6 @@ class CreditModel
 
         //como ankara-buenos aires son posicion 0, va a dar 0. Por lo tanto lo seteamos en 1.
 
-        echo var_dump($segments);
         //si no está vacio
         if (empty($segments)) {
 
@@ -45,19 +46,12 @@ class CreditModel
                 $segments = $segments[0]['resta'];
             }
 
-        $totalPrice = ( ( ($priceCabin[0]['price'] + $priceService[0]['price'] + $segmentPrice) * $segments) * $num_tickets);
+        $totalPrice = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets) * $this->creditPrice);
+
+
         return ['totalPrice' => $totalPrice, 'priceCabin' => $priceCabin[0]['price'], 'priceService' => $priceService[0]['price'],
-            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $segmentPrice];
+            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $this->segmentPrice];
 
     }
 
-    public function validateTotalPrice($totalPrice){
-
-        if ($_SESSION['totalPrice'] == $totalPrice){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 }
