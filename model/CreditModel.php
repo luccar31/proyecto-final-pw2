@@ -5,6 +5,7 @@ class CreditModel
     private $database;
     private $segmentPrice = 100;
     private $creditPrice = 10;
+    private $medical = 100;
 
     public function __construct($database)
     {
@@ -46,12 +47,12 @@ class CreditModel
                 $segments = $segments[0]['resta'];
             }
 
-        $totalPrice = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets) * $this->creditPrice);
-        $totalPriceInCredit = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets));
+        $totalPrice = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical) * $this->creditPrice);
+        $totalPriceInCredit = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical));
 
 
         return ['totalPrice' => $totalPrice, 'priceCabin' => $priceCabin[0]['price'], 'priceService' => $priceService[0]['price'],
-            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $this->segmentPrice, 'totalPriceInCredit' => $totalPriceInCredit];
+            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $this->segmentPrice, 'totalPriceInCredit' => $totalPriceInCredit, 'medical' => $this->medical];
 
     }
 
