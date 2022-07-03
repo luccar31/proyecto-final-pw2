@@ -28,8 +28,7 @@ class TicketModel
     }
 
     public function findClientTickets($nickname){
-        return $this->database->query("SELECT t.id, f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
-                                        tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
+        return $this->database->query("SELECT f.id_flight as id_flight, t.id, f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
                                         FROM ticket t
                                         INNER JOIN cabin c ON t.id_cabin = c.id
                                         INNER JOIN type_cabin tc ON c.id_type = tc.id
@@ -118,6 +117,17 @@ class TicketModel
         $_SESSION['cabin'] = $idCabin[0]['id'];
 
         return $_SESSION['cabin'];
-}
+    }
+
+    public function createBoardingCode($id_flight, $user_nickname){
+        $code = $this->generateCode();
+        $this->database->query("UPDATE ticket SET boarding_code = '$code' WHERE id_flight = '$id_flight' AND user_nickname = '$user_nickname'");
+        return $code;
+    }
+
+    private function generateCode(){
+        $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return substr(str_shuffle($caracteres), 0, 10);
+    }
 
 }

@@ -1,28 +1,31 @@
 <?php
 
-include_once('helper/MySqlDatabase.php');
-include_once('helper/Router.php');
-include_once('helper/Session.php');
-include_once('helper/Helper.php');
+require_once('helper/MySqlDatabase.php');
+require_once('helper/Router.php');
+require_once('helper/Session.php');
+require_once('helper/Helper.php');
 require_once('helper/MustachePrinter.php');
 require_once('helper/Mailer.php');
 require_once('helper/PDFGenerator.php');
+require_once('helper/QRGenerator.php');
 
-include_once('controller/HomeController.php');
-include_once('controller/SigninController.php');
-include_once('controller/LoginController.php');
-include_once('controller/ProfileController.php');
-include_once('controller/MedicalcheckupController.php');
-include_once('controller/Flight_planController.php');
-include_once('controller/TicketController.php');
-include_once('controller/CreditController.php');
+require_once('controller/HomeController.php');
+require_once('controller/SigninController.php');
+require_once('controller/LoginController.php');
+require_once('controller/ProfileController.php');
+require_once('controller/MedicalcheckupController.php');
+require_once('controller/Flight_planController.php');
+require_once('controller/TicketController.php');
+require_once('controller/CreditController.php');
+require_once('controller/CheckinController.php');
 
-include_once('model/UserModel.php');
-include_once('model/ClientModel.php');
-include_once('model/AppointmentModel.php');
-include_once('model/TicketModel.php');
-include_once('model/Flight_planModel.php');
-include_once('model/CreditModel.php');
+require_once('model/UserModel.php');
+require_once('model/ClientModel.php');
+require_once('model/AppointmentModel.php');
+require_once('model/TicketModel.php');
+require_once('model/Flight_planModel.php');
+require_once('model/CreditModel.php');
+require_once('model/CheckinModel.php');
 
 class Configuration {
 
@@ -56,6 +59,14 @@ class Configuration {
 
     public function getCreditController(){
         return new CreditController(['creditModel' => $this->getCreditModel()], $this->getPrinter());
+    }
+
+    public function getCheckinController(){
+        return new CheckinController(['ticketModel' => $this->getTicketModel()], $this->getPrinter(), $this->getPrinterForPDF(), $this->getQRGenerator(), $this->getPDFGenerator(), $this->getMailer());
+    }
+
+    private function getCheckinModel(){
+        return new CheckinModel($this->getDatabase());
     }
 
     private function getCreditModel(){
@@ -96,7 +107,7 @@ class Configuration {
     }
 
     private function getPrinterForPDF() {
-        return new MustachePrinter("assets");
+        return new MustachePrinter("assets/templates");
     }
 
     public function getRouter() {
@@ -109,5 +120,9 @@ class Configuration {
 
     public function getPDFGenerator(){
         return new PDFGenerator();
+    }
+
+    public function getQRGenerator(){
+        return new QRGenerator('assets/qr/');
     }
 }
