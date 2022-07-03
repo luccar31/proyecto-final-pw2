@@ -363,12 +363,20 @@ class Flight_planModel
 
     public function getDepartureCities($type)
     {
-        if ($type == 4 || $type == 1) {
+        if ($type == 1) {
             return $this->database->query("SELECT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
                                            ORDER BY j.order_");
-        } else {
+        } elseif ($type == 4){
+
+            return $this->database->query("SELECT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
+                                           ORDER BY j.order_");
+        }
+
+        else {
             return $this->database->query("SELECT DISTINCT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
