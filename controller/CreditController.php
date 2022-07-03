@@ -33,8 +33,4 @@ class CreditController {
         $this->printer->generateView('payView.html', $data);
 
     }
-
-    public function confirmPay(){
-            Helper::redirect('/ticket/createTicket');
-    }
 }

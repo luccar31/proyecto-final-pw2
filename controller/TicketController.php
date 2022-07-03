@@ -59,25 +59,25 @@ class TicketController{
         //si createTicketComplete es falso quiere decir que puede buscar otro vuelo
         if ($_SESSION['createTicketComplete'] == false) {
             $data['id_flight'] = $this->flight_planModel->createFlight($_SESSION['id_flight_plan'], $_SESSION['departure_date'], $_SESSION['departure_time'], $_SESSION['departure'], $_SESSION['week']);
+            $_SESSION['id_flight'] = $data['id_flight'];
             $this->ticketModel->createTicket($data['id_flight'], $_SESSION['type_cabin'], $_SESSION['service'], $_SESSION['nickname'], $_SESSION['num_tickets'], $_SESSION['departure'], $_SESSION['destination']);
+
             $data['ticket'] = $this->ticketModel->findClientTicket($data['id_flight'], $_SESSION['nickname'], $_SESSION['type_cabin']);
+
             $data['enabledClient'] = "Su vuelo ha sido reservado! N° de vuelo: ";
 
-            //para que no recargue la página y siga comprando gratis, se pone createTicketComplete en true. Se volverá false cuando busque otro vuelo.
             $_SESSION['createTicketComplete'] = true;
         } else {
             $data['error'] = "Ya reservó este vuelo";
-
         }
 
-        $this->generatePDF($data['ticket'][0]);
         $this->printer->generateView('reserved_ticketsView.html', $data);
     }
 
-    private function generatePDF($data){
-        $html = $this->printer2->generateTemplatedStringForPDF('templatepdf.html', $data);
+    public function generatePDF(){
+        $data['ticket'] = $this->ticketModel->findClientTicket($_SESSION['id_flight'], $_SESSION['nickname'], $_SESSION['type_cabin']);
+        $html = $this->printer2->generateTemplatedStringForPDF('templatepdf.html', $data['ticket'][0]);
         $this->pdf->getPDF($html);
-        exit();
     }
 
     //selecciona cabina y servicio
