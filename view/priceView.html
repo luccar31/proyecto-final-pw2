@@ -1,15 +1,16 @@
 {{> header}}
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-lg-8 mb-4 mb-lg-0">
-        <div class="card mb-3" style="border-radius: .5rem;">
+  <div class="container py-5 h-10" >
+    <div class="row d-flex justify-content-center align-items-center h-100" >
+      <div class="col col-lg-8 mb-4 mb-lg-0" >
+        <div class="card mb-3" style="border-radius: .5rem;" >
+          <div class="card-header gradient-custom text-white">
+            <h5 class="my-1">Información del precio</h5>
+          </div>
           <div class="row g-0">
             {{#price}}
               <div class="card-body p-4 priceDiv">
-                <h3>Información del precio</h3>
-                <hr class="mt-0 mb-4">
                 <div class="row pt-1">
                   <div class="col-6 mb-3 priceDiv">
                     <h5>Precio de cabina</h5>
@@ -41,8 +42,8 @@
                     <h4 class="text-muted"> <img class="imgPrice" src="/assets/img/credit.png">{{totalPriceInCredit}} (${{totalPrice}})</h4>
                   </div>
                 </div>
-                <button class="btn btn-outline-success btn-lg px-5" type="button">
-                  <a href="/ticket/verifyEnabledClient" style="color: #151515">Continuar</a>
+                <button class="btn btn-outline-dark btn-m px-3" type="button">
+                  <a href="/ticket/verifyEnabledClient" style="color: #bc9961">Continuar</a>
                 </button>
 
               </div>
