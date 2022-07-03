@@ -48,7 +48,7 @@ class TicketModel
                                                      JOIN equipment_cabin ec on c.id = ec.id_cabin
                                                      JOIN flight_plan fp ON ec.id_equipment = fp.id_equipment
                                                      WHERE fp.id = '$id_flight_plan')
-");
+                                      ");
     }
 
     public function getServices($id_flight_plan){

@@ -19,7 +19,6 @@ class TicketController{
     }
 
     public function execute(){
-
         $this->printer->generateView('ticketView.html');
     }
 
