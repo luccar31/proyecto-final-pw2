@@ -278,6 +278,7 @@ CREATE TABLE ticket
     user_nickname VARCHAR(50) NOT NULL,
     departure INT NOT NULL,
     destination INT NOT NULL,
+    boarding_code VARCHAR(50),
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
     FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
     FOREIGN KEY (id_service) REFERENCES service (id),
