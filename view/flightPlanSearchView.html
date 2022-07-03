@@ -47,6 +47,7 @@
                                     </thead>
 
                                     <tr>
+                                        {{id}}
                                         <td>{{day}}</td>
                                         <td>{{time}}</td>
                                         <td>{{#name_departure}}<img src="/assets/img/escalas2/{{name_departure}}.png" alt="" width="50" height="50">{{/name_departure}}</td>
@@ -81,11 +82,24 @@
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Last updated 3 mins ago</small>
-                        <button type="button" class="btn btn-primary botonVuelo">
-                            <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}">
+
+                        <form action="/ticket/selectCabinAndService" method="post">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <input type="hidden" name="date" value="{{day}}">
+                        <input type="hidden" name="date2" value="{{day2}}">
+                        <input type="hidden" name="time" value="{{time}}">
+                        <input type="hidden" name="time2" value="{{time2}}">
+                        <input type="hidden" name="departure" value="{{#id_departure}}{{id_departure}}{{/id_departure}}">
+                        <input type="hidden" name="destination" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+                        <input type="hidden" name="destination" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+                        <input type="hidden" name="week" value="{{#week}}{{week}}{{/week}}">
+                        <input type="hidden" name="hours" value="{{hours}}">
+
+                        <button type="submit" class="btn btn-primary botonVuelo">
                                 Continuar
-                            </a>
                         </button>
+                        </form>
+
                     </div>
                 </div>
             </div>

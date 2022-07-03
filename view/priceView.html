@@ -9,7 +9,7 @@
       </div>
       <div class="card-body">
 
-        <form action="/credit/pay" method="post" >
+        <form action="/ticket/verifyEnabledClient" method="post" >
           {{#price}}
           <div class="form-floating ">
 
@@ -44,8 +44,6 @@
             </div>
           </div>
           <div>
-
-            <input type="hidden" name="totalPrice" value="{{totalPrice}}">
             <button type="submit" class="btn btn-outline-dark btn-sm px-3 mt-4">Pagar</button>
           </div>
           <a href="/flight_plan" class="btn btn-outline-dark btn-sm px-3 mt-4">Volver a buscar vuelo</a>

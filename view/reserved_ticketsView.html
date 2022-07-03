@@ -2,6 +2,16 @@
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
     <div class="container py-5 h-100">
+        <h5 class="my-1" style="color: red; text-align: center">{{#error}}
+
+
+
+            <div class="card-header gradient-custom text-white" style="; text-align: center">
+                <h5 class="my-1" style="color: red">{{error}}</h5>
+                <br>
+                <img src="/assets/img/ojo.jpg" style="text-align: center">
+            </div>
+            {{/error}}</h5>
         {{#notLogged}}
         <div class="card-header gradient-custom text-white" style="text-align: center">
             <h5 class="my-1" style="color: red; text-align: center">{{notLogged}}</h5>
@@ -9,6 +19,7 @@
             <button type="button" class="btn btn-secondary"><a href="/login">Iniciar sesión</a></button>
         </div>
         {{/notLogged}}
+
         {{#disabledClient}}
         <div class="card-header gradient-custom text-white" style="text-align: center">
             <h5 class="my-1" style="color: red; text-align: center">{{disabledClient}}</h5>

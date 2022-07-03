@@ -20,66 +20,113 @@ class TicketController{
     }
 
 
-
-    //crea ticket y el vuelo en caso de que no exista
-    public function createTicket(){
-
-       /* $data = $this ->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $id_type_cabin, $num_tickets);*/
-
-
-        /*if($data['isValid'] == true){*/
-
+    public function verifyEnabledClient()
+    {
 
         //si inició sesión:
         if (isset($_SESSION['nickname'])) {
 
             $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
 
+
             //inició sesión pero no realizó chequeo médico
             if (empty($data['enabledClient'])) {
 
                 $data['disabledClient'] = "Debe realizar un chequeo médico. El código de viajero y nivel de vuelo es requerido.";
+                $this->printer->generateView('reserved_ticketsView.html', $data);
 
-            } //inició sesión y realizó chequeo médico. Hace la reserva.
+            } //inició sesión y realizó chequeo médico. Hace el pago
             else {
-                $data['id_flight'] = $this->flight_planModel->createFlight($_SESSION['id_flight_plan'], $_SESSION['departure_date'], $_SESSION['departure_time'], $_SESSION['departure'], $_SESSION['week']);
-                $this->ticketModel->createTicket($data['id_flight'], $_SESSION['id_type_cabin'], $_SESSION['id_service'], $_SESSION['nickname'], $_SESSION['num_tickets'], $_SESSION['departure'], $_SESSION['destination']);
-                $data['ticket'] = $this->ticketModel->findClientTicket($data['id_flight'], $_SESSION['nickname']);
-                $data['enabledClient'] = "Su vuelo ha sido reservado! N° de vuelo: ";
-            }
+                Helper::redirect('/credit/pay');
 
+            }
         }
         //no inició sesión
         else {
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
+            $this->printer->generateView('reserved_ticketsView.html', $data);
         }
 
-            $this->printer->generateView('reserved_ticketsView.html', $data);
 
-      /*  }else{
-            $this->printer->generateView('ticketView.html', $data);
-        }*/
+
+    }
+
+    //crea ticket y el vuelo en caso de que no exista
+    public function createTicket(){
+
+        //si createTicketComplete es falso quiere decir que puede buscar otro vuelo
+        if ($_SESSION['createTicketComplete'] == false){
+            $data['id_flight'] = $this->flight_planModel->createFlight($_SESSION['id_flight_plan'], $_SESSION['departure_date'], $_SESSION['departure_time'], $_SESSION['departure'], $_SESSION['week']);
+            $this->ticketModel->createTicket($data['id_flight'], $_SESSION['type_cabin'], $_SESSION['service'], $_SESSION['nickname'], $_SESSION['num_tickets'], $_SESSION['departure'], $_SESSION['destination']);
+            $data['ticket'] = $this->ticketModel->findClientTicket($data['id_flight'], $_SESSION['nickname'], $_SESSION['type_cabin']);
+            $data['enabledClient'] = "Su vuelo ha sido reservado! N° de vuelo: ";
+
+            //para que no recargue la página y siga comprando gratis, se pone createTicketComplete en true. Se volverá false cuando busque otro vuelo.
+            $_SESSION['createTicketComplete'] = true;
+        }
+        else{
+            $data['error'] = "Ya reservó este vuelo";
+
+        }
+
+        $this->printer->generateView('reserved_ticketsView.html', $data);
+
 
     }
 
     //selecciona cabina y servicio
     public function selectCabinAndService(){
-
-        $data['cabins'] = $this->ticketModel->getCabins($_GET["id"]);
-        $data['services'] = $this->ticketModel->getServices($_GET["id"]);
-
         //guardo los datos del vuelo elegido en sesión para utilizarlos mas tarde
-        $_SESSION['id_flight_plan'] = $_GET["id"];
-        $_SESSION['departure_date'] = $_GET["date"];
-        $_SESSION['departure_time'] = $_GET["time"];
-        $_SESSION['arrival_date'] = $_GET["date2"];
-        $_SESSION['arrival_time'] = $_GET["time2"];
-        $_SESSION['departure'] = $_GET["departure"];
-        $_SESSION['destination'] = $_GET["destination"];
-        $_SESSION['week'] = $_GET["week"];
-        $_SESSION['hours'] = $_GET["hours"];
+        $_SESSION['id_flight_plan'] = $_POST["id"];
+        $_SESSION['departure_date'] = $_POST["date"];
+        $_SESSION['departure_time'] = $_POST["time"];
+        $_SESSION['arrival_date'] = $_POST["date2"];
+        $_SESSION['arrival_time'] = $_POST["time2"];
+        $_SESSION['departure'] = $_POST["departure"];
+        $_SESSION['destination'] = $_POST["destination"];
+        $_SESSION['week'] = $_POST["week"];
+        $_SESSION['hours'] = $_POST["hours"];
+
+
+        $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);
+        $data['services'] = $this->ticketModel->getServices($_SESSION['id_flight_plan']);
 
         $this->printer->generateView('ticketView.html', $data);
+
+
+    }
+
+    //valida la cabina
+    public function validateCabin(){
+
+        $_SESSION['type_cabin'] = $_POST['type_cabin'];
+        $_SESSION['service'] = $_POST['service'];
+        $_SESSION['num_tickets'] = $_POST['num_tickets'];
+
+        if ($_SESSION['num_tickets'] >= 1){
+            $data = $this->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $_SESSION['type_cabin'], $_SESSION['num_tickets']);
+
+            if ($data['isValid'] == true){
+
+                Helper::redirect('/credit/payInfo');
+            }
+            else{
+                $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);
+                $data['services'] = $this->ticketModel->getServices($_SESSION['id_flight_plan']);
+
+                $this->printer->generateView('ticketView.html', $data);
+            }
+        }
+        else{
+            $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);
+            $data['services'] = $this->ticketModel->getServices($_SESSION['id_flight_plan']);
+            $data['ceroTickets'] = "La cantidad mímina de tickets a elegir debe ser 1";
+
+            $this->printer->generateView('ticketView.html', $data);
+        }
+
+
+
 
     }
 
