@@ -1,35 +1,40 @@
 {{> header}}
 {{> navbar}}
-<section class="checkup">
-  <article>
-    <form action="/medicalcheckup/makeAppointment" method="post">
-      <p>
-        <label for="date-input">Seleccione la fecha de su turno: </label>
-        <input id="date-input" name="date" type="date" value={{date}}>
-      </p>
-      <p>
-        {{#medicalCenter}}
-        <label for="med-select">Su centro médico seleccionado fue: {{medicalCenter}}</label>
-        {{/medicalCenter}}
-        {{^medicalCenter}}
-        <label for="med-select">Seleccione su centro médico más cercano: </label>
-        {{/medicalCenter}}
-        <select id="med-select" name="medicalCenter">
-          <option selected value="0">Seleccione centro médico</option>
-          {{#medicalCenters}}
-          <option value={{id}}>{{name}}</option>
-          {{/medicalCenters}}
-        </select>
-      </p>
-      <p>
-        <button type="submit">Reservar turno</button>
-      </p>
-    </form>
-  </article>
-  <article>
-    {{#errors}}
-    <p style="color: red">{{.}}</p>
-    {{/errors}}
-  </article>
+<section class="checkup vh-100 profile" style="background-color: #f4f5f7;">
+    <div class="container py-5 h-100">
+        <div class="card">
+            <div class="card-header gradient-custom text-white">
+                <h5 class="my-1">Chequeo Médico</h5>
+            </div>
+            <div class="card-body">
+                <form action="/medicalcheckup/makeAppointment" method="post">
+                    <p>
+                        <label for="date-input">Seleccione la fecha de su turno: </label>
+                        <input id="date-input" name="date" type="date" value={{date}}>
+                    </p>
+                    <p>
+                        {{#medicalCenter}}
+                        <label for="med-select">Su centro médico seleccionado fue: {{medicalCenter}}</label>
+                        {{/medicalCenter}}
+                        {{^medicalCenter}}
+                        <label for="med-select">Seleccione su centro médico más cercano: </label>
+                        {{/medicalCenter}}
+                        <select id="med-select" name="medicalCenter">
+                            <option selected value="0">Seleccione centro médico</option>
+                            {{#medicalCenters}}
+                            <option value={{id}}>{{name}}</option>
+                            {{/medicalCenters}}
+                        </select>
+                    </p>
+                    <p>
+                        <button type="submit" class="btn btn-outline-dark btn-sm px-2">Reservar turno</button>
+                    </p>
+                </form>
+            </div>
+            <article>
+                {{#errors}}
+                <p style="color: red">{{.}}</p>
+                {{/errors}}
+            </article>
 </section>
 {{> footer}}
