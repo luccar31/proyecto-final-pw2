@@ -53,8 +53,31 @@ class ReportController
     }
 
     public function report3(){ //cabina mas vendida
-        $response = $this->reportModel->mostSoldCabin();
-        Helper::debugExit($response);
+        $data = $this->reportModel->mostSoldCabin();
+//        Helper::debugExit($data);
+
+        $graph = new Graph(650,600,'auto');
+        $graph->SetScale("textlin",0,65);
+
+
+        $graph->yaxis->SetTickPositions(array(0,5,15,25,35,45),array(10,15,20,30,40));
+        $graph->SetBox(false);
+
+        $graph->ygrid->SetFill(false);
+        $graph->xaxis->SetTickLabels(array('Turista','Ejecutivo','Primera'));
+        $graph->yaxis->HideLine(false);
+        $graph->yaxis->HideTicks(false,false);
+
+        $b1plot = new BarPlot($data);
+        $gbplot = new GroupBarPlot(array($b1plot));
+        $graph->Add($gbplot);
+
+        $b1plot->SetColor("white");
+        $b1plot->SetFillColor("#cc1111");
+
+        $graph->title->Set("Venta de tickets por cabina");
+
+        $graph->Stroke();
     }
 
     public function report4(){ //facturacion por cliente

@@ -31,9 +31,12 @@ class ReportModel
     }
 
     public function mostSoldCabin(){
-        $this->database->query("SELECT tc.description, COUNT(tc.id) as Cantidad FROM ticket
+        $cabin = $this->database->query("SELECT tc.description, COUNT(tc.id) as Cantidad FROM ticket
                                 INNER JOIN cabin c on ticket.id_cabin = c.id
                                 INNER JOIN type_cabin tc on c.id_type = tc.id
                                 GROUP BY tc.id");
+
+        $cabin = array_column($cabin, 'Cantidad');
+        return $cabin;
     }
 }
