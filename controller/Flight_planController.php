@@ -41,43 +41,21 @@ class Flight_planController
         $data['selectedDestinationName'] = $this->flight_planModel->getCityNameById($data['destination']);
         $errors = 0;
 
-        // semana vacía
-        if (empty($data['week'])) {
-            $errors++;
-            $data['emptyWeek'] = "Seleccione una semana";
-        }
-        // origen vacío
-        if (empty($data['departure'])) {
-            $errors++;
-            $data['emptyDepartureError'] = "Seleccione un origen";
-        }
-        // destino vacío
-        if (empty($data['destination'])) {
-            $errors++;
-            $data['emptyDestinationError'] = "Seleccione un destino";
-        }
+        $this->validateInputs($data['week'], $data['departure'], $data['destination'], $data, $errors);
 
-        //si los inputs están todos seteados, se evalua en el backend:
-        if ($errors == 0) {
-
-            //me devuelve errores del backend en caso de que los haya
-            $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week'], $data['type']);
-
-            //si lo devuelto está vacio, no hay errores:
-            if (empty($data['errors'])) {
-
-                //por lo tanto, busca los vuelos para mostrar
-                $this->searchFlight($data['departure'], $data['destination'], $data['week'], $data['type']);
-
-            } //caso contrario, hay errores (semana antigua, origen y destino igual), vuelve al formulario:
-            else {
-                $this->printer->generateView('flightPlanFormView.html', $data);
-            }
-
-        } //si sigue habiendo erroes en los input, vuelve al formulario
-        else {
+        if ($errors != 0) {
             $this->printer->generateView('flightPlanFormView.html', $data);
+            exit();
         }
+
+        $data['errors'] = $this->flight_planModel->validateInputs($data['departure'], $data['destination'], $data['week'], $data['type']);
+
+        if (!empty($data['errors'])) {
+            $this->printer->generateView('flightPlanFormView.html', $data);
+            exit();
+        }
+
+        $this->searchFlight($data['departure'], $data['destination'], $data['week'], $data['type']);
     }
 
     //busca vuelos creados o planes de vuelo
@@ -95,10 +73,8 @@ class Flight_planController
         $id_ship = $_GET['id_ship'];
         $id_type_flight = $_GET['id_type_flight'];
 
-
         //busca la posición actual de la nave según la fecha y hora
         $id_position = $this->flight_planModel->findShipPosition($id_ship);
-
 
         if ($id_type_flight == 1) {
 
@@ -129,9 +105,23 @@ class Flight_planController
         }
 
         return $this->printer->generateView('flightStatus.html', $data);
-
-
     }
 
-
+    private function validateInputs($week, $departure, $destination, &$data, &$errors){
+        // semana vacía
+        if (!$week) {
+            $errors++;
+            $data['emptyWeek'] = "Seleccione una semana";
+        }
+        // origen vacío
+        if (!$departure) {
+            $errors++;
+            $data['emptyDepartureError'] = "Seleccione un origen";
+        }
+        // destino vacío
+        if (!$destination) {
+            $errors++;
+            $data['emptyDestinationError'] = "Seleccione un destino";
+        }
+    }
 }
