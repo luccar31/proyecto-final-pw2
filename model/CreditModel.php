@@ -47,11 +47,22 @@ class CreditModel
             }
 
         $totalPrice = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets) * $this->creditPrice);
+        $totalPriceInCredit = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets));
 
 
         return ['totalPrice' => $totalPrice, 'priceCabin' => $priceCabin[0]['price'], 'priceService' => $priceService[0]['price'],
-            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $this->segmentPrice];
+            'segments' => $segments, 'num_tickets' => $num_tickets, 'segmentPrice' => $this->segmentPrice, 'totalPriceInCredit' => $totalPriceInCredit];
 
+    }
+
+    public function registerPayment($titular, $nroTarjeta, $totalPrice, $nickname){
+
+        echo $titular;
+        echo $nroTarjeta;
+        echo $totalPrice;
+        echo $nickname;
+        $this->database->query("INSERT INTO payment (titular, nroTarjeta, totalPrice, user_nickname)
+                                VALUES ('$titular','$nroTarjeta','$totalPrice', '$nickname')");
     }
 
 }

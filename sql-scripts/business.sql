@@ -278,6 +278,7 @@ CREATE TABLE ticket
     user_nickname VARCHAR(50) NOT NULL,
     departure INT NOT NULL,
     destination INT NOT NULL,
+    boarding_code VARCHAR(50),
     FOREIGN KEY (id_cabin) REFERENCES cabin (id),
     FOREIGN KEY (id_flight) REFERENCES flight (id_flight),
     FOREIGN KEY (id_service) REFERENCES service (id),
@@ -578,3 +579,11 @@ CREATE TABLE stop(
                      arrive_time TIME NOT NULL, -- hora de llegada a la locacion
                      arrive_date DATE NOT NULL -- fecha de llegada
 );
+
+CREATE TABLE payment(
+
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    titular VARCHAR (50),
+                    nroTarjeta VARCHAR (16),
+                    totalPrice INT,
+                    user_nickname VARCHAR (50))
