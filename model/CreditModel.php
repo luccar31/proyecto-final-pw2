@@ -62,6 +62,7 @@ class CreditModel
         echo $nroTarjeta;
         echo $totalPrice;
         echo $nickname;
+
         $this->database->query("INSERT INTO payment (titular, nroTarjeta, totalPrice, user_nickname)
                                 VALUES ('$titular','$nroTarjeta','$totalPrice', '$nickname')");
     }
