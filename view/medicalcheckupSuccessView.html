@@ -2,15 +2,21 @@
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
   <div class="container py-5 h-100">
-    <div class="card">
-      <div class="card-header gradient-custom text-white">
-        <h5 class="my-1">Chequeo Médico</h5>
-      </div>
-      <div class="card-body">
-        <h5 class="card-text">Su turno ha sido reservado existosamente el día {{date}} en {{medicalCenter}}</h5>
-        <h5 class="card-text">Se le ha enviado un correo de confirmación al email registrado en la cuenta</h5>
-        <a class="btn btn-outline-dark btn-sm px-2" href="/profile">Volver al perfil</a>
-        {{#pausedBuy}}<a class="btn btn-outline-success btn-sm px-2" href="/credit/payInfo">Continuar</a>{{/pausedBuy}}
+    <div class="row d-flex justify-content-center align-items-center h-100" style="text-align: center">
+      <div class="col col-lg-8 mb-4 mb-lg-0">
+        <div class="card">
+          <div class="card-header gradient-custom text-white">
+            <h5 class="my-1">Chequeo Médico</h5>
+          </div>
+          <div class="card-body">
+            <h5 class="card-text" style="color: limegreen">Su turno ha sido reservado existosamente el día {{date}} en {{medicalCenter}}</h5>
+            <h5 class="card-text">Se le ha enviado un correo de confirmación al email registrado en la cuenta</h5>
+            <br>
+            <a class="btn btn-outline-dark btn-m px-3" href="/profile">Volver al perfil</a>
+            {{#pausedBuy}}<a class="btn btn-outline-success btn-m px-3" href="/credit/payInfo">Continuar</a>{{/pausedBuy}}
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

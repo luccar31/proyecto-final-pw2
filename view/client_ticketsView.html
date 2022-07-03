@@ -18,7 +18,7 @@
             <th scope="col">Destino</th>
             <th scope="col">Tipo de cabina</th>
             <th scope="col">Servicio</th>
-            <th scope="col"></th>
+            <th scope="col">Código de abordaje</th>
           </tr>
           </thead>
           {{#tickets}}
@@ -30,17 +30,21 @@
             <td>{{destination}}</td>
             <td>{{type_cabin}}</td>
             <td>{{service}}</td>
+            <td>{{boarding_code}}</td>
             <td>
               <button class="btn btn-primary" type="button">
                 <a href="/flight_plan/progress?id_ship={{id_ship}}&id_type_flight={{id_type_flight}}">
                   Dónde está mi nave <i class="fas fa-search"></i>
                 </a>
               </button>
-              <button class="btn btn-primary" type="button">
-                <a href="/checkin/confirmTicketReservation?id_flight={{id_flight}}">
-                  Hacer check-in <i class="fas fa-search"></i>
+
+              {{^boarding_code}}
+              <button class="btn btn-success" type="button">
+                <a href="/checkin/confirmTicketReservation?id_ticket={{id}}">
+                  Hacer check-in <i class="fas fa-check"></i>
                 </a>
               </button>
+              {{/boarding_code}}
             </td>
           </tr>
           {{/tickets}}
