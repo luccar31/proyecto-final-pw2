@@ -144,7 +144,7 @@ class Flight_planModel
 
             //si no hizo chequeo médico, que muestre all igual, total en la ultima etapa le decimos que no hizo el chequeo:
             if (empty($flight_level)) {
-                return [1, 2, 3];
+                return [1, 2, 3, 4];
                 //si realizó el chequeo, evaluo el nivel de vuelo
             } else {
                 // si es nivel 1 o 2, puede viajar en circuito corto y largo (1, 2)
@@ -152,12 +152,12 @@ class Flight_planModel
                     return [1, 2];
                     //de lo contrario es nive 3, puede viajar en todos
                 } else {
-                    return [1, 2, 3];
+                    return [1, 2, 3, 4];
                 }
             }
         } //si no inició sesión, que muestre all tipos total en la ultima etapa le decimos que no hizo el chequeo.
         else {
-            return [1, 2, 3];
+            return [1, 2, 3, 4];
         }
     }
 

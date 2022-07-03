@@ -24,11 +24,13 @@ class TicketController{
 
     public function verifyEnabledClient()
     {
+        //variable de sesion para después concultar en los otros controladores y redirigir a donde estaba
+        $_SESSION['pausedBuy'] = true;
+
         //si inició sesión:
         if (isset($_SESSION['nickname'])) {
 
             $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
-
 
             //inició sesión pero no realizó chequeo médico
             if (empty($data['enabledClient'])) {
@@ -44,6 +46,7 @@ class TicketController{
         }
         //no inició sesión
         else {
+
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
             $this->printer->generateView('reserved_ticketsView.html', $data);
         }

@@ -11,6 +11,7 @@
         <table class='table'>
           <thead>
           <tr>
+            <th scope="col">N°</th>
             <th scope="col">Fecha de partida</th>
             <th scope="col">Hora de partida</th>
             <th scope="col">Origen</th>
@@ -22,6 +23,7 @@
           </thead>
           {{#tickets}}
           <tr>
+            <td>{{id}}</td>
             <td>{{departure_date}}</td>
             <td>{{departure_hour}}</td>
             <td>{{departure}}</td>

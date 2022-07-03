@@ -517,7 +517,7 @@ INSERT INTO route VALUES (2, 2, 2);
 INSERT INTO route VALUES (3, 2, 3);
 INSERT INTO route VALUES (4, 3, 2);
 INSERT INTO route VALUES (5, 3, 3);
-INSERT INTO route VALUES (6, 4, NULL);
+INSERT INTO route VALUES (6, 4, 3);
 
 CREATE TABLE journey(
                         id INT PRIMARY KEY, -- identificador unico

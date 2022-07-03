@@ -10,6 +10,7 @@
         <h5 class="card-text">Su turno ha sido reservado existosamente el día {{date}} en {{medicalCenter}}</h5>
         <h5 class="card-text">Se le ha enviado un correo de confirmación al email registrado en la cuenta</h5>
         <a class="btn btn-outline-dark btn-sm px-2" href="/profile">Volver al perfil</a>
+        {{#pausedBuy}}<a class="btn btn-outline-success btn-sm px-2" href="/credit/payInfo">Continuar</a>{{/pausedBuy}}
       </div>
     </div>
   </div>
