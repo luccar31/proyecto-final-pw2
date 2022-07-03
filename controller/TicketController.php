@@ -73,6 +73,9 @@ class TicketController{
             $data['error'] = "Ya reservó este vuelo";
         }
 
+
+        $_SESSION['checkInByTicket'] = "";
+
         $this->printer->generateView('reserved_ticketsView.html', $data);
     }
 

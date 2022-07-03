@@ -23,15 +23,24 @@ class CheckinController
     }
 
     public function confirmTicketReservation(){
-        $id_flight = $_GET['id_flight'];
-        $nickname = $_SESSION['nickname'];
 
-        $boardingCode = $this->ticketModel->createBoardingCode($id_flight, $nickname);
+        if ($_SESSION['checkInByTicket'] != $_GET['id_ticket']){
 
-        Helper::redirect("/checkin/generateQR?bcode='$boardingCode'");
+            $_SESSION['checkInByTicket'] = $_GET['id_ticket'];
+                $id_ticket = $_GET['id_ticket'];
+                $nickname = $_SESSION['nickname'];
+
+                $boardingCode = $this->ticketModel->createBoardingCode($id_ticket, $nickname);
+
+                Helper::redirect("/checkin/generateQR?bcode='$boardingCode'&id_ticket='$id_ticket'");
+        }
+        else{
+            Helper::redirect("/ticket/showClientTickets");
+        }
     }
 
     public function generateQR(){
+
         $code = $_GET['bcode'];
         $content = 'Codigo de abordaje: '.$code;
 
@@ -49,6 +58,7 @@ class CheckinController
 
         $html = $this->printerPDF->generateTemplatedStringForPDF('templateAbordingMail.html', $data);
         $this->mailer->sendEmail($_SESSION['email'], 'Codigo de abordaje', $html);
+
 
     }
 
