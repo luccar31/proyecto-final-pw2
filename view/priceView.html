@@ -2,32 +2,26 @@
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
   <div class="container py-5 h-100">
-
     <div class="card">
       <div class="card-header gradient-custom text-white">
         <h5 class="my-1">Información del precio</h5>
       </div>
       <div class="card-body">
-
-        <form action="/credit/pay" method="post">
+        <form action="/ticket/verifyEnabledClient" method="post">
           {{#price}}
           <div class="form-floating ">
-
             <div class="col-6 mb-3">
               <h6>Precio de cabina por tramo</h6>
               <p class="text-muted">${{priceCabin}}</p>
             </div>
-
             <div class="col-6 mb-3">
               <h6>Precio de servicio por tramo</h6>
               <p class="text-muted">${{priceService}}</p>
             </div>
-
             <div class="col-6 mb-3">
               <h6>Cantidad de personas</h6>
               <p class="text-muted">{{num_tickets}}</p>
             </div>
-
           </div>
           <div class="form-floating mt-4">
             <div class="col-6 mb-3">
@@ -44,18 +38,13 @@
             </div>
           </div>
           <div>
-
-            <input name="totalPrice" type="hidden" value="{{totalPrice}}">
             <button class="btn btn-outline-dark btn-sm px-3 mt-4" type="submit">Pagar</button>
           </div>
           <a class="btn btn-outline-dark btn-sm px-3 mt-4" href="/flight_plan">Volver a buscar vuelo</a>
           {{/price}}
         </form>
-
-
       </div>
     </div>
-
   </div>
 </section>
 {{> footer}}

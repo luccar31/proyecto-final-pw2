@@ -12,18 +12,20 @@
           <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
-                <button aria-controls="pills-home" aria-selected="true" class="nav-link active" data-bs-target="#pills-home"
+                <button aria-controls="pills-home" aria-selected="true" class="nav-link active"
+                        data-bs-target="#pills-home"
                         data-bs-toggle="pill" id="pills-home-tab" role="tab" type="button">Datos del vuelo
                 </button>
-
               </li>
               <li class="nav-item">
-                <button aria-controls="pills-profile" aria-selected="false" class="nav-link" data-bs-target="#pills-profile"
+                <button aria-controls="pills-profile" aria-selected="false" class="nav-link"
+                        data-bs-target="#pills-profile"
                         data-bs-toggle="pill" id="pills-profile-tab" role="tab" type="button">Escalas
                 </button>
               </li>
               <li class="nav-item">
-                <button aria-controls="pills-contact" aria-selected="false" class="nav-link" data-bs-target="#pills-contact"
+                <button aria-controls="pills-contact" aria-selected="false" class="nav-link"
+                        data-bs-target="#pills-contact"
                         data-bs-toggle="pill" id="pills-contact-tab" role="tab" type="button">Contact
                 </button>
               </li>
@@ -31,9 +33,7 @@
           </div>
           <div class="card-body">
             <div class="tab-content" id="pills-tabContent">
-
               <div aria-labelledby="pills-home-tab" class="tab-pane fade show active" id="pills-home" role="tabpanel">
-
                 <table class='table table-borderless' style="text-align: center">
                   <thead>
                   <tr>
@@ -43,16 +43,10 @@
                     <th scope="col">Destino</th>
                     <th scope="col">Día de llegada</th>
                     <th scope="col">Hora de llegada</th>
-                    <!--        &lt;!&ndash;    <th scope="col">Duración</th>&ndash;&gt;
-                            <th scope="col">Nave</th>
-                            &lt;!&ndash; <th scope="col">Patente</th>&ndash;&gt;
-                            <th scope="col">Tipo de viaje</th>
-                            <th scope="col">Tipo de equipo</th>
-                            <th scope="col"></th>-->
                   </tr>
                   </thead>
-
                   <tr>
+                    {{id}}
                     <td>{{day}}</td>
                     <td>{{time}}</td>
                     <td>{{#name_departure}}<img alt="" height="50" src="/assets/img/escalas2/{{name_departure}}.png"
@@ -63,29 +57,13 @@
                     </td>
                     <td>{{day2}}</td>
                     <td>{{time2}}</td>
-                    <!--              &lt;!&ndash;  <td>{{hours}}hs</td>&ndash;&gt;
-                                  <td>{{model}}</td>
-                                  &lt;!&ndash;      <td>{{domain}}</td>&ndash;&gt;
-                                  <td>{{type}}</td>
-                                  <td>{{equipment}}</td>
-                                  <td>
-                                      <button type="button" class="btn btn-primary">
-                                          <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}">
-                                              Continuar
-                                          </a>
-                                      </button>
-                                  </td>-->
                   </tr>
                 </table>
-
               </div>
-
-
               <div aria-labelledby="pills-profile-tab" class="tab-pane fade" id="pills-profile" role="tabpanel">
                 {{#name_departure}}<img alt="" height="50" src="/assets/img/escalas2/{{name_departure}}.png" width="50">{{/name_departure}}
                 {{#name_destination}}<img alt="" height="50" src="/assets/img/escalas2/{{name_destination}}.png"
                                           width="50">{{/name_destination}}
-
               </div>
               <div aria-labelledby="pills-contact-tab" class="tab-pane fade" id="pills-contact" role="tabpanel">...
               </div>
@@ -93,23 +71,29 @@
           </div>
           <div class="card-footer">
             <small class="text-muted">Last updated 3 mins ago</small>
-            <button class="btn btn-primary botonVuelo" type="button">
-              <a href="/ticket/selectCabinAndService?id={{id}}&date={{day}}&date2={{day2}}&time={{time}}&time2={{time2}}&departure={{#id_departure}}{{id_departure}}{{/id_departure}}&destination={{#id_destination}}{{id_destination}}{{/id_destination}}&week={{#week}}{{week}}{{/week}}&hours={{hours}}">
+            <form action="/ticket/selectCabinAndService" method="post">
+              <input name="id" type="hidden" value="{{id}}">
+              <input name="date" type="hidden" value="{{day}}">
+              <input name="date2" type="hidden" value="{{day2}}">
+              <input name="time" type="hidden" value="{{time}}">
+              <input name="time2" type="hidden" value="{{time2}}">
+              <input name="departure" type="hidden" value="{{#id_departure}}{{id_departure}}{{/id_departure}}">
+              <input name="destination" type="hidden" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+              <input name="destination" type="hidden" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+              <input name="week" type="hidden" value="{{#week}}{{week}}{{/week}}">
+              <input name="hours" type="hidden" value="{{hours}}">
+              <button class="btn btn-primary botonVuelo" type="submit">
                 Continuar
-              </a>
-            </button>
+              </button>
+            </form>
           </div>
         </div>
       </div>
       {{/flight_plans}}
     </div>
-
-
     {{#empty}}
     <div style="color: red">{{error}}</div>
     {{/empty}}
-
-
     {{#error}}
     <div style="color: red">{{error}}</div>
     {{/error}}
@@ -117,8 +101,5 @@
       <button type="submit">Volver</button>
     </a>
   </div>
-
-
 </section>
-
 {{> footer}}
