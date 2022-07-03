@@ -75,8 +75,8 @@ class TicketController{
 
     public function generatePDF(){
         $data['ticket'] = $this->ticketModel->findClientTicket($_SESSION['id_flight'], $_SESSION['nickname'], $_SESSION['type_cabin']);
-        $html = $this->printer2->generateTemplatedStringForPDF('templatepdf.html', $data['ticket'][0]);
-        $this->pdf->getPDF($html);
+        $html = $this->printer2->generateTemplatedStringForPDF('templateTicketInfo.html', $data['ticket'][0]);
+        $this->pdf->getPDF($html, 'ReservaVuelo');
     }
 
     //selecciona cabina y servicio
