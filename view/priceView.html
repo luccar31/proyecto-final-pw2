@@ -2,47 +2,53 @@
 {{> navbar}}
 <section class="vh-100 profile" style="background-color: #f4f5f7;">
   <div class="container py-5 h-100">
-    <div class="card">
-      <div class="card-header gradient-custom text-white">
-        <h5 class="my-1">Información del precio</h5>
-      </div>
-      <div class="card-body">
-        <form action="/ticket/verifyEnabledClient" method="post">
-          {{#price}}
-          <div class="form-floating ">
-            <div class="col-6 mb-3">
-              <h6>Precio de cabina por tramo</h6>
-              <p class="text-muted">${{priceCabin}}</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Precio de servicio por tramo</h6>
-              <p class="text-muted">${{priceService}}</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Cantidad de personas</h6>
-              <p class="text-muted">{{num_tickets}}</p>
-            </div>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-8 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: .5rem;">
+          <div class="row g-0">
+            {{#price}}
+              <div class="card-body p-4 priceDiv">
+                <h3>Información del precio</h3>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Precio de cabina</h5>
+                    <h4 class="text-muted">{{priceCabin}} <img class="imgPrice" src="/assets/img/credit.png"></h4>
+                  </div>
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Precio de servicio</h5>
+                    <h5 class="text-muted">{{priceService}} <img class="imgPrice" src="/assets/img/credit.png"></h5>
+                  </div>
+                </div>
+                <div class="row pt-1">
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Precio por tramo</h5>
+                    <h4 class="text-muted">{{segmentPrice}} <img class="imgPrice" src="/assets/img/credit.png"></h4>
+
+                  </div>
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Cantidad de pasajeros</h5>
+                    <h4 class="text-muted">{{num_tickets}}</h4>
+                  </div>
+                </div>
+                <div class="row pt-1">
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Tramos</h5>
+                    <h4 class="text-muted">{{segments}}</h4>
+                  </div>
+                  <div class="col-6 mb-3 priceDiv">
+                    <h5>Total</h5>
+                    <h4 class="text-muted"> <img class="imgPrice" src="/assets/img/credit.png">{{totalPriceInCredit}} (${{totalPrice}})</h4>
+                  </div>
+                </div>
+                <button class="btn btn-outline-success btn-lg px-5" type="button">
+                  <a href="/ticket/verifyEnabledClient" style="color: #151515">Continuar</a>
+                </button>
+
+              </div>
+            {{/price}}
           </div>
-          <div class="form-floating mt-4">
-            <div class="col-6 mb-3">
-              <h6>Precio por tramo</h6>
-              <p class="text-muted">${{segmentPrice}}</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Tramos</h6>
-              <p class="text-muted">{{segments}}</p>
-            </div>
-            <div class="col-6 mb-3">
-              <h6>Total</h6>
-              <p class="text-muted">${{totalPrice}}</p>
-            </div>
-          </div>
-          <div>
-            <button class="btn btn-outline-dark btn-sm px-3 mt-4" type="submit">Pagar</button>
-          </div>
-          <a class="btn btn-outline-dark btn-sm px-3 mt-4" href="/flight_plan">Volver a buscar vuelo</a>
-          {{/price}}
-        </form>
+        </div>
       </div>
     </div>
   </div>

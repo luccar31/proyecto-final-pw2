@@ -33,4 +33,26 @@ class CreditController {
         $this->printer->generateView('payView.html', $data);
 
     }
+
+    public function confirmPay(){
+
+
+        $titular = $_POST['titular'];
+        $nroTarjeta = $_POST['nroTarjeta'];
+        echo strlen($nroTarjeta);
+
+        if (empty($titular) || empty($nroTarjeta) || strlen($nroTarjeta) != 16 || empty($_POST['ccv']) || empty($_POST['vencimiento'])){
+            $data['firstname'] = $_SESSION['user_firstname'];
+            $data['surname'] = $_SESSION['user_surname'];
+            $data['error'] = 'Los datos ingresados son incorrectos';
+            $this->printer->generateView('payView.html', $data);
+        }
+        else{
+
+            $this->creditModel->registerPayment($titular, $nroTarjeta, $_SESSION['totalPrice'], $_SESSION['nickname']);
+            Helper::redirect('/ticket/createTicket');
+        }
+
+
+    }
 }

@@ -11,9 +11,9 @@
     </div>
     {{/payError}}
     {{^payError}}
-    <div class="container px-4">
-      <div class="row gx-5">
-        <div class="col">
+    <div class="container px-8" style="padding-left: 100px">
+      <div class="row gx-2">
+        <div class="col-sm-4">
           <div class="cardCredit">
             <div class="cardCredit__front cardCredit__part">
               <img class="cardCredit__front-square cardCredit__square" src="/assets/img/bbva.png">
@@ -40,32 +40,64 @@
             </div>
           </div>
         </div>
-        <div class="col">
-          <form action="/ticket/createTicket" method="post">
-            <div class="mb-3">
-              <label class="form-label">Número de tarjeta</label>
-              <input type="number" class="form-control" id="nroTarjeta" >
+        <div class="col-sm-6">
+          <div class="row">
+            <div>
+              <form action="/credit/confirmPay" method="post">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Ingrese los datos de su tarjeta</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="name">Nombre del titular</label>
+                        <input class="form-control" id="name" name="titular" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="ccnumber">Número de tarjeta</label>
+                        <div class="input-group">
+                          <input class="form-control" name="nroTarjeta" type="text" placeholder="0000 0000 0000 0000" autocomplete="email">
+                          <div class="input-group-append">
+                            <span class="input-group-text" style="height: 40px">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
+  <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+</svg></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-sm-4">
+                      <label for="vencimiento">Vencimiento</label>
+                      <input class="form-control" type="text" id="vencimiento" name="vencimiento" placeholder="10/25">
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="cvv">CVV/CVC</label>
+                        <input class="form-control" id="cvv" name="ccv" type="text" placeholder="123">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="card-footer" style="text-align: right">
+                  {{#error}}  <div style="color: red">{{error}}</div>  {{/error}}
+                  <button class="btn btn-outline-success btn-lg px-5" type="submit">
+                    <i class="mdi mdi-gamepad-circle"></i>Pagar</button>
+                </div>
+              </div>
+              </form>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Titular</label>
-              <input type="titular" class="form-control" id="titular">
-            </div>
-            <div class="mb-3 form-check">
-              <label class="form-label">Vencimiento</label>
-              <input type="text" class="form-control" id="vencimiento">
-            </div>
-            <div class="mb-3 form-check">
-              <label class="form-label">CCV</label>
-              <input type="text" class="form-control" id="ccv">
-            </div>
-            <div class="mb-3 form-check">
-              <label class="form-label">Monto a pagar: </label>
-              {{#totalPrice}}
-              <h3>{{totalPrice}}</h3>
-              {{/totalPrice}}
-            </div>
-            <button type="submit" class="btn btn-primary">Pagar</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

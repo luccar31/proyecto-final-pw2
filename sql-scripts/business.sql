@@ -578,3 +578,11 @@ CREATE TABLE stop(
                      arrive_time TIME NOT NULL, -- hora de llegada a la locacion
                      arrive_date DATE NOT NULL -- fecha de llegada
 );
+
+CREATE TABLE payment(
+
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    titular VARCHAR (50),
+                    nroTarjeta VARCHAR (16),
+                    totalPrice INT,
+                    user_nickname VARCHAR (50))
