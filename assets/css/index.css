@@ -17,18 +17,18 @@ a:hover {
     background: white;
 }
 
-.login, .home, .flight, .profile, .tickets, .pay{
+.login, .home, .flight, .profile, .tickets, .pay {
     background: url("/assets/img/fondo_blur.jpg");
     background-size: cover;
     padding: 20px 0 60px 0;
 }
 
-.navbar-custom{
+.navbar-custom {
     height: 80px;
 
 }
 
-.login_title{
+.login_title {
     font-size: 20px;
 }
 
@@ -38,35 +38,37 @@ a:hover {
     padding: 150px 0 300px 0;
 }
 
-.botonVuelo{
+.botonVuelo {
     float: right;
 }
 
-.pay{
+.pay {
     padding-top: 200px;
     padding-bottom: 200px;
 }
 
-.payForm{
+.payForm {
     background: white;
 }
+
 .price {
     display: flex;
 }
 
-.imgPrice{
+.imgPrice {
     width: 40px;
     height: 30px;
 }
 
-.priceDiv{
+.priceDiv {
     text-align: center;
 }
 
-.padding{
-    padding:5rem !important;
-    margin-left:300px;
+.padding {
+    padding: 5rem !important;
+    margin-left: 300px;
 }
+
 .card {
     margin-bottom: 1.5rem;
 }

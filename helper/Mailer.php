@@ -1,12 +1,11 @@
 <?php
 
-require_once ('third-party/PHPMailer/src/Exception.php');
-require_once ('third-party/PHPMailer/src/PHPMailer.php');
-require_once ('third-party/PHPMailer/src/SMTP.php');
+require_once('third-party/PHPMailer/src/Exception.php');
+require_once('third-party/PHPMailer/src/PHPMailer.php');
+require_once('third-party/PHPMailer/src/SMTP.php');
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer extends PHPMailer
 {
@@ -16,7 +15,8 @@ class Mailer extends PHPMailer
         $this->config();
     }
 
-    private function config(){
+    private function config()
+    {
         $this->isSMTP();
         $this->SMTPAuth = true;
         $this->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
@@ -27,7 +27,8 @@ class Mailer extends PHPMailer
         $this->isHTML();
     }
 
-    public function sendEmail($to, $subject = '', $body = ''){
+    public function sendEmail($to, $subject = '', $body = '')
+    {
         try {
             $this->addAddress($to);
             $this->Subject = $subject;

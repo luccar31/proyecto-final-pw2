@@ -59,6 +59,28 @@ class Flight_planController
     }
 
     //busca vuelos creados o planes de vuelo
+
+    private function validateInputs($week, $departure, $destination, &$data, &$errors)
+    {
+        // semana vacía
+        if (!$week) {
+            $errors++;
+            $data['emptyWeek'] = "Seleccione una semana";
+        }
+        // origen vacío
+        if (!$departure) {
+            $errors++;
+            $data['emptyDepartureError'] = "Seleccione un origen";
+        }
+        // destino vacío
+        if (!$destination) {
+            $errors++;
+            $data['emptyDestinationError'] = "Seleccione un destino";
+        }
+    }
+
+    //esto es para la barra de progreso dinámica
+
     private function searchFlight($departure, $destination, $week, $type)
     {
         $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week, $type);
@@ -66,7 +88,6 @@ class Flight_planController
         $this->printer->generateView('flightPlanSearchView.html', $data);
     }
 
-    //esto es para la barra de progreso dinámica
     public function progress()
     {
 
@@ -105,23 +126,5 @@ class Flight_planController
         }
 
         return $this->printer->generateView('flightStatus.html', $data);
-    }
-
-    private function validateInputs($week, $departure, $destination, &$data, &$errors){
-        // semana vacía
-        if (!$week) {
-            $errors++;
-            $data['emptyWeek'] = "Seleccione una semana";
-        }
-        // origen vacío
-        if (!$departure) {
-            $errors++;
-            $data['emptyDepartureError'] = "Seleccione un origen";
-        }
-        // destino vacío
-        if (!$destination) {
-            $errors++;
-            $data['emptyDestinationError'] = "Seleccione un destino";
-        }
     }
 }

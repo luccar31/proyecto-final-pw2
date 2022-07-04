@@ -23,46 +23,46 @@
                     <h6>Email</h6>
                     <p class="text-muted">{{email}}</p>
                   </div>
-                {{#traveler_code}}
-                <h6>Datos de Viaje</h6>
-                <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Número de Viajero</h6>
-                    <p class="text-muted">{{traveler_code}}</p>
+                  {{#traveler_code}}
+                  <h6>Datos de Viaje</h6>
+                  <hr class="mt-0 mb-4">
+                  <div class="row pt-1">
+                    <div class="col-6 mb-3">
+                      <h6>Número de Viajero</h6>
+                      <p class="text-muted">{{traveler_code}}</p>
+                    </div>
+                    <div class="col-6 mb-3">
+                      <h6>Nivel de Vuelo</h6>
+                      <p class="text-muted">{{flight_level}}</p>
+                    </div>
                   </div>
-                  <div class="col-6 mb-3">
-                    <h6>Nivel de Vuelo</h6>
-                    <p class="text-muted">{{flight_level}}</p>
+                  {{/traveler_code}}
+                  {{^traveler_code}}
+                  <h6>Datos de Viaje</h6>
+                  <hr class="mt-0 mb-4">
+                  <div class="row pt-1">
+                    <div class="col-6 mb-3">
+                      <h6>Numero de Viajero</h6>
+                      <p class="text-muted">Usted aún no se realizó el chequeo médico</p>
+                    </div>
+                    <div class="col-6 mb-3">
+                      <a href="/medicalcheckup">
+                        <button class="btn btn-outline-dark btn-lg px-5" type="submit">Sacar Turno</button>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                {{/traveler_code}}
-                {{^traveler_code}}
-                <h6>Datos de Viaje</h6>
-                <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Numero de Viajero</h6>
-                    <p class="text-muted">Usted aún no se realizó el chequeo médico</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <a href="/medicalcheckup">
-                      <button class="btn btn-outline-dark btn-lg px-5" type="submit">Sacar Turno</button>
-                    </a>
-                  </div>
-                </div>
-                {{/traveler_code}}
-                <button class="btn btn-primary" type="button">
-                  <a href="/ticket/showClientTickets">Ver mis tickets</a>
-                </button>
+                  {{/traveler_code}}
+                  <button class="btn btn-primary" type="button">
+                    <a href="/ticket/showClientTickets">Ver mis tickets</a>
+                  </button>
 
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  {{/client}}
+    {{/client}}
 </section>
 {{> footer}}

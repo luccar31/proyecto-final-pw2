@@ -55,11 +55,10 @@ class SigninController
         //le mando los datos para que valide y me retorna si es valido o no
         $data = $this->userModel->validateData($data, $previousData);
 
-        if ($data['isValid'] == false){
+        if ($data['isValid'] == false) {
             $this->printer->generateView('signinView.html', $data);
 
-        }
-        else{
+        } else {
             $this->userModel->createUser($nickname, $password);
             $this->clientModel->createClient($nickname, $firstname, $surname, $email);
             $_SESSION['nickname'] = $nickname;

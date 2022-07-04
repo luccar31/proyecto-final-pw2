@@ -1,6 +1,6 @@
 <?php
 
-require_once ('third-party/dompdf/autoload.inc.php');
+require_once('third-party/dompdf/autoload.inc.php');
 
 use Dompdf\Dompdf;
 
@@ -12,10 +12,11 @@ class PDFGenerator extends Dompdf
         $this->getOptions()->setChroot('/');
     }
 
-    public function getPDF($html, $filename){
+    public function getPDF($html, $filename)
+    {
         $this->loadHtml($html);
         $this->setPaper('A4');
         $this->render();
-        $this->stream($filename.'.pdf');
+        $this->stream($filename . '.pdf');
     }
 }

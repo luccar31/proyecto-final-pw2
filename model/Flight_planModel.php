@@ -368,15 +368,13 @@ class Flight_planModel
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
                                            ORDER BY j.order_");
-        } elseif ($type == 4){
+        } elseif ($type == 4) {
 
             return $this->database->query("SELECT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
                                            ORDER BY j.order_");
-        }
-
-        else {
+        } else {
             return $this->database->query("SELECT DISTINCT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))

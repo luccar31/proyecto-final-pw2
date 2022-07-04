@@ -1,24 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Space+Mono:400,400i,700,700i');
 
 
-
-
 .title {
     margin-bottom: 30px;
     color: #162969;
 }
 
 
-.cardCredit{
+.cardCredit {
     width: 320px;
     height: 190px;
     -webkit-perspective: 600px;
     -moz-perspective: 600px;
-    perspective:600px;
+    perspective: 600px;
 
 }
 
-.cardCredit__part{
+.cardCredit__part {
     box-shadow: 1px 1px #aaa3a3;
     top: 0;
     position: absolute;
@@ -27,8 +25,9 @@
     display: inline-block;
     width: 320px;
     height: 190px;
-    background: rgb(12,36,91);
-    background: linear-gradient(90deg, rgba(12,36,91,1) 0%, rgba(36,71,138,1) 37%, rgba(18,140,203,1) 71%, rgba(0,194,255,1) 100%);    background-repeat: no-repeat;
+    background: rgb(12, 36, 91);
+    background: linear-gradient(90deg, rgba(12, 36, 91, 1) 0%, rgba(36, 71, 138, 1) 37%, rgba(18, 140, 203, 1) 71%, rgba(0, 194, 255, 1) 100%);
+    background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border-radius: 8px;
@@ -44,7 +43,7 @@
     -moz-backface-visibility: hidden;
 }
 
-.cardCredit__front{
+.cardCredit__front {
     padding: 18px;
     -webkit-transform: rotateY(0);
     -moz-transform: rotateY(0);
@@ -66,11 +65,12 @@
     height: 16px;
 }
 
-.cardCredit__front-logo{
+.cardCredit__front-logo {
     position: absolute;
     top: 18px;
     right: 18px;
 }
+
 .cardCredit__square {
     border-radius: 5px;
     height: 30px;
@@ -101,7 +101,7 @@
 .cardCredit__label {
     font-size: 10px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     letter-spacing: 1px;
 }
 
@@ -118,6 +118,7 @@
 .cardCredit__back-content {
     padding: 15px 15px 0;
 }
+
 .cardCredit__secret--last {
     color: #303030;
     text-align: right;
@@ -128,11 +129,11 @@
 .cardCredit__secret {
     padding: 5px 12px;
     background-color: #fff;
-    position:relative;
+    position: relative;
 }
 
-.cardCredit__secret:before{
-    content:'';
+.cardCredit__secret:before {
+    content: '';
     position: absolute;
     top: -3px;
     left: -3px;

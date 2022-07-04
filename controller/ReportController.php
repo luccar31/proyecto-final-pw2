@@ -19,7 +19,7 @@ class ReportController
 
     public function execute()
     {
-        if(!$_SESSION['admin']){
+        if (!$_SESSION['admin']) {
             helper::redirect('/');
         }
         $this->printer->generateView('reportView.html');
@@ -27,7 +27,7 @@ class ReportController
 
     public function report1()
     {
-        if(!$_SESSION['admin']){
+        if (!$_SESSION['admin']) {
             helper::redirect('/');
         }
 
@@ -36,7 +36,7 @@ class ReportController
 
     public function report2()
     {
-        if(!$_SESSION['admin']){
+        if (!$_SESSION['admin']) {
             helper::redirect('/');
         }
 
@@ -98,7 +98,7 @@ class ReportController
 
     public function report3()
     {
-        if(!$_SESSION['admin']){
+        if (!$_SESSION['admin']) {
             helper::redirect('/');
         }
 
@@ -130,7 +130,7 @@ class ReportController
 
     public function report4()
     {
-        if(!$_SESSION['admin']){
+        if (!$_SESSION['admin']) {
             helper::redirect('/');
         }
 

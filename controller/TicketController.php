@@ -1,6 +1,7 @@
 <?php
 
-class TicketController{
+class TicketController
+{
 
     private $printer;
     private $printer2;
@@ -9,7 +10,8 @@ class TicketController{
     private $ticketModel;
     private $appointmentModel;
 
-    public function __construct($models, $printer, $printer2, $pdf){
+    public function __construct($models, $printer, $printer2, $pdf)
+    {
         $this->flight_planModel = $models['flight_planModel'];
         $this->ticketModel = $models['ticketModel'];
         $this->appointmentModel = $models['appointmentModel'];
@@ -18,7 +20,8 @@ class TicketController{
         $this->pdf = $pdf;
     }
 
-    public function execute(){
+    public function execute()
+    {
         $this->printer->generateView('ticketView.html');
     }
 
@@ -43,8 +46,7 @@ class TicketController{
                 Helper::redirect('/credit/pay');
 
             }
-        }
-        //no inició sesión
+        } //no inició sesión
         else {
 
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
@@ -79,14 +81,16 @@ class TicketController{
         $this->printer->generateView('reserved_ticketsView.html', $data);
     }
 
-    public function generatePDF(){
+    public function generatePDF()
+    {
         $data['ticket'] = $this->ticketModel->findClientTicket($_SESSION['id_flight'], $_SESSION['nickname'], $_SESSION['type_cabin']);
         $html = $this->printer2->generateTemplatedStringForPDF('templateTicketInfo.html', $data['ticket'][0]);
         $this->pdf->getPDF($html, 'ReservaVuelo');
     }
 
     //selecciona cabina y servicio
-    public function selectCabinAndService(){
+    public function selectCabinAndService()
+    {
         //guardo los datos del vuelo elegido en sesión para utilizarlos mas tarde
         $_SESSION['id_flight_plan'] = $_POST["id"];
         $_SESSION['departure_date'] = $_POST["date"];
@@ -107,27 +111,26 @@ class TicketController{
     }
 
     //valida la cabina
-    public function validateCabin(){
+    public function validateCabin()
+    {
 
         $_SESSION['type_cabin'] = $_POST['type_cabin'];
         $_SESSION['service'] = $_POST['service'];
         $_SESSION['num_tickets'] = $_POST['num_tickets'];
 
-        if ($_SESSION['num_tickets'] >= 1){
+        if ($_SESSION['num_tickets'] >= 1) {
             $data = $this->ticketModel->validateCapacityCabin($_SESSION['id_flight_plan'], $_SESSION['type_cabin'], $_SESSION['num_tickets']);
 
-            if ($data['isValid'] == true){
+            if ($data['isValid'] == true) {
 
                 Helper::redirect('/credit/payInfo');
-            }
-            else{
+            } else {
                 $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);
                 $data['services'] = $this->ticketModel->getServices($_SESSION['id_flight_plan']);
 
                 $this->printer->generateView('ticketView.html', $data);
             }
-        }
-        else{
+        } else {
             $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);
             $data['services'] = $this->ticketModel->getServices($_SESSION['id_flight_plan']);
             $data['ceroTickets'] = "La cantidad mímina de tickets a elegir debe ser 1";
@@ -136,12 +139,14 @@ class TicketController{
         }
     }
 
-    public function showClientTickets(){
+    public function showClientTickets()
+    {
         $ticketsClient['tickets'] = $this->findClientTickets();
         $this->printer->generateView('client_ticketsView.html', $ticketsClient);
     }
 
-    private function findClientTickets(){
+    private function findClientTickets()
+    {
         return $this->ticketModel->findClientTickets($_SESSION["nickname"]);
     }
 

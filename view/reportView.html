@@ -1,22 +1,25 @@
 {{> header}}
 {{> navbar}}
 <section class="checkup vh-100 profile" style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
-        <div class="card">
-            <div class="card-header gradient-custom text-white">
-                <h5 class="my-1">Reportes</h5>
-            </div>
-            <div class="card-body">
-                <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report1" style="color: darkcyan">Tasa de ocupación por viaje y equipo</a></button>
-                <form>
-                    <label for="year">Ingrese año a saber:</label>
-                    <input type="number" name="y" id="year" min="2022" required>
-                    <button formaction="/report/report2" class="btn btn-outline-dark btn-sm px-2">Facturación Mensual</button>
-                </form>
-                <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report3" style="color: darkcyan">Cabina más vendida</a></button>
-                <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report4" style="color: darkcyan">Facturación por Cliente</a></button>
-            </div>
-        </div>
+  <div class="container py-5 h-100">
+    <div class="card">
+      <div class="card-header gradient-custom text-white">
+        <h5 class="my-1">Reportes</h5>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report1" style="color: darkcyan">Tasa de
+          ocupación por viaje y equipo</a></button>
+        <form>
+          <label for="year">Ingrese año a saber:</label>
+          <input id="year" min="2022" name="y" required type="number">
+          <button class="btn btn-outline-dark btn-sm px-2" formaction="/report/report2">Facturación Mensual</button>
+        </form>
+        <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report3" style="color: darkcyan">Cabina más
+          vendida</a></button>
+        <button class="btn btn-outline-dark btn-sm px-2"><a href="/report/report4" style="color: darkcyan">Facturación
+          por Cliente</a></button>
+      </div>
     </div>
+  </div>
 </section>
 {{> footer}}

@@ -21,7 +21,8 @@
               <p class="cardCredit_numer">**** **** **** 6258</p>
               <div class="cardCredit__space-75">
                 <span class="cardCredit__label">Titular de la tarjeta</span>
-                <p class="cardCredit__info">{{#firstname}}{{firstname}}{{/firstname}} {{#surname}}{{surname}}{{/surname}}</p>
+                <p class="cardCredit__info">{{#firstname}}{{firstname}}{{/firstname}}
+                  {{#surname}}{{surname}}{{/surname}}</p>
               </div>
               <div class="cardCredit__space-25">
                 <span class="cardCredit__label">Expira</span>
@@ -44,57 +45,62 @@
           <div class="row">
             <div>
               <form action="/credit/confirmPay" method="post">
-              <div class="card">
-                <div class="card-header gradient-custom text-white">
-                  <h5 class="my-1">Ingrese los datos de su tarjeta</h5>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <label for="name">Nombre del titular</label>
-                        <input class="form-control" id="name" name="titular" type="text">
+                <div class="card">
+                  <div class="card-header gradient-custom text-white">
+                    <h5 class="my-1">Ingrese los datos de su tarjeta</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label for="name">Nombre del titular</label>
+                          <input class="form-control" id="name" name="titular" type="text">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <label for="ccnumber">Número de tarjeta</label>
-                        <div class="input-group">
-                          <input class="form-control" name="nroTarjeta" type="text" placeholder="0000 0000 0000 0000" autocomplete="email">
-                          <div class="input-group-append">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label for="ccnumber">Número de tarjeta</label>
+                          <div class="input-group">
+                            <input autocomplete="email" class="form-control" name="nroTarjeta" placeholder="0000 0000 0000 0000"
+                                   type="text">
+                            <div class="input-group-append">
                             <span class="input-group-text" style="height: 40px">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
+                             <svg class="bi bi-credit-card" fill="currentColor" height="16" viewBox="0 0 16 16"
+                                  width="16" xmlns="http://www.w3.org/2000/svg">
   <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
   <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
 </svg></span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-4">
-                      <label for="vencimiento">Vencimiento</label>
-                      <input class="form-control" type="text" id="vencimiento" name="vencimiento" placeholder="10/25">
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label for="cvv">CVV/CVC</label>
-                        <input class="form-control" id="cvv" name="ccv" type="text" placeholder="123">
+                    <div class="row">
+                      <div class="form-group col-sm-4">
+                        <label for="vencimiento">Vencimiento</label>
+                        <input class="form-control" id="vencimiento" name="vencimiento" placeholder="10/25" type="text">
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label for="cvv">CVV/CVC</label>
+                          <input class="form-control" id="cvv" name="ccv" placeholder="123" type="text">
+                        </div>
                       </div>
                     </div>
-                  </div>
 
+                  </div>
+                  <div class="card-footer" style="text-align: right">
+                    {{#error}}
+                    <div style="color: red">{{error}}</div>
+                    {{/error}}
+                    <button class="btn btn-outline-dark btn-m px-5" type="submit">
+                      <i class="mdi mdi-gamepad-circle"></i>Pagar
+                    </button>
+                  </div>
                 </div>
-                <div class="card-footer" style="text-align: right">
-                  {{#error}}  <div style="color: red">{{error}}</div>  {{/error}}
-                  <button class="btn btn-outline-dark btn-m px-5" type="submit">
-                    <i class="mdi mdi-gamepad-circle"></i>Pagar</button>
-                </div>
-              </div>
               </form>
             </div>
           </div>
