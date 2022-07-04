@@ -25,29 +25,38 @@ class ReportController
         Helper::debugExit('Nada');
     }
 
-    public function report2(){ //facturacion mensual
-        $data = $this->reportModel->monthlyBilling();
+    public function report2(){ //
+        $year = $_GET['y'];
+        $data = $this->reportModel->monthlyBilling($year);
+
+        if(!$data['totals']){
+            echo 'No hay nada para mostrar uwu';
+            exit();
+        }
 
         $graph = new Graph(600,600,'auto');
         $graph->SetScale("textlin");
 
-        $tickPositions = array(10000,20000,30000,50000, 60000, 70000, 80000, 90000, 100000, 40000);
+        $tickPositions = $this->getTickPositions($data['totals']);
         $graph->yaxis->SetTickPositions($tickPositions);
-        $graph->SetBox(false);
-
+        $graph->SetMargin(60,50,40,40);
+        $graph->SetBox(true);
         $graph->ygrid->SetFill(false);
-        $graph->xaxis->SetTickLabels(array('Ene','Feb','Mar','Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov' , 'Dic'));
+        $tickLabels = $data['months'];
+        $graph->xaxis->SetTickLabels($tickLabels);
+
         $graph->yaxis->HideLine(false);
         $graph->yaxis->HideTicks(false,false);
 
-        $b1plot = new BarPlot($data);
-        $gbplot = new GroupBarPlot(array($b1plot));
-        $graph->Add($gbplot);
+        $b1plot = new BarPlot($data['totals']);
+        $b1plot->SetWidth(40);
+        //$gbplot = new GroupBarPlot(array($b1plot));
+        $graph->Add($b1plot);
 
         $b1plot->SetColor("white");
-        $b1plot->SetFillColor("#cc1111");
+        $b1plot->SetFillColor($this->rand_color());
 
-        $graph->title->Set("Bar Plots");
+        $graph->title->Set("Facturacion mensual del año $year");
 
         $graph->Stroke();
     }
@@ -60,6 +69,27 @@ class ReportController
     public function report4(){ //facturacion por cliente
         $response = $this->reportModel->billingPerClient();
         Helper::debugExit($response);
+    }
+
+    private function getTickPositions($data)
+    {
+        $max = (int)ceil(max($data));
+        $intervals = 10;
+        $intervalLength = (int)floor($max / 10);
+
+        $positions = [];
+
+        for ($i = 1; $i < $intervals; $i++){
+            $pos = $intervalLength * $i;
+            $positions[] = $pos;
+        }
+        $positions[] = $max;
+
+        return $positions;
+    }
+
+    private function rand_color() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
 
 }

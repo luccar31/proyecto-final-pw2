@@ -20,14 +20,10 @@ class ReportModel
                                             GROUP BY MONTH(date)
                                             ORDER BY MONTH(date)");
 
+        $months = array_map(function($elem){return date('M', mktime(0, 0, 0, (int)$elem, 10));},array_column($billing,'Mes'));
+        $totals = array_values(array_column($billing,'Total'));
 
-        $data = array_fill(1,12,0);
-
-        foreach($billing as $register){
-             $data[(int)$register['Mes']] = (int)$register['Total'];
-        }
-
-        return array_values($data);
+        return ['months' => $months, 'totals' => $totals];
     }
 
     public function mostSoldCabin(){
