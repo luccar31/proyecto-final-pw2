@@ -32,7 +32,7 @@ class CheckinController
 
                 $boardingCode = $this->ticketModel->createBoardingCode($id_ticket, $nickname);
 
-                Helper::redirect("/checkin/generateQR?bcode='$boardingCode'&id_ticket='$id_ticket'");
+                Helper::redirect("/checkin/generateQR?bcode=$boardingCode");
         }
         else{
             Helper::redirect("/ticket/showClientTickets");
