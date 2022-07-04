@@ -581,9 +581,10 @@ CREATE TABLE stop(
 );
 
 CREATE TABLE payment(
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    titular VARCHAR (50),
-                    nroTarjeta VARCHAR (16),
-                    totalPrice INT,
-                    user_nickname VARCHAR (50)
-)
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        titular VARCHAR (50),
+                        nroTarjeta VARCHAR (16),
+                        totalPrice DOUBLE NOT NULL,
+                        user_nickname VARCHAR (50) NOT NULL,
+                        date DATETIME NOT NULL
+);
