@@ -34,7 +34,6 @@ class MedicalcheckupController
 
     public function makeAppointmentForm()
     {
-
         $data['medicalCenters'] = $this->appointmentModel->getMedicalCenters();
         $data['medicalCenter'] = isset($_GET['med']) ? $_GET['med'] : null;
         $data['date'] = isset($_GET['d']) ? $_GET['d'] : null;
@@ -72,7 +71,9 @@ class MedicalcheckupController
     {
         $error = [];
 
-        if (!$this->isValidDate($date)) {
+        //helper::debugExit();
+
+        if (!$this->isValidDate($date) || !$date) {
             $error[] = 'Ingrese una fecha correcta';
         }
 

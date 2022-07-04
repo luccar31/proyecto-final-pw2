@@ -23,17 +23,6 @@ CREATE TABLE user
     FOREIGN KEY (role) REFERENCES role (id)
 );
 
-INSERT INTO user
-VALUES ('lucas1234', '81dc9bdb52d04dc20036dbd8313ed055', 2);
-INSERT INTO user
-VALUES ('stefi5678', '81dc9bdb52d04dc20036dbd8313ed055', 1);
-INSERT INTO user
-VALUES ('tomi4321', '81dc9bdb52d04dc20036dbd8313ed055', 1);
-INSERT INTO user
-VALUES ('maxi9876', '81dc9bdb52d04dc20036dbd8313ed055', 1);
-INSERT INTO user
-VALUES ('alexis7777', '81dc9bdb52d04dc20036dbd8313ed055', 1);
-
 CREATE TABLE client
 (
     user_nickname VARCHAR(50) PRIMARY KEY,
@@ -46,6 +35,17 @@ CREATE TABLE client
     verification  BOOLEAN      NOT NULL
 );
 
+INSERT INTO user
+VALUES ('admin', '81dc9bdb52d04dc20036dbd8313ed055', 2);
+INSERT INTO user
+VALUES ('stefi5678', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('tomi4321', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('maxi9876', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('alexis7777', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+
 INSERT INTO client
 VALUES ('stefi5678', 'Stefenía', 'Rinaldi', 'stefania@gmail.com', null, null, true);
 INSERT INTO client
@@ -54,6 +54,43 @@ INSERT INTO client
 VALUES ('maxi9876', 'Maximiliano', 'Davies', 'maxi@gmail.com', null, null, true);
 INSERT INTO client
 VALUES ('alexis7777', 'Alexis', 'Verba', 'alexis@gmail.com', null, null, true);
+
+INSERT INTO user
+VALUES ('usuario1', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario2', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario3', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario4', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario5', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario6', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario7', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario8', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO user
+VALUES ('usuario9', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+INSERT INTO client
+VALUES ('usuario1', 'Usuario', 'Usuario', 'usuario1@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario2', 'Usuario', 'Usuario', 'usuario2@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario3', 'Usuario', 'Usuario', 'usuario3@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario4', 'Usuario', 'Usuario', 'usuario4@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario5', 'Usuario', 'Usuario', 'usuario5@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario6', 'Usuario', 'Usuario', 'usuario6@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario7', 'Usuario', 'Usuario', 'usuario7@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario8', 'Usuario', 'Usuario', 'usuario8@mail.com', null, null, true);
+INSERT INTO client
+VALUES ('usuario9', 'Usuario', 'Usuario', 'usuario9@mail.com', null, null, true);
 
 CREATE TABLE medical_center
 (
@@ -809,4 +846,12 @@ CREATE TABLE payment
     user_nickname VARCHAR(50) NOT NULL,
     date          DATETIME    NOT NULL
 );
+
+
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '13100', 'usuario1', '2022-08-04 22:37:17');
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '15120', 'usuario1', '2022-09-04 22:37:17');
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '154000', 'usuario1', '2022-10-04 22:37:17');
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '131000', 'usuario1', '2022-11-04 22:37:17');
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '131000', 'usuario1', '2022-08-04 22:37:17');
+INSERT INTO `payment` (`id`, `titular`, `nroTarjeta`, `totalPrice`, `user_nickname`, `date`) VALUES (NULL, 'Usuario Usuario', '4000111100006258', '131000', 'usuario1', '2022-09-04 22:37:17');
 

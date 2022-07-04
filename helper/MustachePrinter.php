@@ -24,6 +24,7 @@ class MustachePrinter
 
         $data['logged'] = Session::isSessionActive();
         $data['firstname'] = Session::getNickname();
+        $data['admin'] = isset($_SESSION['admin']) ? $_SESSION['admin'] : null;
 
         echo $this->mustache->render($contentAsString, $data);
     }
