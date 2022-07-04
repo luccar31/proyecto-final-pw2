@@ -1,63 +1,75 @@
 {{> header}}
 {{> navbar}}
 <section class="vh-200 profile">
-  <div class="container py-5 h-100">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card h-100">
-          <img alt="..." class="card-img-top" src="/assets/img/fondo.jpg" style="object-fit: cover; height: 400px">
-          <div class="card-body">
-            <h5 class="card-title">Orbitales</h5>
-            <p class="card-text">Los viajes orbitales incluyen las siguientes rutas: <br><br> ■ Ankara -> Buenos
-              Aires<br>■ Buenos Aires -> Ankara</p>
-            <a data-scroll href="#section1">Hola</a>
-          </div>
-          <div class="container">
-            <form action="flight_plan" method="post">
-              <input hidden name="type" type="hidden" value=1>
-              <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4" type="submit">Buscar Vuelos</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img alt="..." class="card-img-top" src="/assets/img/entreDestinos.jpg"
-               style="object-fit: cover; height: 400px">
-          <div class="card-body">
-            <h5 class="card-title">Entre Destinos</h5>
-            <p class="card-text">Los viajes entre destinos pueden ser:<br><br>■ Circuito corto: Buenos Aires/Ankara ->
-              EEI -> Hotel Orbital -> Luna -> Marte<br>
-              ■ Circuito Largo: Buenos Aires/Ankara -> EEI -> Luna -> Marte -> Ganimedes -> Europa -> Io -> Encedalo ->
-              Titan</p>
-          </div>
+    <div class="container py-5 h-100">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img alt="..." class="card-img-top" src="/assets/img/fondo.jpg"
+                         style="object-fit: cover; height: 400px">
+                    <div class="card-body">
+                        <h5 class="card-title">Orbitales</h5>
+                        <p class="card-text">Los viajes orbitales incluyen las siguientes rutas: <br><br> ■ Ankara ->
+                            Buenos
+                            Aires<br>■ Buenos Aires -> Ankara</p>
+                        <a data-scroll href="#section1">Hola</a>
+                    </div>
+                    <div class="container">
+                        <form action="flight_plan" method="post">
+                            <input hidden name="type" type="hidden" value=1>
+                            <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4"
+                                    type="submit">Buscar Vuelos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img alt="..." class="card-img-top" src="/assets/img/entreDestinos.jpg"
+                         style="object-fit: cover; height: 400px">
+                    <div class="card-body">
+                        <h5 class="card-title">Entre Destinos</h5>
+                        <p class="card-text">Los viajes entre destinos pueden ser:<br><br>■ Circuito corto: Buenos
+                            Aires/Ankara ->
+                            EEI -> Hotel Orbital -> Luna -> Marte<br>
+                            ■ Circuito Largo: Buenos Aires/Ankara -> EEI -> Luna -> Marte -> Ganimedes -> Europa -> Io
+                            -> Encedalo ->
+                            Titan</p>
+                    </div>
 
-          <div class="container">
-            <form action="flight_plan" method="post">
-              <input hidden name="type" type="hidden" value=2>
-              <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4" type="submit">Buscar Vuelos</button>
-            </form>
-          </div>
+                    <div class="container">
+                        <form action="flight_plan" method="post">
+                            <input hidden name="type" type="hidden" value=2>
+                            <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4"
+                                    type="submit">Buscar Vuelos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img alt="..." class="card-img-top" src="/assets/img/tour.jpg"
+                         style="object-fit: cover; height: 400px">
+                    <div class="card-body">
+                        <h5 class="card-title">Tour</h5>
+                        <p class="card-text">El Tour dura 35 dias y sale desde Buenos Aires hasta Neptuno, pasando por
+                            todos
+                            los destinos anteriores<br><br>
+                            ■ (Solo disponible para pasajeros de nivel 3)</p>
+                    </div>
+                    <div class="container">
+                        <form action="flight_plan" method="post">
+                            <input hidden name="type" type="hidden" value=4>
+                            <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4"
+                                    type="submit">Buscar Vuelos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img alt="..." class="card-img-top" src="/assets/img/tour.jpg" style="object-fit: cover; height: 400px">
-          <div class="card-body">
-            <h5 class="card-title">Tour</h5>
-            <p class="card-text">El Tour dura 35 dias y sale desde Buenos Aires hasta Neptuno, pasando por todos
-              los destinos anteriores<br><br>
-              ■ (Solo disponible para pasajeros de nivel 3)</p>
-          </div>
-          <div class="container">
-            <form action="flight_plan" method="post">
-              <input hidden name="type" type="hidden" value=4>
-              <button class="btn btn-outline-dark btn-lg px-4 d-grid gap-2 col-10 mx-auto mb-4" type="submit">Buscar Vuelos</button>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </section>
 {{> footer}}

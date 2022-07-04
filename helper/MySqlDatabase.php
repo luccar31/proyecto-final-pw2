@@ -1,6 +1,7 @@
 <?php
 
-class MySqlDatabase {
+class MySqlDatabase
+{
 
     private $host;
     private $user;
@@ -9,7 +10,8 @@ class MySqlDatabase {
 
     private $conn;
 
-    public function __construct($host, $user, $pass, $database) {
+    public function __construct($host, $user, $pass, $database)
+    {
         $this->host = $host;
         $this->user = $user;
         $this->pass = $pass;
@@ -18,19 +20,22 @@ class MySqlDatabase {
         $this->connect();
     }
 
-    public function __destruct(){
+    public function __destruct()
+    {
         $this->disconnect();
     }
 
-    public function query($sql) {
+    public function query($sql)
+    {
         $sql = trim($sql);
         $result = mysqli_query($this->conn, $sql);
-        if (substr($sql, 0, 6) == "SELECT"){
-            return mysqli_fetch_all($result , MYSQLI_ASSOC);
+        if (substr($sql, 0, 6) == "SELECT") {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
         }
     }
 
-    private function connect() {
+    private function connect()
+    {
         $conn = mysqli_connect($this->host, $this->user, $this->pass, $this->database);
         if (!$conn) {
             die('Connection failed: ' . mysqli_connect_error());
@@ -38,7 +43,8 @@ class MySqlDatabase {
         $this->conn = $conn;
     }
 
-    private function disconnect() {
+    private function disconnect()
+    {
         mysqli_close($this->conn);
     }
 }

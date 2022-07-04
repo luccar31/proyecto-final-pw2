@@ -4,11 +4,13 @@ class AppointmentModel
 {
     private $database;
 
-    public function __construct($database){
+    public function __construct($database)
+    {
         $this->database = $database;
     }
 
-    public function getAppointment($nickname){
+    public function getAppointment($nickname)
+    {
         $res = $this->database->query("
             SELECT ap.date, ap.user_nickname, mc.name as medicalCenter
             FROM appointment ap INNER JOIN medical_center mc ON ap.id_medical_center = mc.id
@@ -17,11 +19,12 @@ class AppointmentModel
         return $res ? $res[0] : false;
     }
 
-    public function createAppointment($nickname, $date, $medicalCenter){
+    public function createAppointment($nickname, $date, $medicalCenter)
+    {
 
         $errors = $this->modelValidation($nickname, $date, $medicalCenter);
 
-        if( !$errors ){
+        if (!$errors) {
             $this->database->query("
                 INSERT INTO appointment (date, user_nickname, id_medical_center)
                 VALUES ('$date','$nickname', '$medicalCenter')
@@ -31,8 +34,9 @@ class AppointmentModel
 
         return $errors;
     }
-  
-    private function createTraveler($nickname){
+
+    private function createTraveler($nickname)
+    {
         $travelerCode = $this->generateTravelerCode();
         $flight_level = rand(1, 3);
         $this->database->query("
@@ -43,7 +47,8 @@ class AppointmentModel
         ");
     }
 
-    public function deleteAppointment($nickname){
+    public function deleteAppointment($nickname)
+    {
         $this->database->query("
             DELETE
             FROM appointment
@@ -51,21 +56,23 @@ class AppointmentModel
         ");
     }
 
-    private function modelValidation($nickname, $date, $medicalCenter){
+    private function modelValidation($nickname, $date, $medicalCenter)
+    {
         $errors = [];
 
-        if($this->getAppointment($nickname)){
+        if ($this->getAppointment($nickname)) {
             $errors[] = 'Usted ya posee un turno asignado';
         }
 
-        if(!$this->isRoomForAppointment($date, $medicalCenter)){
+        if (!$this->isRoomForAppointment($date, $medicalCenter)) {
             $errors[] = "El día $date no se encuentran turnos disponibles en el centro médico de $medicalCenter";
         }
 
         return $errors;
     }
 
-    private function getAppointmentsInDate($date, $medicalCenter){
+    private function getAppointmentsInDate($date, $medicalCenter)
+    {
         $data = $this->database->query("
             SELECT COUNT(*) as c
             FROM appointment ap INNER JOIN medical_center mc ON ap.id_medical_center = mc.id
@@ -75,7 +82,8 @@ class AppointmentModel
         return (int)$data[0]["c"];
     }
 
-    private function getLimitAppointments($medicalCenter){
+    private function getLimitAppointments($medicalCenter)
+    {
         $data = $this->database->query("
             SELECT daily_limit as c
             FROM medical_center
@@ -85,7 +93,8 @@ class AppointmentModel
         return (int)$data[0]["c"];
     }
 
-    private function isRoomForAppointment($date, $medicalCenter){
+    private function isRoomForAppointment($date, $medicalCenter)
+    {
         $appointmentsInDate = $this->getAppointmentsInDate($date, $medicalCenter);
         $limit = $this->getLimitAppointments($medicalCenter);
 
@@ -93,20 +102,30 @@ class AppointmentModel
 
         return $available > 0;
     }
-  
-    private function generateTravelerCode(){
+
+    private function generateTravelerCode()
+    {
         $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle($caracteres), 0, 10);
     }
 
-    public function getMedicalCenters(){
+    public function getMedicalCenters()
+    {
         return $this->database->query("
             SELECT id, name
             FROM medical_center
         ");
     }
 
-    public function getNameMedicalCenter($id){
+    public function getNameMedicalCenter($id)
+    {
         return $this->database->query("SELECT * FROM medical_center WHERE id=$id")[0]['name'];
+    }
+
+    public function getFlightLevel($nickname)
+    {
+        $result = $this->database->query("SELECT flight_level FROM client WHERE user_nickname = '$nickname'");
+        return $result[0]['flight_level'];
+
     }
 }

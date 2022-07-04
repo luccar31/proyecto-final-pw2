@@ -2,119 +2,138 @@
 {{> navbar}}
 
 <section class="home">
-  <div class="container">
+    <div class="container">
 
 
-    <div class="row">
-      {{#flight_plans}}
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item">
-                <button aria-controls="pills-home" aria-selected="true" class="nav-link active"
-                        data-bs-target="#pills-home{{id}}"
-                        data-bs-toggle="pill" id="pills-home-tab" role="tab" type="button">Datos del vuelo
-                </button>
-              </li>
-             <!-- <li class="nav-item">
-                <button aria-controls="pills-profile" aria-selected="false" class="nav-link"
-                        data-bs-target="#pills-profile{{id}}"
-                        data-bs-toggle="pill" id="pills-profile-tab" role="tab" type="button">Escalas
-                </button>
-              </li>-->
-              <li class="nav-item">
-                <button aria-controls="pills-contact" aria-selected="false" class="nav-link"
-                        data-bs-target="#pills-contact{{id}}"
-                        data-bs-toggle="pill" id="pills-contact-tab" role="tab" type="button">Detalle
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <div class="tab-content" id="pills-tabContent">
-              <div aria-labelledby="pills-home-tab" class="tab-pane fade show active" id="pills-home{{id}}" role="tabpanel">
-                <table class='table table-borderless' style="text-align: center">
-                  <thead>
-                  <tr>
-                    <th scope="col">Día de partida</th>
-                    <th scope="col">Hora de partida</th>
-                    <th scope="col">Origen</th>
-                    <th scope="col">Destino</th>
-                    <th scope="col">Día de llegada</th>
-                    <th scope="col">Hora de llegada</th>
-                  </tr>
-                  </thead>
-                  <tr>
-                    <td>{{day}}</td>
-                    <td>{{time}}</td>
-                    <td>{{#name_departure}}<img alt="" height="50" src="/assets/img/escalas2/{{name_departure}}.png"
-                                                width="50">{{/name_departure}}
-                    </td>
-                    <td>{{#name_destination}}<img alt="" height="50" src="/assets/img/escalas2/{{name_destination}}.png"
-                                                  width="50">{{/name_destination}}
-                    </td>
-                    <td>{{day2}}</td>
-                    <td>{{time2}}</td>
-                  </tr>
-                </table>
-              </div>
-           <!--   <div aria-labelledby="pills-profile-tab" class="tab-pane fade" id="pills-profile{{id}}" role="tabpanel">
-                {{#name_departure}}<img alt="" height="50" src="/assets/img/escalas2/{{name_departure}}.png" width="50">{{/name_departure}}
-                {{#name_destination}}<img alt="" height="50" src="/assets/img/escalas2/{{name_destination}}.png"
-                                          width="50">{{/name_destination}}
-              </div>-->
-              <div aria-labelledby="pills-contact-tab" class="tab-pane fade" id="pills-contact{{id}}" role="tabpanel">
-                <table class='table table-borderless' style="text-align: center">
-                  <thead>
-                  <tr>
-                    <th scope="col">Plan de vuelo</th>
-                    <th scope="col">Nave</th>
-                    <th scope="col">Tipo de viaje</th>
-                    <th scope="col">Tipo de equipo</th>
-                  </tr>
-                  </thead>
-                  <tr>
-                    <td>{{id}}</td>
-                    <td>{{model}}</td>
-                    <td>{{type}}</td>
-                    <td>{{equipment}}</td>
-                  </tr>
-                </table>
-              </div>
+        <div class="row">
+            {{#flight_plans}}
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <button aria-controls="pills-home" aria-selected="true" class="nav-link active"
+                                        data-bs-target="#pills-home{{id}}"
+                                        data-bs-toggle="pill" id="pills-home-tab" role="tab" type="button">Datos del
+                                    vuelo
+                                </button>
+                            </li>
+                            <!-- <li class="nav-item">
+                               <button aria-controls="pills-profile" aria-selected="false" class="nav-link"
+                                       data-bs-target="#pills-profile{{id}}"
+                                       data-bs-toggle="pill" id="pills-profile-tab" role="tab" type="button">Escalas
+                               </button>
+                             </li>-->
+                            <li class="nav-item">
+                                <button aria-controls="pills-contact" aria-selected="false" class="nav-link"
+                                        data-bs-target="#pills-contact{{id}}"
+                                        data-bs-toggle="pill" id="pills-contact-tab" role="tab" type="button">Detalle
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div aria-labelledby="pills-home-tab" class="tab-pane fade show active"
+                                 id="pills-home{{id}}" role="tabpanel">
+                                <table class='table table-borderless' style="text-align: center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Día de partida</th>
+                                        <th scope="col">Hora de partida</th>
+                                        <th scope="col">Origen</th>
+                                        <th scope="col">Destino</th>
+                                        <th scope="col">Día de llegada</th>
+                                        <th scope="col">Hora de llegada</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>{{day}}</td>
+                                        <td>{{time}}</td>
+                                        <td>{{#name_departure}}<img alt="" height="50"
+                                                                    src="/assets/img/escalas2/{{name_departure}}.png"
+                                                                    width="50">{{/name_departure}}
+                                        </td>
+                                        <td>{{#name_destination}}<img alt="" height="50"
+                                                                      src="/assets/img/escalas2/{{name_destination}}.png"
+                                                                      width="50">{{/name_destination}}
+                                        </td>
+                                        <td>{{day2}}</td>
+                                        <td>{{time2}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!--   <div aria-labelledby="pills-profile-tab" class="tab-pane fade" id="pills-profile{{id}}" role="tabpanel">
+                                 {{#name_departure}}<img alt="" height="50" src="/assets/img/escalas2/{{name_departure}}.png" width="50">{{/name_departure}}
+                                 {{#name_destination}}<img alt="" height="50" src="/assets/img/escalas2/{{name_destination}}.png"
+                                                           width="50">{{/name_destination}}
+                               </div>-->
+                            <div aria-labelledby="pills-contact-tab" class="tab-pane fade" id="pills-contact{{id}}"
+                                 role="tabpanel">
+                                <table class='table table-borderless' style="text-align: center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Plan de vuelo</th>
+                                        <th scope="col">Nave</th>
+                                        <th scope="col">Tipo de viaje</th>
+                                        <th scope="col">Tipo de equipo</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>{{id}}</td>
+                                        <td>{{model}}</td>
+                                        <td>{{type}}</td>
+                                        <td>{{equipment}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted"></small>
+                        <form action="/ticket/selectCabinAndService" method="post">
+                            <input name="id" type="hidden" value="{{id}}">
+                            <input name="date" type="hidden" value="{{day}}">
+                            <input name="date2" type="hidden" value="{{day2}}">
+                            <input name="time" type="hidden" value="{{time}}">
+                            <input name="time2" type="hidden" value="{{time2}}">
+                            <input name="departure" type="hidden"
+                                   value="{{#id_departure}}{{id_departure}}{{/id_departure}}">
+                            <input name="destination" type="hidden"
+                                   value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+                            <input name="destination" type="hidden"
+                                   value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
+                            <input name="week" type="hidden" value="{{#week}}{{week}}{{/week}}">
+                            <input name="hours" type="hidden" value="{{hours}}">
+                            <input name="id_type_equipment" type="hidden" value="{{id_type_equipment}}">
+                            <button class="btn btn-primary botonVuelo" type="submit">
+                                Continuar
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted"></small>
-            <form action="/ticket/selectCabinAndService" method="post">
-              <input name="id" type="hidden" value="{{id}}">
-              <input name="date" type="hidden" value="{{day}}">
-              <input name="date2" type="hidden" value="{{day2}}">
-              <input name="time" type="hidden" value="{{time}}">
-              <input name="time2" type="hidden" value="{{time2}}">
-              <input name="departure" type="hidden" value="{{#id_departure}}{{id_departure}}{{/id_departure}}">
-              <input name="destination" type="hidden" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
-              <input name="destination" type="hidden" value="{{#id_destination}}{{id_destination}}{{/id_destination}}">
-              <input name="week" type="hidden" value="{{#week}}{{week}}{{/week}}">
-              <input name="hours" type="hidden" value="{{hours}}">
-              <button class="btn btn-primary botonVuelo" type="submit">
-                Continuar
-              </button>
-            </form>
-          </div>
+            {{/flight_plans}}
+            {{#empty}}
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100" style="text-align: center; padding-bottom: 200px;padding-top: 200px">
+                    <div class="col col-lg-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <div class="card-header gradient-custom text-white">
+                                <h5 class="my-1">Búsqueda Fallida</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5  style="color: red">{{error}}</h5>
+                                <br>
+                                <a class="btn btn-outline-dark btn-m px-3 " href="/">Volver</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {{/empty}}
         </div>
-      </div>
-      {{/flight_plans}}
     </div>
-    {{#empty}}
-    <div style="color: red">{{error}}</div>
-    {{/empty}}
-    {{#error}}
-    <div style="color: red">{{error}}</div>
-    {{/error}}
-    <a href="/">
-      <button type="submit">Volver</button>
-    </a>
-  </div>
 </section>
 {{> footer}}

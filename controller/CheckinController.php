@@ -9,7 +9,8 @@ class CheckinController
     private $qr;
     private $pdf;
 
-    public function __construct($models, $printer, $printerPDF, $qr, $pdf, $mailer) {
+    public function __construct($models, $printer, $printerPDF, $qr, $pdf, $mailer)
+    {
         $this->ticketModel = $models['ticketModel'];
         $this->printer = $printer;
         $this->printerPDF = $printerPDF;
@@ -18,35 +19,37 @@ class CheckinController
         $this->mailer = $mailer;
     }
 
-    public function execute(){
+    public function execute()
+    {
         Helper::redirect('/');
     }
 
-    public function confirmTicketReservation(){
+    public function confirmTicketReservation()
+    {
 
-        if ($_SESSION['checkInByTicket'] != $_GET['id_ticket']){
+        if ($_SESSION['checkInByTicket'] != $_GET['id_ticket']) {
 
             $_SESSION['checkInByTicket'] = $_GET['id_ticket'];
-                $id_ticket = $_GET['id_ticket'];
-                $nickname = $_SESSION['nickname'];
+            $id_ticket = $_GET['id_ticket'];
+            $nickname = $_SESSION['nickname'];
 
-                $boardingCode = $this->ticketModel->createBoardingCode($id_ticket, $nickname);
+            $boardingCode = $this->ticketModel->createBoardingCode($id_ticket, $nickname);
 
-                Helper::redirect("/checkin/generateQR?bcode=$boardingCode");
-        }
-        else{
+            Helper::redirect("/checkin/generateQR?bcode=$boardingCode");
+        } else {
             Helper::redirect("/ticket/showClientTickets");
         }
     }
 
-    public function generateQR(){
+    public function generateQR()
+    {
 
         $code = $_GET['bcode'];
-        $content = 'Codigo de abordaje: '.$code;
+        $content = 'Codigo de abordaje: ' . $code;
 
         $filepath = $this->qr->getQrPng($content);
 
-        if (!$filepath){
+        if (!$filepath) {
             echo 'No se pudo generar el QR';
             exit();
         }

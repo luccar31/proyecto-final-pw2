@@ -5,11 +5,13 @@ class TicketModel
 
     private $database;
 
-    public function __construct($database){
+    public function __construct($database)
+    {
         $this->database = $database;
     }
 
-    public function createTicket($id_flight, $type_cabin, $id_service, $userNickname, $num_tickets, $departure, $destination){
+    public function createTicket($id_flight, $type_cabin, $id_service, $userNickname, $num_tickets, $departure, $destination)
+    {
 
         $cabin = $_SESSION['cabin'];
 
@@ -19,7 +21,8 @@ class TicketModel
         }
     }
 
-    public function findClientTickets($nickname){
+    public function findClientTickets($nickname)
+    {
         return $this->database->query("SELECT f.id_flight as id_flight, t.id, f.departure_date, f.departure_hour, l.name as departure , 
                                         l2.name as destination, tc.description as type_cabin, s.description as service, f.id_ship, 
                                         fp.type_flight as id_type_flight,   t.boarding_code as boarding_code
@@ -34,7 +37,8 @@ class TicketModel
                                         WHERE user_nickname = '$nickname'");
     }
 
-    public function getCabins($id_flight_plan){
+    public function getCabins($id_flight_plan)
+    {
         return $this->database->query("SELECT DISTINCT t.* FROM type_cabin t 
                                        JOIN cabin c ON t.id = c.id_type
                                        WHERE c.id IN(SELECT c.id FROM cabin c
@@ -44,13 +48,14 @@ class TicketModel
                                       ");
     }
 
-    public function getServices($id_flight_plan){
+    public function getServices($id_flight_plan)
+    {
         return $this->database->query("SELECT * FROM service GROUP BY price desc");
     }
 
 
-
-    public function findClientTicket($id_flight, $nickname, $type_cabin){
+    public function findClientTicket($id_flight, $nickname, $type_cabin)
+    {
         return $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 
                                         tc.description as type_cabin, s.description as service, f.id_ship, fp.type_flight as id_type_flight
                                         FROM ticket t
@@ -64,7 +69,8 @@ class TicketModel
                                         WHERE user_nickname = '$nickname' AND t.id_flight = '$id_flight' AND tc.id = '$type_cabin'");
     }
 
-    public function validateCapacityCabin($id_flight_plan, $type_cabin, $num_tickets){
+    public function validateCapacityCabin($id_flight_plan, $type_cabin, $num_tickets)
+    {
 
         //trae la capacidad de la cabina elegida
         $capacityCabinData = $this->database->query("SELECT c.capacity
@@ -88,11 +94,11 @@ class TicketModel
 
         $countFlightTickets = $countFlightTicketsData[0]["num_tickets"];
         $capacityCabin = $capacityCabinData[0]["capacity"];
-        $availables = $capacityCabin-$countFlightTickets;
+        $availables = $capacityCabin - $countFlightTickets;
 
-        if($countFlightTickets + $num_tickets <= $capacityCabin){
+        if ($countFlightTickets + $num_tickets <= $capacityCabin) {
             $data['isValid'] = true;
-        }else{
+        } else {
             $data['capacityCabin'] = "Capacidad: $capacityCabin asientos.";
             $data['countFlightTickets'] = "Disponibles: $availables";
             $data['outOfCapacityError'] = "Se alcanzo la capacidad maxima permitida de pasajeros para este tipo de cabina, por favor elija otra";
@@ -102,7 +108,8 @@ class TicketModel
 
     }
 
-    private function getCabinByTypeAndFlight($id_flight_plan, $id_type_cabin){
+    private function getCabinByTypeAndFlight($id_flight_plan, $id_type_cabin)
+    {
 
         $idCabin = $this->database->query("SELECT c.id from cabin c 
                                            where c.id_type = '$id_type_cabin' AND c.id IN(SELECT ec.id_cabin FROM equipment_cabin ec 
@@ -113,13 +120,15 @@ class TicketModel
         return $_SESSION['cabin'];
     }
 
-    public function createBoardingCode($id_ticket, $user_nickname){
+    public function createBoardingCode($id_ticket, $user_nickname)
+    {
         $code = $this->generateCode();
         $this->database->query("UPDATE ticket SET boarding_code = '$code' WHERE id = '$id_ticket' AND user_nickname = '$user_nickname'");
         return $code;
     }
 
-    private function generateCode(){
+    private function generateCode()
+    {
         $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         return substr(str_shuffle($caracteres), 0, 10);
     }

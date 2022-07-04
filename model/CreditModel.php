@@ -16,7 +16,7 @@ class CreditModel
     {
 
         //consultar si ya pagó
-        if (isset($_SESSION['nickname'])){
+        if (isset($_SESSION['nickname'])) {
             $this->consultMedicalPrice($_SESSION['nickname']);
         }
 
@@ -44,17 +44,15 @@ class CreditModel
         if (empty($segments)) {
 
             $segments = 1;
+        } elseif ($segments[0]['resta'] == 0) {
+            $segments = 1;
+        } else {
+
+            $segments = $segments[0]['resta'];
         }
-        elseif($segments[0]['resta'] == 0){
-                $segments = 1;
-            }
-            else{
 
-                $segments = $segments[0]['resta'];
-            }
-
-        $totalPrice = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical) * $this->creditPrice);
-        $totalPriceInCredit = ( (((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical));
+        $totalPrice = ((((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical) * $this->creditPrice);
+        $totalPriceInCredit = ((((($priceCabin[0]['price'] + $priceService[0]['price']) + ($this->segmentPrice * $segments))) * $num_tickets + $this->medical));
 
 
         return ['totalPrice' => $totalPrice, 'priceCabin' => $priceCabin[0]['price'], 'priceService' => $priceService[0]['price'],
@@ -62,7 +60,8 @@ class CreditModel
 
     }
 
-    public function registerPayment($titular, $nroTarjeta, $totalPrice, $nickname){
+    public function registerPayment($titular, $nroTarjeta, $totalPrice, $nickname)
+    {
 
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
@@ -77,7 +76,7 @@ class CreditModel
 
         $result = $this->database->query("SELECT * from ticket WHERE user_nickname = '$user_nickname'");
 
-        if (!empty($result)){
+        if (!empty($result)) {
             $this->medical = 0;
         }
     }

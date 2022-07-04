@@ -107,7 +107,8 @@ class Flight_planController
         return $this->printer->generateView('flightStatus.html', $data);
     }
 
-    private function validateInputs($week, $departure, $destination, &$data, &$errors){
+    private function validateInputs($week, $departure, $destination, &$data, &$errors)
+    {
         // semana vacía
         if (!$week) {
             $errors++;

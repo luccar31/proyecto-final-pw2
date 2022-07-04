@@ -2,52 +2,55 @@
 {{> navbar}}
 
 <section class="login">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
 
-            <div class="mb-md-5 mt-md-4 pb-5">
-              <p class="text-white-50 mb-5 login_title">¡Comenzá tu viaje interespacial! (?</p>
-              <form action="/login/validateUser" method="post">
-                <div class="form-outline form-white mb-4">
-                  <label class="form-label" for="nickname">Usuario</label>
-                  <input class="form-control form-control-lg" id="nickname" name="nickname" placeholder="Ingrese su nombre de usuario"
-                         type="text"/>
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <p class="text-white-50 mb-5 login_title">¡Comenzá tu viaje interespacial! (?</p>
+                            <form action="/login/validateUser" method="post">
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="nickname">Usuario</label>
+                                    <input class="form-control form-control-lg" id="nickname" name="nickname"
+                                           placeholder="Ingrese su nombre de usuario"
+                                           type="text"/>
+                                </div>
+
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="password">Contraseña</label>
+                                    <input class="form-control form-control-lg" id="password" name="password"
+                                           placeholder="Ingrese su contraseña"
+                                           type="password"/>
+
+                                </div>
+                                {{#error}}
+                                <div style="color: red">{{error}}</div>
+                                {{/error}}
+                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">¿Olvidaste tu
+                                    contraseña?</a></p>
+
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit">Iniciar Sesión</button>
+                            </form>
+                            <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                <a class="text-white" href="#!"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                <a class="text-white" href="#!"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                <a class="text-white" href="#!"><i class="fab fa-google fa-lg"></i></a>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <p class="mb-0">¿No tienes una cuenta? <a class="text-white-50 fw-bold" href="/signin">Registrate</a>
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="form-outline form-white mb-4">
-                  <label class="form-label" for="password">Contraseña</label>
-                  <input class="form-control form-control-lg" id="password" name="password" placeholder="Ingrese su contraseña"
-                         type="password"/>
-
-                </div>
-                {{#error}}
-                <div style="color: red">{{error}}</div>
-                {{/error}}
-                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">¿Olvidaste tu contraseña?</a></p>
-
-                <button class="btn btn-outline-light btn-lg px-5" type="submit">Iniciar Sesión</button>
-              </form>
-              <div class="d-flex justify-content-center text-center mt-4 pt-1">
-                <a class="text-white" href="#!"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a class="text-white" href="#!"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                <a class="text-white" href="#!"><i class="fab fa-google fa-lg"></i></a>
-              </div>
-
             </div>
-
-            <div>
-              <p class="mb-0">¿No tienes una cuenta? <a class="text-white-50 fw-bold" href="/signin">Registrate</a>
-              </p>
-            </div>
-
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 {{> footer}}
