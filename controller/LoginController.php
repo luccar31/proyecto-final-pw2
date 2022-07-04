@@ -43,6 +43,7 @@ class LoginController {
         session_start();
         $_SESSION["logged"] = true;
         $_SESSION["nickname"] = $nickname;
+        $_SESSION["admin"] = $this->userModel->isAdmin($nickname);
         $_SESSION["email"] = $this->clientModel->getEmail($nickname);
         Helper::redirect('/login/getVerificationState');
     }
@@ -57,7 +58,7 @@ class LoginController {
         //se comprueba al inicio el estado de verificacion de la cuenta
         $this->updateSessionVerificationState();
 
-        if(!$_SESSION['verified']){
+        if(!$_SESSION['verified'] && !$_SESSION['admin']){
             //Helper::redirect('/login/sendVerificationEmail');
             $this->sendVerificationEmail();
         }

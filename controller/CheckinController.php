@@ -58,8 +58,5 @@ class CheckinController
 
         $html = $this->printerPDF->generateTemplatedStringForPDF('templateAbordingMail.html', $data);
         $this->mailer->sendEmail($_SESSION['email'], 'Codigo de abordaje', $html);
-
-
     }
-
 }

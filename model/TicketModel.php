@@ -9,14 +9,6 @@ class TicketModel
         $this->database = $database;
     }
 
-    /*public function search($typeCabin = null, $typeService = null){
-
-        if ($typeCabin) {
-
-        }
-
-    }*/
-
     public function createTicket($id_flight, $type_cabin, $id_service, $userNickname, $num_tickets, $departure, $destination){
 
         $cabin = $_SESSION['cabin'];

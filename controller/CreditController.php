@@ -15,14 +15,11 @@ class CreditController {
 
     //info de los precios del vuelo elegido
     public function payInfo(){
-
         $data['price'] = $this->creditModel->calculatePrice($_SESSION['id_flight_plan'], $_SESSION['num_tickets'], $_SESSION['service'], $_SESSION['type_cabin']);
 
         $_SESSION['totalPrice'] = $data['price']['totalPrice'];
 
         $this->printer->generateView('priceView.html', $data);
-
-
     }
 
     public function pay(){

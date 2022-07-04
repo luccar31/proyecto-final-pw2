@@ -18,6 +18,7 @@ require_once('controller/Flight_planController.php');
 require_once('controller/TicketController.php');
 require_once('controller/CreditController.php');
 require_once('controller/CheckinController.php');
+require_once('controller/ReportController.php');
 
 require_once('model/UserModel.php');
 require_once('model/ClientModel.php');
@@ -26,6 +27,14 @@ require_once('model/TicketModel.php');
 require_once('model/Flight_planModel.php');
 require_once('model/CreditModel.php');
 require_once('model/CheckinModel.php');
+require_once('model/ReportModel.php');
+
+require_once ('third-party/jpgraph/src/jpgraph.php');
+require_once ('third-party/jpgraph/src/jpgraph_pie.php');
+require_once ('third-party/jpgraph/src/jpgraph_bar.php');
+require_once ('third-party/jpgraph/src/jpgraph_pie3d.php');
+
+
 
 class Configuration {
 
@@ -65,6 +74,10 @@ class Configuration {
         return new CheckinController(['ticketModel' => $this->getTicketModel()], $this->getPrinter(), $this->getPrinterForPDF(), $this->getQRGenerator(), $this->getPDFGenerator(), $this->getMailer());
     }
 
+    public function getReportController(){
+        return new ReportController(['reportModel' => $this->getReportModel(), 'userModel' => $this->getUserModel()], $this->getPrinter(), $this->getPrinterForPDF(), $this->getPDFGenerator());
+    }
+
     private function getCheckinModel(){
         return new CheckinModel($this->getDatabase());
     }
@@ -91,6 +104,10 @@ class Configuration {
 
     private function getTicketModel(){
         return new TicketModel($this->getDatabase());
+    }
+
+    private function getReportModel(){
+        return new ReportModel($this->getDatabase());
     }
 
     private function getDatabase() {

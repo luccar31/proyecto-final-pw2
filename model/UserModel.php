@@ -61,4 +61,9 @@ class UserModel
         return $data;
 
     }
+
+    public function isAdmin($user_nickname){
+        $role = (int)$this->database->query("SELECT role FROM user WHERE nickname = '$user_nickname'")[0]['role'];
+        return $role == 2;
+    }
 }
