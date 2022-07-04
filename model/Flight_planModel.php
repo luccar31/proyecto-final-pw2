@@ -27,20 +27,22 @@ class Flight_planModel
         $typesOfEquipmentAllowed = $this->consultFlightLevel();
         $typesOfEquipmentAllowed = implode("','", $typesOfEquipmentAllowed);
 
+
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
         if ($departure <= 2) {
             $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, 
-                                               te.description as equipment, j.diff_time as hours, e.id_type as id_type_equipment  FROM flight_plan fp
-                                               INNER JOIN equipment e on fp.id_equipment = e.id
-                                               INNER JOIN location l on fp.departure_loc = l.id
-                                               INNER JOIN type_flight tf on fp.type_flight = tf.id
-                                               INNER JOIN type_equipment te on e.id_type = te.id
-                                               INNER JOIN route r on tf.id = r.id_type_flight
-                                               INNER JOIN journey j on r.id = j.id_route
-                                               WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed')
-                                               GROUP BY fp.id
-                                               ORDER BY fp.departure_day");
+                                           te.description as equipment, (SELECT sum(diff_time) from journey WHERE order_ <= j.order_ AND id_route = r.id) as hours FROM flight_plan fp
+                                           INNER JOIN equipment e on fp.id_equipment = e.id
+                                           INNER JOIN location l on fp.departure_loc = l.id
+                                           INNER JOIN type_flight tf on fp.type_flight = tf.id
+                                           INNER JOIN type_equipment te on e.id_type = te.id
+                                           INNER JOIN route r on tf.id = r.id_type_flight
+                                           INNER JOIN journey j on r.id = j.id_route
+                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed')
+                                           AND j.id_route = r.id and j.id_location = '$destination'
+                                           GROUP BY fp.id
+                                           ORDER BY fp.departure_day");
 
             //metodo para tranformar el dia del plan de vuelo a una fecha en base a la semana elegida por el usuario
             //o dar formato
@@ -70,16 +72,12 @@ class Flight_planModel
         return ['flight_plans' => $result, 'week' => $week_number, 'id_destination' => $destination, 'name_destination' => $name_destination, 'name_departure' => $name_departure, 'id_departure' => $departure];
     }
 
-    //función que obtiene el id del tipo de vuelo automáticamente
-
     private function obtainValuesFromWeekStr($str)
     {
         $matches = [];
         preg_match('/(?<year>\d{4})-W(?<weekno>\d{1,2})/', $str, $matches);
         return $matches;
     }
-
-    //función para crear el vuelo
 
     public function getCityNameById($id)
     {
@@ -90,8 +88,7 @@ class Flight_planModel
 
     }
 
-    //consulta el nivel de vuelo del cliente
-
+    //función para consultar el tipo de vuelo
     private function consultTypeFlight($departure, $destination)
     {
 
@@ -110,28 +107,27 @@ class Flight_planModel
         $type_flight_2 = array_column($type_flight_2, 'id_location');
         $type_flight_3 = array_column($type_flight_3, 'id_location');
 
-        //pregunto si el destino está dentro del respectivo array (recorrido)
+        //si el destino está en el circuito corto pero no en el largo, el tipo de vuelo es 2
         if (in_array($destination, $type_flight_2) && !in_array($destination, $type_flight_3)) {
             $type = [2];
-        } elseif (in_array($destination, $type_flight_3) && !in_array($destination, $type_flight_2)) {
+        }
+        //si el destino está en circuito largo pero no en circuito corto, el tipo de vuelo es 3
+        elseif (in_array($destination, $type_flight_3) && !in_array($destination, $type_flight_2)) {
             $type = [3];
-            //si el destino está en el circuito corto y en el circuito largo que me retorne un array con los dos tipos
-        } else {
+        }
+        //si el destino está en el circuito corto y en el circuito largo que me retorne un array con los dos tipos
+        else {
             $type = [2, 3];
         }
-
         //en el caso de Orbital Hotel, si el origen existe en circuito corto pero no en largo, automaticamente
         //lo asigna como tipo circuito corto
         if (!in_array($departure, $type_flight_3) && in_array($departure, $type_flight_2)) {
             $type = [2];
         }
 
-
-        //el implode me retorna algo asi (1,2,3)
+        //el implode me retorna algo asi (1,2,3) para poder hacer mas facil la consulta en sql
         return implode("','", $type);
     }
-
-    //valida los inputs del formulario
 
     private function consultFlightLevel()
     {
@@ -291,8 +287,6 @@ class Flight_planModel
         return $route[0];
     }
 
-    //esto es para mostrar devuelta en la vista luego de algun error
-
     private function getEquipment($id_equipment)
     {
         $equipment = $this->database->query("SELECT * FROM equipment WHERE id = '$id_equipment'");
@@ -384,9 +378,6 @@ class Flight_planModel
 
     }
 
-    //en el caso que no haya vuelo existente, se tiene que convertir el dia (L,M,X,J,V,S,D) en un formato fecha y calcular
-    //con las horas
-
     public function getDestinationCities($type)
     {
         if ($type == 1) {
@@ -409,7 +400,6 @@ class Flight_planModel
     }
 
     //metodo para buscar donde esta la nave, sirve para la barra de progreso
-
     public function findShipPosition($id_ship)
     {
 
@@ -420,9 +410,16 @@ class Flight_planModel
 
         $actualDateTime = $actualDate . " " . $actualTime;
 
-        //busco de la tabla stop, aquellos relacionados a un vuelo que utilice la nave. Obtengo sus fechas y hora de llegada y las concateno
-        //para después compararlos con la fecha y hora actual. Solo quiero aquellos resultados anteriores a la fecha actual.
-        //Me los trae en orden descentende.
+        //Concateno la fecha y hora de llegada de una escala para luego compararla con la actual
+        //Obtengo la locación de donde está parado
+        //Hago join con vuelo para obtener la nave
+        //Hago join con otro stop para obtener la última locación de ese trayecto.
+        //WHERE: aquellas escalas donde el vuelo utilice la nave que consultamos
+        //WHERE: la fecha de llegada sea (fecha más alta de las escalas, menor a la fecha actual)
+        //Ejemplo: si estoy parado el dia 4/7 en Marte, la nave puede estar en EEI, Estacion Espacial, Orbital Hotel o La Luna
+        //entonces solo me interesa obtener la fecha
+
+
         $position = $this->database->query("SELECT (CONCAT(s.arrive_date, ' ', s.arrive_time)) as dateTime, s.id_location, s2.id_location as lastLocation FROM stop s
                                INNER JOIN flight f on s.id_flight = f.id_flight
                                INNER JOIN stop s2 on s.id_flight = s2.id_flight
@@ -438,7 +435,9 @@ class Flight_planModel
             } else {
                 return $position[0]['id_location'];
             }
-        } else {
+        }
+        //si no encontró nada, entonces que la última posición sea la locación con id más alto pero cuya fecha de llegada sea menor a la actual
+        else {
 
             $lastPosition = $this->database->query("SELECT max(id_location) as id_location FROM stop WHERE arrive_date <= '$actualDate'");
 

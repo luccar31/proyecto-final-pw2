@@ -38,6 +38,7 @@ class TicketController
             //busco si hizo un chequeo:
             $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
 
+
             //inició sesión pero no realizó chequeo médico:
             if (empty($data['enabledClient'])) {
 
@@ -46,7 +47,7 @@ class TicketController
 
             }
             //inició sesión y realizó chequeo médico, pero el vuelo era para niveles 3 y en el chequeo le dio menor
-            elseif ($_SESSION['id_type_equipment'] == 3 && $_SESSION['flight_level'] != 3) {
+            elseif ($_SESSION['id_type_equipment'] == 3 && $this->appointmentModel->getFlightLevel($_SESSION['nickname']) != 3) {
                 $this->printer->generateView('failedSearch.html');
 
             } //caso feliz:

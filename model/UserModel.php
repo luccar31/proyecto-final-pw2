@@ -65,4 +65,5 @@ class UserModel
         $role = (int)$this->database->query("SELECT role FROM user WHERE nickname = '$user_nickname'")[0]['role'];
         return $role == 2;
     }
+
 }

@@ -16,4 +16,5 @@ class HomeController
     {
         $this->printer->generateView('homeView.html');
     }
+
 }

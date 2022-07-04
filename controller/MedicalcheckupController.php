@@ -144,4 +144,5 @@ class MedicalcheckupController
         }
         return $res;
     }
+
 }

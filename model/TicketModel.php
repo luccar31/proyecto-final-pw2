@@ -53,7 +53,6 @@ class TicketModel
         return $this->database->query("SELECT * FROM service GROUP BY price desc");
     }
 
-
     public function findClientTicket($id_flight, $nickname, $type_cabin)
     {
         return $this->database->query("SELECT DISTINCT f.departure_date, f.departure_hour, l.name as departure , l2.name as destination, 

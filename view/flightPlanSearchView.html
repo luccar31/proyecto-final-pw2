@@ -80,6 +80,7 @@
                   </tr>
                   </thead>
                   <tr>
+                    {{rID}}
                     <td>{{id}}</td>
                     <td>{{model}}</td>
                     <td>{{type}}</td>
@@ -90,6 +91,7 @@
             </div>
           </div>
           <div class="card-footer">
+            <p>Duración del viaje: {{hours}}hs</p>
             <small class="text-muted"></small>
             <form action="/ticket/selectCabinAndService" method="post">
               <input name="id" type="hidden" value="{{id}}">

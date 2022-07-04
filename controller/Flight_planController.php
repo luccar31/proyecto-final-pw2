@@ -127,4 +127,5 @@ class Flight_planController
 
         return $this->printer->generateView('flightStatus.html', $data);
     }
+
 }

@@ -33,4 +33,5 @@ class ClientModel
     {
         return $this->database->query("SELECT email FROM client WHERE user_nickname = '$nickname'")[0]['email'];
     }
+
 }

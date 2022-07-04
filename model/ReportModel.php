@@ -42,4 +42,5 @@ class ReportModel
         $cabin = array_column($cabin, 'Cantidad');
         return $cabin;
     }
+
 }
