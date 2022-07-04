@@ -32,6 +32,8 @@ require_once('model/ReportModel.php');
 require_once ('third-party/jpgraph/src/jpgraph.php');
 require_once ('third-party/jpgraph/src/jpgraph_pie.php');
 require_once ('third-party/jpgraph/src/jpgraph_bar.php');
+require_once ('third-party/jpgraph/src/jpgraph_pie3d.php');
+
 
 
 class Configuration {

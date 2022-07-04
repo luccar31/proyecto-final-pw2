@@ -58,13 +58,11 @@ class CreditModel
 
     public function registerPayment($titular, $nroTarjeta, $totalPrice, $nickname){
 
-        echo $titular;
-        echo $nroTarjeta;
-        echo $totalPrice;
-        echo $nickname;
+        $date = new DateTime();
+        $date = $date->format('Y-m-d H:i:s');
 
-        $this->database->query("INSERT INTO payment (titular, nroTarjeta, totalPrice, user_nickname)
-                                VALUES ('$titular','$nroTarjeta','$totalPrice', '$nickname')");
+        $this->database->query("INSERT INTO payment (titular, nroTarjeta, totalPrice, user_nickname, date)
+                                VALUES ('$titular','$nroTarjeta','$totalPrice', '$nickname', '$date')");
     }
 
 }

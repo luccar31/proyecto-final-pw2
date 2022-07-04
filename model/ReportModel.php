@@ -9,7 +9,8 @@ class ReportModel
     }
 
     public function billingPerClient(){
-        return $this->database->query("SELECT user_nickname, SUM(totalPrice) FROM payment GROUP BY user_nickname");
+        return $this->database->query("SELECT user_nickname, SUM(totalPrice) as suma FROM payment GROUP BY user_nickname");
+
     }
 
     public function monthlyBilling($year = null){
@@ -27,9 +28,12 @@ class ReportModel
     }
 
     public function mostSoldCabin(){
-        $this->database->query("SELECT tc.description, COUNT(tc.id) as Cantidad FROM ticket
+        $cabin = $this->database->query("SELECT tc.description, COUNT(tc.id) as Cantidad FROM ticket
                                 INNER JOIN cabin c on ticket.id_cabin = c.id
                                 INNER JOIN type_cabin tc on c.id_type = tc.id
                                 GROUP BY tc.id");
+
+        $cabin = array_column($cabin, 'Cantidad');
+        return $cabin;
     }
 }
