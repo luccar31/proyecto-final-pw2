@@ -23,15 +23,15 @@ class LoginController {
         $password = $_POST["password"];
 
         $user = $this->userModel->getUser($nickname, $password);
-        $client = $this->clientModel->getClient($nickname);
-
-        $_SESSION['user_firstname'] = $client[0]['firstname'];
-        $_SESSION['user_surname'] = $client[0]['surname'];
 
         if(!$user){
             $data = ['nickname' => $nickname,'password' => $password, 'error' => "Usuario o contraseña incorrecto"];
             return $this->printer->generateView('loginView.html', $data);
         }
+
+        $client = $this->clientModel->getClient($nickname);
+        $_SESSION['user_firstname'] = $client[0]['firstname'];
+        $_SESSION['user_surname'] = $client[0]['surname'];
 
         $this->startSession($nickname);
 
