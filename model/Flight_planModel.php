@@ -11,7 +11,7 @@ class Flight_planModel
     }
 
     //funcion que busca vuelos
-    public function getFlightPlanList($departure, $destination, $week, $type)
+    public function getFlightPlanList($departure, $destination, $week, $type, $type_equipment)
     {
 
         //como $week viene por ejemplo en formato '2022-W25' tengo que hacer un split y obtener el valor 25 en este caso
@@ -20,13 +20,12 @@ class Flight_planModel
         $name_destination = $this->getCityNameById($destination);
         $name_departure = $this->getCityNameById($departure);
 
-        if ($type == 2) {
-            $type = $this->consultTypeFlight($departure, $destination);
+
+
+        if ($type_equipment == 1){
+            $type_equipment = [1,3];
+            $type_equipment = implode("','", $type_equipment);
         }
-
-        $typesOfEquipmentAllowed = $this->consultFlightLevel();
-        $typesOfEquipmentAllowed = implode("','", $typesOfEquipmentAllowed);
-
 
         //consulta que muestra todos los planes de vuelo cuando se sacan pasajes desde Buenos Aires o Anakara, aunque
         //haya alguno creado se los muestra igual
@@ -39,7 +38,8 @@ class Flight_planModel
                                            INNER JOIN type_equipment te on e.id_type = te.id
                                            INNER JOIN route r on tf.id = r.id_type_flight
                                            INNER JOIN journey j on r.id = j.id_route
-                                           WHERE tf.id IN ('$type') AND fp.departure_loc = '$departure' AND te.id IN ('$typesOfEquipmentAllowed')
+                                           WHERE r.id_type_flight = '$type' AND fp.departure_loc = '$departure' AND r.id_type_equipment in ('$type_equipment')
+                                           AND te.id in ('$type_equipment')
                                            AND j.id_route = r.id and j.id_location = '$destination'
                                            GROUP BY fp.id
                                            ORDER BY fp.departure_day");
@@ -60,7 +60,7 @@ class Flight_planModel
                                             INNER JOIN stop s1 on f.id_flight = s1.id_flight
                                             INNER JOIN stop s2 on f.id_flight = s2.id_flight
                                             INNER JOIN type_equipment te on e.id_type = te.id
-                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$type') AND fp.departure_loc IN (1,2) AND e.id_type IN ('$typesOfEquipmentAllowed')
+                                            WHERE f.departure_week = '$week_number' AND tf.id IN ('$type') AND fp.departure_loc IN (1,2) AND e.id_type IN ($type_equipment)
                                             AND s1.id_location = '$departure' AND s2.id_location = '$destination'");
         }
         //si no encuentra nada, tira mensaje de error
@@ -253,7 +253,7 @@ class Flight_planModel
 
         //creo fecha
         $d = date_create($departure_date . " " . $departure_time);
-        $time = date_format($d, 'h:i:s');
+        $time = date_format($d, 'H:i:s');
         $date = date_format($d, 'Y-m-d');
 
         //inserto la primer escala que es el origen
@@ -267,7 +267,7 @@ class Flight_planModel
             $hours = $stop['diff_time'];
             date_add($d, date_interval_create_from_date_string("$hours hours"));
 
-            $time = date_format($d, 'h:i:s');
+            $time = date_format($d, 'H:i:s');
             $date = date_format($d, 'Y-m-d');
 
             $this->database->query("INSERT INTO stop (id_flight, id_location, arrive_time, arrive_date)
@@ -368,12 +368,18 @@ class Flight_planModel
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
                                            ORDER BY j.order_");
-        } else {
+        } elseif ($type == 3) {
             return $this->database->query("SELECT DISTINCT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
-                                           WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
+                                           WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = 3)
                                            ORDER BY j.order_");
 
+        }
+        else{
+            return $this->database->query("SELECT DISTINCT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = 2)
+                                           ORDER BY j.order_");
         }
 
     }
@@ -389,12 +395,18 @@ class Flight_planModel
             return $this->database->query("SELECT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.id_location = 12");
-        } else {
+        } elseif ($type == 3){
             return $this->database->query("SELECT DISTINCT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
-                                           WHERE j.id_location > 2 AND j.id_location <12 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
+                                           WHERE j.id_location > 2 AND j.id_location <12 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = 3)
                                            ORDER BY j.order_");
 
+        }
+        else{
+            return $this->database->query("SELECT DISTINCT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.id_location > 2 AND j.id_location <12 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = 2)
+                                           ORDER BY j.order_");
         }
 
     }

@@ -68,43 +68,64 @@
                   <div class="row pt-1">
                     <hr class="mt-0 mb-4">
                   </div>
+                  <div class="row pt-1">
                   <div class="col-6 mb-3">
-                    <div class="row pt-1" style="padding-bottom: 50px; padding-left: 12px">
                       <h6><label>Elija una semana</label></h6>
                       <input class="form-control " id="week" name="week" type="week" value={{week}}>
                       <input hidden name="type" type="hidden" value={{type}}>
-
                       {{#emptyWeek}}
+                    <div style="color: red">
+                      {{emptyWeek}}
+                    </div>
+                    {{/emptyWeek}}
+
+
+
+                  </div>
+                    <div class="col-6 mb-3" style="text-align: center">
+
+                      {{#entreDestinos}}
+                      <h6><label>Elija la velocidad</label></h6>
+                      <p>Baja Aceleración</p>
+                      <input class="" name="type_equipment" type="radio" value="2" required>
+                      <p>Alta Aceleración</p>
+                      <input class="" name="type_equipment" type="radio" value="3" required>
+                      {{/entreDestinos}}
+                      {{#tour}}
+                      <input class="" name="type_equipment" type="hidden" value="3" required>
+                      {{/tour}}
+                      {{#orbital}}
+                      <input class="" name="type_equipment" type="hidden" value="1" required>
+                      {{/orbital}}
+
+
+                    </div>
+             <div class="row pt-1">
+                    <div class="row pt-1" style="text-align: right">
+                      <a href="/medicalcheckup">
+                        <button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar</button>
+                      </a>
+                    </div>
+                    <div class="errors">
+                      {{#errors}}
                       <div style="color: red">
-                        {{emptyWeek}}
+                        {{invalidWeek}}
                       </div>
-                      {{/emptyWeek}}
-
+                      <div style="color: red">
+                        {{sameLocations}}
+                      </div>
+                      <div style="color: red">
+                        {{invalidJourney}}
+                      </div>
+                      <div style="color: red">
+                        {{badOrder}}
+                      </div>
+                      {{/errors}}
                     </div>
-                  </div>
-                  <div class="row pt-1" style="text-align: right">
-                    <a href="/medicalcheckup">
-                      <button class="btn btn-outline-dark btn-lg px-5" type="submit">Buscar</button>
-                    </a>
-                  </div>
-                  <div class="errors">
-                    {{#errors}}
-                    <div style="color: red">
-                      {{invalidWeek}}
-                    </div>
-                    <div style="color: red">
-                      {{sameLocations}}
-                    </div>
-                    <div style="color: red">
-                      {{invalidJourney}}
-                    </div>
-                    <div style="color: red">
-                      {{badOrder}}
-                    </div>
-                    {{/errors}}
-                  </div>
 
 
+                  </div>
+                  </div>
                 </div>
               </form>
             </div>

@@ -47,7 +47,7 @@ class TicketController
 
             }
             //inició sesión y realizó chequeo médico, pero el vuelo era para niveles 3 y en el chequeo le dio menor
-            elseif ($_SESSION['id_type_equipment'] == 3 && $this->appointmentModel->getFlightLevel($_SESSION['nickname']) != 3) {
+            elseif (  $_SESSION['id_type_equipment'] == 3 && $this->appointmentModel->getFlightLevel($_SESSION['nickname']) != 3) {
                 $this->printer->generateView('failedSearch.html');
 
             } //caso feliz:
@@ -110,7 +110,6 @@ class TicketController
         $_SESSION['destination'] = $_POST["destination"];
         $_SESSION['week'] = $_POST["week"];
         $_SESSION['hours'] = $_POST["hours"];
-        $_SESSION['id_type_equipment'] = $_POST['id_type_equipment'];
 
 
         $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);

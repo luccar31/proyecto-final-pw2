@@ -24,12 +24,24 @@ class Flight_planController
         $data['type'] = $_POST['type'];
         $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
         $data['destinationCities'] = $this->flight_planModel->getDestinationCities($data['type']);
+
+        if ($data['type'] == 2 || $data['type'] == 3){
+            $data['entreDestinos'] = true;
+        }
+        if ($data['type'] == 4){
+            $data['tour'] = true;
+        }
+        if ($data['type'] == 1){
+            $data['orbital'] = true;
+        }
+
         $this->printer->generateView('flightPlanFormView.html', $data);
     }
 
     //muestra el formulario y lo valida
     public function searchFlightForm()
     {
+
         $data['type'] = $_POST['type'];
         $_SESSION['type'] = $_POST['type'];
         $data['departureCities'] = $this->flight_planModel->getDepartureCities($data['type']);
@@ -39,6 +51,10 @@ class Flight_planController
         $data['week'] = $_POST['week'];
         $data['selectedDepartureName'] = $this->flight_planModel->getCityNameById($data['departure']);
         $data['selectedDestinationName'] = $this->flight_planModel->getCityNameById($data['destination']);
+        $data['id_type_equipment'] = $_POST['type_equipment'];
+        $_SESSION['id_type_equipment'] = $_POST['type_equipment'];
+
+
         $errors = 0;
 
         $this->validateInputs($data['week'], $data['departure'], $data['destination'], $data, $errors);
@@ -55,7 +71,7 @@ class Flight_planController
             exit();
         }
 
-        $this->searchFlight($data['departure'], $data['destination'], $data['week'], $data['type']);
+        $this->searchFlight($data['departure'], $data['destination'], $data['week'], $data['type'], $data['id_type_equipment']);
     }
 
     //busca vuelos creados o planes de vuelo
@@ -81,9 +97,9 @@ class Flight_planController
 
     //esto es para la barra de progreso dinámica
 
-    private function searchFlight($departure, $destination, $week, $type)
+    private function searchFlight($departure, $destination, $week, $type, $type_equipment)
     {
-        $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week, $type);
+        $data = $this->flight_planModel->getFlightPlanList($departure, $destination, $week, $type, $type_equipment);
 
         $this->printer->generateView('flightPlanSearchView.html', $data);
     }
