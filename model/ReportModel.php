@@ -9,7 +9,8 @@ class ReportModel
     }
 
     public function billingPerClient(){
-        return $this->database->query("SELECT user_nickname, SUM(totalPrice) FROM payment GROUP BY user_nickname");
+        return $this->database->query("SELECT user_nickname, SUM(totalPrice) as suma FROM payment GROUP BY user_nickname");
+
     }
 
     public function monthlyBilling($year = null){

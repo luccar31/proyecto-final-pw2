@@ -31,7 +31,7 @@ class ReportController
         $graph = new Graph(600,600,'auto');
         $graph->SetScale("textlin");
 
-        $tickPositions = array(10000,20000,30000,50000, 60000, 70000, 80000, 90000, 100000, 40000);
+        $tickPositions = array(100000,200000,300000,400000, 500000, 600000, 700000, 800000, 900000, 1000000);
         $graph->yaxis->SetTickPositions($tickPositions);
         $graph->SetBox(false);
 
@@ -80,9 +80,69 @@ class ReportController
         $graph->Stroke();
     }
 
+
     public function report4(){ //facturacion por cliente
-        $response = $this->reportModel->billingPerClient();
-        Helper::debugExit($response);
+        $result = $this->reportModel->billingPerClient();
+
+        $suma = array_column($result, 'suma');
+        $cliente = array_column($result, 'user_nickname');
+
+// Some data
+$data = $suma;
+
+// A new pie graph
+$graph = new PieGraph(900,900,'auto');
+
+// Don't display the border
+$graph->SetFrame(false);
+
+// Setup title
+$graph->title->Set("Facturación por cliente");
+$graph->title->SetFont(FF_ARIAL,FS_BOLD,18);
+$graph->title->SetMargin(8); // Add a little bit more margin from the top
+
+// Create the pie plot
+$p1 = new PiePlotC($data);
+
+// Set size of pie
+$p1->SetSize(0.43);
+
+// Label font and color setup
+$p1->value->SetFont(FF_ARIAL,FS_BOLD,12);
+$p1->value->SetColor('white');
+
+$p1->value->Show();
+
+
+
+// Use percentage values in the legends values (This is also the default)
+$p1->SetLabelType(PIE_VALUE_PER);
+
+
+        for ($i=0; $i < sizeof($result); $i++){
+
+            $array[] = $result[$i]['user_nickname'] . "\n" . "$" . $result[$i]['suma'];
+        }
+
+
+$lbl = $array;
+$p1->SetLabels($lbl);
+
+
+// Add drop shadow to slices
+$p1->SetShadow();
+
+
+// Add plot to pie graph
+$graph->Add($p1);
+
+// .. and send the image on it's marry way to the browser
+$graph->Stroke();
+
+
+
+
+
     }
 
 }
