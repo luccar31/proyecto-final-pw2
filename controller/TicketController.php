@@ -27,33 +27,41 @@ class TicketController
 
     public function verifyEnabledClient()
     {
-        //variable de sesion para después concultar en los otros controladores y redirigir a donde estaba
+        //creamos esta variable de sesión para que (en caso de que pida iniciar sesión o realizar el cheuqeo médico)
+        //podamos volver al paso en el que estaba
         $_SESSION['pausedBuy'] = true;
+
 
         //si inició sesión:
         if (isset($_SESSION['nickname'])) {
 
+            //busco si hizo un chequeo:
             $data['enabledClient'] = $this->appointmentModel->getAppointment($_SESSION['nickname']);
 
-            //inició sesión pero no realizó chequeo médico
+            //inició sesión pero no realizó chequeo médico:
             if (empty($data['enabledClient'])) {
 
                 $data['disabledClient'] = "Debe realizar un chequeo médico. El código de viajero y nivel de vuelo es requerido.";
                 $this->printer->generateView('reserved_ticketsView.html', $data);
 
-            } //inició sesión y realizó chequeo médico. Hace el pago
+            }
+            //inició sesión y realizó chequeo médico, pero el vuelo era para niveles 3 y en el chequeo le dio menor
+            elseif ($_SESSION['id_type_equipment'] == 3 && $_SESSION['flight_level'] != 3) {
+                $this->printer->generateView('failedSearch.html');
+
+            } //caso feliz:
             else {
                 Helper::redirect('/credit/pay');
 
             }
-        } //no inició sesión
+        }
+        //si directamentee no inició sesión:
         else {
 
             $data['notLogged'] = "Debe inciar sesión para reservar vuelos";
             $this->printer->generateView('reserved_ticketsView.html', $data);
         }
 
-        $this->printer->generateView('reserved_ticketsView.html', $data);
     }
 
     //crea ticket y el vuelo en caso de que no exista
@@ -101,6 +109,7 @@ class TicketController
         $_SESSION['destination'] = $_POST["destination"];
         $_SESSION['week'] = $_POST["week"];
         $_SESSION['hours'] = $_POST["hours"];
+        $_SESSION['id_type_equipment'] = $_POST['id_type_equipment'];
 
 
         $data['cabins'] = $this->ticketModel->getCabins($_SESSION['id_flight_plan']);

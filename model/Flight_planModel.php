@@ -31,7 +31,7 @@ class Flight_planModel
         //haya alguno creado se los muestra igual
         if ($departure <= 2) {
             $result = $this->database->query("SELECT fp.id as id, e.model as model, fp.departure_day as day, fp.departure_time as time, tf.description as type, 
-                                               te.description as equipment, j.diff_time as hours FROM flight_plan fp
+                                               te.description as equipment, j.diff_time as hours, e.id_type as id_type_equipment  FROM flight_plan fp
                                                INNER JOIN equipment e on fp.id_equipment = e.id
                                                INNER JOIN location l on fp.departure_loc = l.id
                                                INNER JOIN type_flight tf on fp.type_flight = tf.id
@@ -51,7 +51,7 @@ class Flight_planModel
         //si no encuentra nada, se le muestra un mensaje que no hay vuelos disponibles
         else {
             $result = $this->database->query("SELECT f.*, fp.id as id, s1.arrive_date as day, s2.arrive_date as day2, s1.arrive_time as time, s2.arrive_time as time2,
-                                                     e.model as model, tf.description  as type, te.description as equipment FROM flight f
+                                                     e.model as model, tf.description  as type, te.description as equipment, e.id_type as id_type_equipment  FROM flight f
                                             INNER JOIN flight_plan fp on f.id_flight_plan = fp.id
                                             INNER JOIN equipment e on fp.id_equipment = e.id
                                             INNER JOIN type_flight tf on fp.type_flight = tf.id

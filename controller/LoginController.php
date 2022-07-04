@@ -33,6 +33,7 @@ class LoginController
         }
 
         $client = $this->clientModel->getClient($nickname);
+
         $_SESSION['user_firstname'] = $client[0]['firstname'];
         $_SESSION['user_surname'] = $client[0]['surname'];
 

@@ -121,4 +121,11 @@ class AppointmentModel
     {
         return $this->database->query("SELECT * FROM medical_center WHERE id=$id")[0]['name'];
     }
+
+    public function getFlightLevel($nickname)
+    {
+        $result = $this->database->query("SELECT flight_level FROM client WHERE user_nickname = '$nickname'");
+        return $result[0]['flight_level'];
+
+    }
 }

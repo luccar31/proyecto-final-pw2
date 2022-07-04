@@ -100,6 +100,8 @@ class MedicalcheckupController
     {
         $data['medicalCenter'] = $this->appointmentModel->getNameMedicalCenter($_GET['med']);
         $data['date'] = $_GET['d'];
+        $_SESSION['flight_level'] = $this->appointmentModel->getFlightLevel($_SESSION['nickname']);
+
 
         $this->sendConfirmationEmail($_SESSION['email'], $_SESSION['nickname'], $data['medicalCenter'], $data['date']);
 

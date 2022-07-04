@@ -54,7 +54,8 @@
                       <div class="col-sm-12">
                         <div class="form-group">
                           <label for="name">Nombre del titular</label>
-                          <input class="form-control" id="name" name="titular" type="text">
+                          <input class="form-control" id="name" name="titular" type="text"
+                                 value="{{#firstname}}{{firstname}}{{/firstname}} {{#surname}}{{surname}}{{/surname}}">
                         </div>
                       </div>
                     </div>
@@ -63,12 +64,13 @@
                         <div class="form-group">
                           <label for="ccnumber">Número de tarjeta</label>
                           <div class="input-group">
-                            <input autocomplete="email" class="form-control" name="nroTarjeta" placeholder="0000 0000 0000 0000"
-                                   type="text">
+                            <input class="form-control" name="nroTarjeta" type="text"
+                                   placeholder="0000 0000 0000 0000" autocomplete="email"
+                                   value="4000111100006258">
                             <div class="input-group-append">
                             <span class="input-group-text" style="height: 40px">
-                             <svg class="bi bi-credit-card" fill="currentColor" height="16" viewBox="0 0 16 16"
-                                  width="16" xmlns="http://www.w3.org/2000/svg">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                  class="bi bi-credit-card" viewBox="0 0 16 16">
   <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
   <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
 </svg></span>
@@ -81,12 +83,14 @@
                     <div class="row">
                       <div class="form-group col-sm-4">
                         <label for="vencimiento">Vencimiento</label>
-                        <input class="form-control" id="vencimiento" name="vencimiento" placeholder="10/25" type="text">
+                        <input class="form-control" type="text" id="vencimiento"
+                               name="vencimiento" placeholder="10/25" value="10/25">
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="cvv">CVV/CVC</label>
-                          <input class="form-control" id="cvv" name="ccv" placeholder="123" type="text">
+                          <input class="form-control" id="cvv" name="ccv" type="text"
+                                 placeholder="123" value="420">
                         </div>
                       </div>
                     </div>
