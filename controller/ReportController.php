@@ -19,16 +19,27 @@ class ReportController
 
     public function execute()
     {
+        if(!$_SESSION['admin']){
+            helper::redirect('/');
+        }
         $this->printer->generateView('reportView.html');
     }
 
     public function report1()
     {
-        Helper::debugExit('Nada');
+        if(!$_SESSION['admin']){
+            helper::redirect('/');
+        }
+
+        $this->printer->generateView('noReportView.html');
     }
 
     public function report2()
     {
+        if(!$_SESSION['admin']){
+            helper::redirect('/');
+        }
+
         $year = $_GET['y'];
         $data = $this->reportModel->monthlyBilling($year);
 
@@ -87,6 +98,10 @@ class ReportController
 
     public function report3()
     {
+        if(!$_SESSION['admin']){
+            helper::redirect('/');
+        }
+
         $data = $this->reportModel->mostSoldCabin();
 
         $graph = new Graph(650, 600, 'auto');
@@ -115,6 +130,10 @@ class ReportController
 
     public function report4()
     {
+        if(!$_SESSION['admin']){
+            helper::redirect('/');
+        }
+
         $result = $this->reportModel->billingPerClient();
 
         $suma = array_column($result, 'suma');
@@ -153,8 +172,6 @@ class ReportController
         $graph->Add($p1);
 
         $graph->Stroke();
-
-
     }
 
 }
