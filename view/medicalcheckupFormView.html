@@ -1,7 +1,9 @@
 {{> header}}
 {{> navbar}}
-<section class="checkup vh-100 profile" style="background-color: #f4f5f7;">
+<section class="vh-100 profile" style="background-color: #f4f5f7;">
     <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100" style="text-align: center">
+            <div class="col col-lg-8 mb-4 mb-lg-0">
         <div class="card">
             <div class="card-header gradient-custom text-white">
                 <h5 class="my-1">Chequeo Médico</h5>
@@ -12,29 +14,35 @@
                         <label for="date-input">Seleccione la fecha de su turno: </label>
                         <input id="date-input" name="date" type="date" value={{date}}>
                     </p>
+                        <h5>Seleccione su centro médico más cercano: </h5>
+
+                    <div style="display: flex;  place-content: center">
+                    {{#medicalCenters}}
+                        <div style="text-align: center; padding: 50px">
+                            <img src="/assets/img/centroMedico{{name}}.png" style="width: 150px; height: 150px">
+                            <p>{{name}}</p>
+                            <input class="form-check-input" type="radio" name="medicalCenter" value="{{id}}">
+                        </div>
+                    {{/medicalCenters}}
+
+                    </div>
+                    <p>El precio del chequeo es de 10<img class="imgPrice" src="/assets/img/credit.png"></p>
+                    <p>¡Lo pagará junto con su reserva!</p>
                     <p>
-                        {{#medicalCenter}}
-                        <label for="med-select">Su centro médico seleccionado fue: {{medicalCenter}}</label>
-                        {{/medicalCenter}}
-                        {{^medicalCenter}}
-                        <label for="med-select">Seleccione su centro médico más cercano: </label>
-                        {{/medicalCenter}}
-                        <select id="med-select" name="medicalCenter">
-                            <option selected value="0">Seleccione centro médico</option>
-                            {{#medicalCenters}}
-                            <option value={{id}}>{{name}}</option>
-                            {{/medicalCenters}}
-                        </select>
-                    </p>
-                    <p>
-                        <button type="submit" class="btn btn-outline-dark btn-sm px-2">Reservar turno</button>
+                        <button type="submit" class="btn btn-outline-dark btn-m px-3">Reservar turno</button>
                     </p>
                 </form>
+
+                <article>
+                    {{#errors}}
+                    <h6 style="color: red">{{.}}</h6>
+                    {{/errors}}
+                </article>
             </div>
-            <article>
-                {{#errors}}
-                <p style="color: red">{{.}}</p>
-                {{/errors}}
-            </article>
+        </div>
+
+            </div>
+        </div>
+    </div>
 </section>
 {{> footer}}

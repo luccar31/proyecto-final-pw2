@@ -59,6 +59,7 @@ class MedicalcheckupController
             Helper::redirect("/medicalcheckup/makeAppointmentForm?med={$medicalCenter}&d={$date}");
         }
 
+
         Helper::redirect("/medicalcheckup/successfullAppointment?med={$medicalCenter}&d={$date}");
     }
 
@@ -67,6 +68,10 @@ class MedicalcheckupController
         $data['date'] = $_GET['d'];
 
         $this->sendConfirmationEmail($_SESSION['email'], $_SESSION['nickname'], $data['medicalCenter'], $data['date']);
+
+        if (isset($_SESSION['pausedBuy'])){
+            $data['pausedBuy'] = true;
+        }
 
         $this->printer->generateView('medicalcheckupSuccessView.html', $data);
     }

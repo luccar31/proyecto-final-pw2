@@ -30,7 +30,7 @@
         <h5 class="my-1" style="color: limegreen">{{enabledClient}} {{id_flight}}</h5>
       </div>
       <div class="card-body">
-        <table class='table'>
+        <table class='table table-borderless'>
           <thead>
           <tr>
             <th scope="col">Fecha de partida</th>
@@ -57,7 +57,9 @@
           </tr>
           {{/ticket}}
         </table>
+        <a href="/ticket/showClientTickets" style="text-align: center"><button class="btn btn-outline-dark btn-m px-3">Ver mis tickets</button></a>
       </div>
+
     </div>
     {{/enabledClient}}
   </div>

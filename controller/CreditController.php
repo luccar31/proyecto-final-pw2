@@ -36,7 +36,6 @@ class CreditController {
 
         $titular = $_POST['titular'];
         $nroTarjeta = $_POST['nroTarjeta'];
-        echo strlen($nroTarjeta);
 
         if (empty($titular) || empty($nroTarjeta) || strlen($nroTarjeta) != 16 || empty($_POST['ccv']) || empty($_POST['vencimiento'])){
             $data['firstname'] = $_SESSION['user_firstname'];

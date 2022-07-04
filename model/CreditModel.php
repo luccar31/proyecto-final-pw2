@@ -15,6 +15,12 @@ class CreditModel
     public function calculatePrice($id_flight_plan, $num_tickets, $id_service, $id_type_cabin)
     {
 
+        //consultar si ya pagó
+        if (isset($_SESSION['nickname'])){
+            $this->consultMedicalPrice($_SESSION['nickname']);
+        }
+
+
         $departure = $_SESSION['departure'];
         $destination = $_SESSION['destination'];
 
@@ -63,6 +69,17 @@ class CreditModel
 
         $this->database->query("INSERT INTO payment (titular, nroTarjeta, totalPrice, user_nickname, date)
                                 VALUES ('$titular','$nroTarjeta','$totalPrice', '$nickname', '$date')");
+    }
+
+    private function consultMedicalPrice($nickname)
+    {
+        $user_nickname = $nickname;
+
+        $result = $this->database->query("SELECT * from ticket WHERE user_nickname = '$user_nickname'");
+
+        if (!empty($result)){
+            $this->medical = 0;
+        }
     }
 
 }

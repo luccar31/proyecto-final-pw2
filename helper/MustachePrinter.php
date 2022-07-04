@@ -20,6 +20,7 @@ class MustachePrinter {
         $contentAsString =  file_get_contents($this->viewPath . "/" .$template);
 
         $data['logged'] = Session::isSessionActive();
+        $data['firstname'] = Session::getNickname();
 
         echo  $this->mustache->render($contentAsString, $data);
     }

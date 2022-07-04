@@ -34,6 +34,7 @@ class LoginController {
         }
 
         $this->startSession($nickname);
+
         Helper::redirect('/');
         return 1;
     }
@@ -60,6 +61,9 @@ class LoginController {
         if(!$_SESSION['verified'] && !$_SESSION['admin']){
             //Helper::redirect('/login/sendVerificationEmail');
             $this->sendVerificationEmail();
+        }
+        elseif (isset($_SESSION['pausedBuy'])){
+            Helper::redirect('/credit/payInfo');
         }
 
         Helper::redirect('/');

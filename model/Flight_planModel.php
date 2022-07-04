@@ -144,7 +144,7 @@ class Flight_planModel
 
             //si no hizo chequeo médico, que muestre all igual, total en la ultima etapa le decimos que no hizo el chequeo:
             if (empty($flight_level)) {
-                return [1, 2, 3];
+                return [1, 2, 3, 4];
                 //si realizó el chequeo, evaluo el nivel de vuelo
             } else {
                 // si es nivel 1 o 2, puede viajar en circuito corto y largo (1, 2)
@@ -152,12 +152,12 @@ class Flight_planModel
                     return [1, 2];
                     //de lo contrario es nive 3, puede viajar en todos
                 } else {
-                    return [1, 2, 3];
+                    return [1, 2, 3, 4];
                 }
             }
         } //si no inició sesión, que muestre all tipos total en la ultima etapa le decimos que no hizo el chequeo.
         else {
-            return [1, 2, 3];
+            return [1, 2, 3, 4];
         }
     }
 
@@ -363,12 +363,20 @@ class Flight_planModel
 
     public function getDepartureCities($type)
     {
-        if ($type == 4 || $type == 1) {
+        if ($type == 1) {
             return $this->database->query("SELECT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
                                            ORDER BY j.order_");
-        } else {
+        } elseif ($type == 4){
+
+            return $this->database->query("SELECT l.id,l.name from location l
+                                           JOIN journey j on l.id = j.id_location
+                                           WHERE j.order_ = 0 AND j.id_route in (SELECT id FROM route WHERE id_type_flight = '$type')
+                                           ORDER BY j.order_");
+        }
+
+        else {
             return $this->database->query("SELECT DISTINCT l.id,l.name from location l
                                            JOIN journey j on l.id = j.id_location
                                            WHERE j.order_ < 8 AND j.id_route in (SELECT id FROM route WHERE id_type_flight in (2,3))
